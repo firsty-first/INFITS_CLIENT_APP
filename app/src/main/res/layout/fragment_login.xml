@@ -98,7 +98,7 @@
         app:layout_constraintVertical_bias="0.782" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnGoogleSignIn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/social_back"
@@ -113,7 +113,7 @@
         app:srcCompat="@drawable/google" />
 
     <ImageButton
-        android:id="@+id/imageButton1"
+        android:id="@+id/btnTwitterSignIn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/social_back"
@@ -128,7 +128,7 @@
         app:srcCompat="@drawable/twitter" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btnFacebookSignIn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/social_back"
