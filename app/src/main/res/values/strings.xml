@@ -28,4 +28,10 @@ exercitation ullamco laboris nisi ut aliquip</string>
         <item>Dec</item>
     </array>
 
+    //Facebook cred
+    <string name="facebook_app_id">512089207734380</string>  //put facebook id created in developer.facebook.com
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">bfabadb0b1452dc1c14b847e3ab561ca</string> ////put facebook client token created in developer.facebook.com
+    //Facebook cred
+
 </resources>
