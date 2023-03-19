@@ -104,7 +104,7 @@ public class Appointment_booking extends AppCompatActivity implements AdapterVie
         nowBtn = findViewById(R.id.nowBtn);
         anyTimeBtn = findViewById(R.id.anyTimeBtn);
 
-        add_dietitian = "Smith K.";
+        add_dietitian = "Smith M.";
         appointmentTimeText = "";
 //        base64File = "attached";
 
