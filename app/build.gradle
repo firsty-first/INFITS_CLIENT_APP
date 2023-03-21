@@ -122,8 +122,12 @@ dependencies {
     // Adding lottie library
     def lottieVersion = "4.2.2"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation 'com.intuit.sdp:sdp-android:1.1.0'
+    implementation 'com.intuit.ssp:ssp-android:1.1.0'
+    implementation 'com.github.4bh1nav:ProgressView:v1.0'
 
     implementation 'com.github.antonKozyriatskyi:CircularProgressIndicator:1.3.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
 }

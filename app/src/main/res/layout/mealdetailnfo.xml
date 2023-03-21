@@ -63,6 +63,7 @@
                         android:layout_height="match_parent"/>
                     <ImageView
                         android:layout_width="0dp"
+                        android:visibility="invisible"
                         android:layout_weight="0.04"
                         android:src="@drawable/baseline_circle_24"
                         android:layout_height="match_parent"/>
@@ -71,6 +72,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="0.8"
                         android:text="1 Roti"
+                        android:visibility="invisible"
                         android:textSize="15dp"
                         android:gravity="center|start"
                         android:paddingStart="5dp"                        android:fontFamily="@font/nats_regular"
@@ -80,6 +82,7 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_weight="0.04"
+                        android:visibility="invisible"
                         android:src="@drawable/baseline_circle_24"
                         android:layout_height="match_parent"/>
                     <TextView
@@ -87,6 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="0.8"
                         android:text="10g"
+                        android:visibility="invisible"
                         android:textSize="15dp"
                         android:gravity="center|start"
                         android:paddingStart="5dp"

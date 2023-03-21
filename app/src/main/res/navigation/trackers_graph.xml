@@ -59,6 +59,18 @@
         <action
             android:id="@+id/action_calorieTrackerFragment_to_calorieConsumedFragment"
             app:destination="@+id/calorieConsumedFragment"/>
+        <action
+            android:id="@+id/action_calorieTrackerFragment_tocalorieAddBreakFastFragment"
+            app:destination="@id/calorieAddBreakFastFragment" />
+        <action
+            android:id="@+id/action_calorieTrackerFragment_tocalorieAddLunchFragment"
+            app:destination="@id/calorieAddLunchFragment" />
+        <action
+            android:id="@+id/action_calorieTrackerFragment_tocalorieAddDinnerFragment"
+            app:destination="@id/calorieAddDinnerFragment" />
+        <action
+            android:id="@+id/action_calorieTrackerFragment_tocalorieAddSnacksFragment"
+            app:destination="@id/calorieAddSnacksFragment" />
 <!--        <action-->
 <!--            android:id="@+id/action_calorieConsumedFragment_to_calorieAddBreakFastFragment"-->
 <!--            app:destination="@id/calorieAddBreakFastFragment" />-->
@@ -215,8 +227,11 @@
         android:label="fragment_add_break_fast"
         tools:layout="@layout/fragment_add_break_fast">
         <action
-            android:id="@+id/action_calorieAddBreakFastFragment_to_calorieConsumedFragment"
-            app:destination="@id/calorieConsumedFragment" />
+            android:id="@+id/action_calorieAddBreakFastFragment_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+        <action
+            android:id="@+id/action_calorieAddBreakfastFragment_to_mealInfoWithPhoto"
+            app:destination="@+id/mealInfoWithPhoto"/>
 
     </fragment>
     <fragment
@@ -225,8 +240,12 @@
         android:label="fragment_add_lunch"
         tools:layout="@layout/fragment_add_lunch">
         <action
-            android:id="@+id/action_calorieAddLunchFragment_to_calorieConsumedFragment"
-            app:destination="@id/calorieConsumedFragment" />
+            android:id="@+id/action_calorieAddLunchFragment_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+        <action
+            android:id="@+id/action_calorieAddLunchFragment_to_mealInfoWithPhoto"
+            app:destination="@+id/mealInfoWithPhoto"/>
+
 
     </fragment>
     <fragment
@@ -235,8 +254,12 @@
         android:label="fragment_add_dinner"
         tools:layout="@layout/fragment_add_dinner">
         <action
-            android:id="@+id/action_calorieAddDinnerFragment_to_calorieConsumedFragment"
-            app:destination="@id/calorieConsumedFragment" />
+            android:id="@+id/action_calorieAddDinnerFragment_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+        <action
+            android:id="@+id/action_calorieAddDinnerFragment_to_mealInfoWithPhoto"
+            app:destination="@+id/mealInfoWithPhoto"/>
+
 
     </fragment>
     <fragment
@@ -245,8 +268,31 @@
         android:label="fragment_add_snacks"
         tools:layout="@layout/fragment_add_snacks">
         <action
-            android:id="@+id/action_calorieAddSnacksFragment_to_calorieConsumedFragment"
-            app:destination="@id/calorieConsumedFragment" />
+            android:id="@+id/action_calorieAddSnacksFragment_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+        <action
+            android:id="@+id/action_calorieAddSnacksFragment_to_mealInfoWithPhoto"
+            app:destination="@+id/mealInfoWithPhoto"/>
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/mealInfoWithPhoto"
+        android:name="com.example.infits.mealInfoWithPhoto"
+        android:label="fragment_meal_info_with_photo"
+        tools:layout="@layout/fragment_meal_info_with_photo">
+        <action
+            android:id="@+id/action_mealInfoWithPhoto_to_calorieAddSnacksFragment"
+            app:destination="@id/calorieAddSnacksFragment" />
+        <action
+            android:id="@+id/action_mealInfoWithPhoto_to_calorieAddLunchFragment"
+            app:destination="@id/calorieAddLunchFragment" />
+        <action
+            android:id="@+id/action_mealInfoWithPhoto_to_calorieAddDinnerFragment"
+            app:destination="@id/calorieAddDinnerFragment" />
+        <action
+            android:id="@+id/action_mealInfoWithPhoto_to_calorieAddBreakfastFragment"
+            app:destination="@id/calorieAddBreakFastFragment" />
 
     </fragment>
     <fragment
@@ -257,18 +303,8 @@
         <action
             android:id="@+id/action_calorieConsumedFragment_to_calorieTrackerFragment"
             app:destination="@id/calorieTrackerFragment" />
-        <action
-            android:id="@+id/action_calorieConsumedFragment_tocalorieAddBreakFastFragment"
-            app:destination="@id/calorieAddBreakFastFragment" />
-        <action
-            android:id="@+id/action_calorieConsumedFragment_tocalorieAddLunchFragment"
-            app:destination="@id/calorieAddLunchFragment" />
-        <action
-            android:id="@+id/action_calorieConsumedFragment_tocalorieAddDinnerFragment"
-            app:destination="@id/calorieAddDinnerFragment" />
-        <action
-            android:id="@+id/action_calorieConsumedFragment_tocalorieAddSnacksFragment"
-            app:destination="@id/calorieAddSnacksFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/weightReminderFragment"

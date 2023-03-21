@@ -1,6 +1,8 @@
 package com.example.infits;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,11 +24,13 @@ public class AddMealAdapter extends RecyclerView.Adapter<AddMealAdapter.ViewHold
     Context context;
     ArrayList<addmealInfo> filterItems;
     ArrayList<addmealInfo> addmealInfos;
+    ArrayList<String> mealInfotransfer;
 
     public AddMealAdapter(Context context, ArrayList<addmealInfo> addmealInfos){
         this.context=context;
         this.addmealInfos=addmealInfos;
         this.filterItems=addmealInfos;
+        mealInfotransfer=new ArrayList<>();
     }
 
     @NonNull
@@ -39,9 +44,41 @@ public class AddMealAdapter extends RecyclerView.Adapter<AddMealAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.addmealIcon.setImageDrawable(context.getDrawable(addmealInfos.get(position).mealIocn));
         holder.addMealName.setText(addmealInfos.get(position).mealname);
-        holder.addMealQuantity.setText(addmealInfos.get(position).mealQuantity);
+//        holder.addMealQuantity.setText(addmealInfos.get(position).mealQuantity);
         holder.addMealCalorie.setText(addmealInfos.get(position).mealcalorie);
-        holder.addMealWeight.setText(addmealInfos.get(position).mealWeight);
+//        holder.addMealWeight.setText(addmealInfos.get(position).mealWeight);
+        mealInfotransfer.clear();
+        holder.addMealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle=new Bundle();
+                int icon=addmealInfos.get(position).mealIocn;
+                String Meal_Name=addmealInfos.get(position).mealname;
+                String calorie=addmealInfos.get(position).mealcalorie;
+                String carbs=addmealInfos.get(position).carb;
+                String protin=addmealInfos.get(position).protein;
+                String fat=addmealInfos.get(position).fat;
+                mealInfotransfer.add(Meal_Name);
+                mealInfotransfer.add(calorie);
+                mealInfotransfer.add(carbs);
+                mealInfotransfer.add(protin);
+                mealInfotransfer.add(fat);
+                mealInfotransfer.add(String.valueOf(icon));
+                bundle.putStringArrayList("mealInfotransfer",mealInfotransfer);
+                if (addmealInfos.get(position).mealType == "BreakFast") {
+                    Navigation.findNavController(v).navigate(R.id.action_calorieAddBreakfastFragment_to_mealInfoWithPhoto, bundle);
+                }
+                if (addmealInfos.get(position).mealType == "Lunch") {
+                    Navigation.findNavController(v).navigate(R.id.action_calorieAddLunchFragment_to_mealInfoWithPhoto, bundle);
+                }
+                if (addmealInfos.get(position).mealType == "Dinner") {
+                    Navigation.findNavController(v).navigate(R.id.action_calorieAddDinnerFragment_to_mealInfoWithPhoto, bundle);
+                }
+                if (addmealInfos.get(position).mealType == "Snacks") {
+                    Navigation.findNavController(v).navigate(R.id.action_calorieAddSnacksFragment_to_mealInfoWithPhoto, bundle);
+                }
+            }
+        });
     }
 
     @Override

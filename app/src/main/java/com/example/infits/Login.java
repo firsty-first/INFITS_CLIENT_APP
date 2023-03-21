@@ -101,6 +101,7 @@ public class Login extends AppCompatActivity {
                     }else{
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_LONG).show();
                         Intent id = new Intent(Login.this, DashBoardMain.class);
+                        startActivity(id);
                         Log.d("Response Login",response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);

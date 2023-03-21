@@ -91,23 +91,6 @@ public class CalorieInfoAdapter extends RecyclerView.Adapter<CalorieInfoAdapter.
         holder.mainCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(calorieInfos.get(position).Type=="String") {
-                    if(calorieInfos.get(position).calorieActivity=="BREAKFAST"){
-                        Navigation.findNavController(v).navigate(R.id.action_calorieConsumedFragment_tocalorieAddBreakFastFragment);
-                    }
-                    if(calorieInfos.get(position).calorieActivity=="LUNCH"){
-                        Navigation.findNavController(v).navigate(R.id.action_calorieConsumedFragment_tocalorieAddLunchFragment);
-
-                    }
-                    if(calorieInfos.get(position).calorieActivity=="SNACKS"){
-                        Navigation.findNavController(v).navigate(R.id.action_calorieConsumedFragment_tocalorieAddSnacksFragment);
-
-                    }
-                    if(calorieInfos.get(position).calorieActivity=="DINNER"){
-                        Navigation.findNavController(v).navigate(R.id.action_calorieConsumedFragment_tocalorieAddDinnerFragment);
-
-                    }
-                }
             }
         });
 
