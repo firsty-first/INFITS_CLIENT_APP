@@ -5,4 +5,6 @@
     <item name="nowText" type="id" />
     <item name="anyTimeBtn" type="id" />
     <item name="anyTimeText" type="id" />
+    <item name="dietitionProfession" type="id" />
+    <item name="dietitionEmail" type="id" />
 </resources>
