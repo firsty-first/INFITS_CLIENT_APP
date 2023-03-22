@@ -155,11 +155,6 @@ public class Login extends AppCompatActivity {
                                 editor.putBoolean("proUser",DataFromDatabase.proUser);
                                 editor.apply();
 
-//                            if (fragment != null) {
-//                                fragment.setProfileImage(ContextCompat.getDrawable(getApplicationContext(), R.drawable.profile));
-//                            }
-
-
                                 finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
