@@ -110,7 +110,6 @@ public class FragmentAddBreakFast extends Fragment {
         jsonArray=new JSONArray();
         mainJSONobj=new JSONObject();
         AddFrequentMeal();
-
         calorieImgback.setOnClickListener(v -> requireActivity().onBackPressed());
         breakfastSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

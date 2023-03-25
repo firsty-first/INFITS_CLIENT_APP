@@ -331,6 +331,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.Manifest;
 import android.content.Context;
@@ -339,6 +342,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -346,10 +350,12 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelFileDescriptor;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
@@ -374,6 +380,8 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -387,7 +395,7 @@ public class CameraForMealTracker extends AppCompatActivity {
     byte[] photoArr;
 
     Bitmap food_eaten_photoPhoto;
-
+    int SELECT_PICTURE=200;
     SurfaceView surfaceView;
 
     com.google.android.gms.samples.vision.barcodereader.ui.camera.CameraSource cameraSourceFlash;
@@ -396,9 +404,8 @@ public class CameraForMealTracker extends AppCompatActivity {
     RelativeLayout camera_layout;
 
     ImageView saveImageButton, gallery,food_eaten_photo;
-
+    String jsonObject;
     Button takePhoto;
-
     BarcodeDetector barcodeDetector;
 
 
@@ -408,13 +415,18 @@ public class CameraForMealTracker extends AppCompatActivity {
         setContentView(R.layout.activity_camera_for_meal_tracker);
 
         Intent getIntent = getIntent();
+        jsonObject=getIntent.getStringExtra("mealInfoForPhoto");
+
 
         surfaceView = findViewById(R.id.camera_screen);
 
         takePhoto = findViewById(R.id.take);
+        takePhoto.setEnabled(true);
+        takePhoto.setVisibility(View.VISIBLE);
 
 
         saveImageButton = findViewById(R.id.saveImageButton);
+        saveImageButton.setEnabled(false);
 
         gallery = findViewById(R.id.gallery);
 
@@ -439,13 +451,30 @@ public class CameraForMealTracker extends AppCompatActivity {
                 .build();
 
         saveImageButton.setOnClickListener(v -> {
-            cameraSourceFlash.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+            Intent intent=new Intent(getApplicationContext(),Activity_Todays_Breakfast.class);
+            intent.putExtra("mealInfoForPhoto",jsonObject.toString());
+            startActivity(intent);
 
+
+        });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+
+                // pass the constant to compare it
+                // with the returned requestCode
+                startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+
+            }
         });
 
 
         takePhoto.setOnClickListener(v -> {
             saveImageButton.setVisibility(View.VISIBLE);
+            saveImageButton.setEnabled(true);
             cameraSourceFlash.takePicture(new com.google.android.gms.samples.vision.barcodereader.ui.camera.CameraSource.ShutterCallback() {
                 @Override
                 public void onShutter() {
@@ -494,6 +523,41 @@ public class CameraForMealTracker extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                Uri selectedImageUri = data.getData();
+
+                if (null != selectedImageUri) {
+                    try {
+                        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
+                        FileDescriptor fileDescriptor=parcelFileDescriptor.getFileDescriptor();
+                        surfaceView.setVisibility(View.INVISIBLE);
+                        surfaceView.setBackgroundColor(Color.BLACK);
+                        food_eaten_photo.setVisibility(View.VISIBLE);
+                        saveImageButton.setVisibility(View.VISIBLE);
+                        saveImageButton.setEnabled(true);
+                        takePhoto.setEnabled(false);
+                        takePhoto.setVisibility(View.INVISIBLE);
+                        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                        food_eaten_photo.setImageBitmap(image);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // update the preview image in the layout
+                }
+            }
+        }
+    }
+
 
     @Override
     protected void onPause() {

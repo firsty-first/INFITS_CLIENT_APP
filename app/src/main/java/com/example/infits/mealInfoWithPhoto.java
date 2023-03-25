@@ -1,5 +1,9 @@
 package com.example.infits;
 
+import static android.content.ContentValues.TAG;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.airbnb.lottie.L;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,8 +41,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Timer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +76,7 @@ public class mealInfoWithPhoto extends Fragment {
     NumberPicker numberPicker1, numberPicker2;
     RequestQueue requestQueue,requestQueue1,requestQueue2;
     ImageButton uparrow1, uparrow2, downarrow1, downarrow2, FavouriteMealButton;
-    Button TakeaPhotoButton;
+    TextView TakeaPhotoButton;
     String[] numberPicker1List = new String[]{"0.5", "1", "1.5", "2"};
     String[] numberPicker2List = new String[]{"Small", "Regular", "Large"};
     int REQUEST_IMAGE_CAPTURE = 1;
@@ -122,6 +130,10 @@ public class mealInfoWithPhoto extends Fragment {
         proteinValue.setText(mealInfotransfer.get(3) + " g");
         fatValue.setText(mealInfotransfer.get(4) + " g");
 
+
+        //delete shared preference
+
+        DeleteSharedPreference();
         //Add Recent Meal Data
         AddingDataForRecentMeal();
         //numberPicker 1
@@ -168,7 +180,21 @@ public class mealInfoWithPhoto extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), CameraForMealTracker.class);
-                startActivity(intent);
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("mealName", mealName.getText().toString());
+                    jsonObject.put("calorieValue", calorieValue.getText().toString());
+                    jsonObject.put("carbsValue", carbsValue.getText().toString());
+                    jsonObject.put("fatValue", fatValue.getText().toString());
+                    jsonObject.put("proteinValue", proteinValue.getText().toString());
+                    jsonObject.put("Quantity", numberPicker1List[numberPicker1.getValue()]);
+                    jsonObject.put("Size", numberPicker2List[numberPicker2.getValue()]);
+                    intent.putExtra("mealInfoForPhoto",jsonObject.toString());
+                    startActivity(intent);
+                }catch (Exception e){
+                    Log.d("Exception", e.toString());
+                }
+//
             }
         });
 
@@ -186,10 +212,20 @@ public class mealInfoWithPhoto extends Fragment {
         });
         return view;
     }
+
+
+    private void DeleteSharedPreference(){
+
+        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent=new Intent(getContext(),NotificationReceiver.class);
+        intent.putExtra("tracker","RecentMealInfo");
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(getContext(),1,intent,PendingIntent.FLAG_IMMUTABLE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,0L,59*1000,pendingIntent);
+    }
     private void AddingDataForRecentMeal(){
         try {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("RecentMeal", Context.MODE_PRIVATE);
 
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("RecentMeal", Context.MODE_PRIVATE);
             if(sharedPreferences.contains("RecentMealInfo")) {
                 JSONObject jsonObject2 = new JSONObject(sharedPreferences.getString("RecentMealInfo", ""));
                 JSONArray jsonArray1 = jsonObject2.getJSONArray("RecentMealInfo");
@@ -212,6 +248,9 @@ public class mealInfoWithPhoto extends Fragment {
             editor.putString("RecentMealInfo", mainJSONobj.toString());
             editor.commit();
             Log.d("RecentMeal", sharedPreferences.getString("RecentMealInfo", ""));
+
+
+
         }catch (Exception exception){
             Log.d("Exception",exception.toString());
         }

@@ -7,6 +7,7 @@
     android:background="@color/black"
     tools:context=".CameraForMealTracker">
 
+
 <!--    <LinearLayout-->
 <!--        android:id="@+id/result"-->
 <!--        android:layout_width="match_parent"-->
@@ -172,6 +173,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="56dp"
             android:visibility="invisible"
+
             android:layout_alignTop="@+id/take"
             android:layout_alignBottom="@+id/take"
             android:layout_marginStart="55dp"
