@@ -47,12 +47,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.PickerWater" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="AppTheme.PickerWater" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="colorControlNormal">#76A5FF</item>
     </style>
 
-    <style name="AppTheme.PickerCalorie" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="AppTheme.PickerCalorie" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="colorControlNormal">#FFCE57</item>
     </style>
@@ -89,5 +89,10 @@
     <style name="CircularDeterminateProgressBar">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/circle</item>
+    </style>
+
+    <style name="Widget.Theme.Infits.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 </resources>

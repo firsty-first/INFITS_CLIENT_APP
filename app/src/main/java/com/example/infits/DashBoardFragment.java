@@ -265,7 +265,7 @@ public class DashBoardFragment extends Fragment {
         caloriecard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_dashBoardFragment_to_calorieTrackerFragment);
+                Navigation.findNavController(v).navigate(R.id.action_dashBoardFragment_to_calorieTrackerFragmentN);
             }
         });
 
@@ -441,7 +441,7 @@ public class DashBoardFragment extends Fragment {
                     break;
                 case "heart": Navigation.findNavController(requireActivity(), R.id.trackernav).navigate(R.id.action_dashBoardFragment_to_heartRate);
                     break;
-                case "calorie": Navigation.findNavController(requireActivity(), R.id.trackernav).navigate(R.id.action_dashBoardFragment_to_calorieTrackerFragment);
+                case "calorie": Navigation.findNavController(requireActivity(), R.id.trackernav).navigate(R.id.action_dashBoardFragment_to_calorieTrackerFragmentN);
                     break;
                 case "water":
                     Bundle waterBundle = new Bundle();

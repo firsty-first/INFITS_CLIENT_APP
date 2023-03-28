@@ -9,6 +9,10 @@
     <color name="white">#FFFFFF</color>
     <color name="orange">#FF806C</color>
     <color name="purple">#BD4AAE</color>
+    <color name="progressGreenColor">#0C9900</color>
+    <color name="progressRedColor">#DD4200</color>
+    <color name="progressPurpleColor">#9500DB</color>
+    <color name="progressBlueColor">#7098FF</color>
     <color name="blue">#278EFF</color>
     <color name="darkpurple">#7B29FF</color>
     <color name="green">#529497</color>
@@ -78,4 +82,10 @@
     <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 
     <color name="colorAccent">#FF4081</color>
+    <color name="CalorieConsumedPrrogressColor">#E87300</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
 </resources>

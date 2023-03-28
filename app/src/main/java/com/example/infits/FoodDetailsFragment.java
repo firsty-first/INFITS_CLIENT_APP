@@ -135,7 +135,7 @@ public class FoodDetailsFragment extends Fragment {
     private void getFoodItems() {
         String getFoodUrl = String.format("%sgetFoodItems.php", DataFromDatabase.ipConfig);
 
-        StringRequest getFoodRequest = new StringRequest(
+         StringRequest getFoodRequest = new StringRequest(
                 Request.Method.GET,
                 getFoodUrl,
                 response -> {

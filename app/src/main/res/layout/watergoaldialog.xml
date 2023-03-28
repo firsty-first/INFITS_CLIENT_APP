@@ -1,49 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center"
     app:cardElevation="5dp"
     app:cardCornerRadius="10dp"
     android:layout_margin="10dp">
-    <LinearLayout
-        android:layout_width="260dp"
-        android:layout_height="300dp"
-        android:orientation="vertical"
-        android:gravity="center"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|center_horizontal"
         android:layout_gravity="center">
         <TextView
             android:id="@+id/textView26"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
             android:layout_height="wrap_content"
-            android:text="Set Daily Water Goal"
+            android:text="Set goal for water intake"
+            android:textAlignment="center"
+            android:textColor="#4045c9"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:fontFamily="@font/nats_regular"/>
+
+        <TextView
+            android:id="@+id/textViewInLiters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(in liters) "
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:fontFamily="@font/nats_regular"/>
 
-        <EditText
-            android:id="@+id/goal_water"
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_marginTop="50dp"
+          android:gravity="center"
+          android:layout_height="wrap_content">
+          <View
+              android:layout_width="250dp"
+              android:background="@color/black"
+              android:layout_height="1dp"/>
+      </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/nats_regular"/>
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="60dp"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/textViewSetQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:text="Set quantity!   1 Glass (in ml) "
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:fontFamily="@font/nats_regular"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/setGlassQuantity"
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="#52A4FF"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
+                android:layout_height="40dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.7dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <EditText
+                            android:id="@+id/glassQuantityText"
+                            android:hint="(50ml - 300ml)"
+                            android:layout_width="match_parent"
+                            android:autoSizeTextType="uniform"
+                            android:textSize="12sp"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/set_water_goal"
-            android:layout_width="120dp"
+
+        <com.ramotion.fluidslider.FluidSlider
+            android:id="@+id/fluidSlideBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:bar_color="#52A4FF"
+            app:size="small"
+            android:layout_marginTop="110dp"
+            app:initial_position="0"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:start_text="Min"
+            app:end_text="Max"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="230dp"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/valueFromSlideBar"
+            android:layout_width="80dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
             android:backgroundTint="#52A4FF"
-            android:text="Save"
-            app:cornerRadius="20sp"
-            android:textSize="15sp"
-            android:fontFamily="@font/nats_regular"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+            android:layout_marginStart="10dp"
+            android:layout_height="40dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0.7dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/goal_water"
+                        android:layout_width="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="56"
+                        android:textColor="@color/black"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+<!--        <com.xw.repo.BubbleSeekBar-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:bsb_bubble_color="#52A4FF"-->
+<!--            app:bsb_bubble_text_color="@color/colorPrimaryDark"-->
+<!--            app:bsb_max="4000.0"-->
+<!--            app:bsb_min="0"-->
+<!--            app:bsb_always_show_bubble_delay="500"-->
+<!--            app:bsb_progress="2000"-->
+<!--            app:bsb_auto_adjust_section_mark="true"-->
+<!--            app:bsb_second_track_color="#52A4FF"-->
+<!--            android:layout_marginTop="140dp"-->
+<!--            app:bsb_section_count="10"-->
+<!--            app:bsb_section_text_position="bottom_sides"-->
+<!--            app:bsb_show_progress_in_float="false"-->
+<!--            app:bsb_thumb_text_size="15sp"-->
+<!--            app:bsb_touch_to_seek="true"-->
+<!--            app:bsb_show_section_mark="true"-->
+<!--            app:bsb_show_section_text="true"-->
+<!--            app:bsb_show_thumb_text="true"-->
+<!--            app:bsb_track_color="@color/colorGray"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/set_water_goal"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#52A4FF"
+                android:text="Save"
+                app:cornerRadius="20sp"
+                android:textSize="15sp"
+                android:fontFamily="@font/nats_regular" />
+        </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

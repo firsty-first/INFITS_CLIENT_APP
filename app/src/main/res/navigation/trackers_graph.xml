@@ -48,6 +48,9 @@
             android:id="@+id/action_calorieTrackerFragment_to_foodDetailsFragment"
             app:destination="@id/foodDetailsFragment" />
         <action
+            android:id="@+id/action_calorieTrackerFragment_to_foodDetailsBreakfastList"
+            app:destination="@id/foodDetailsBreakfastList" />
+        <action
             android:id="@+id/action_calorieTrackerFragment_to_dashBoardFragment"
             app:destination="@id/dashBoardFragment" />
         <action
@@ -59,6 +62,15 @@
         android:name="com.example.infits.FoodDetailsFragment"
         android:label="fragment_food_details"
         tools:layout="@layout/fragment_food_details" >
+        <action
+            android:id="@+id/action_foodDetailsFragment_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodDetailsBreakfastList"
+        android:name="com.example.infits.breakFastList"
+        android:label="fragment_food_details_breakfast"
+        tools:layout="@layout/fragment_break_fast_list" >
         <action
             android:id="@+id/action_foodDetailsFragment_to_calorieTrackerFragment"
             app:destination="@id/calorieTrackerFragment" />
@@ -111,7 +123,7 @@
             android:id="@+id/action_dashBoardFragment_to_stepTrackerFragment"
             app:destination="@id/stepTrackerFragment" />
         <action
-            android:id="@+id/action_dashBoardFragment_to_calorieTrackerFragment"
+            android:id="@+id/action_dashBoardFragment_to_calorieTrackerFragmentN"
             app:destination="@id/calorieTrackerFragment" />
         <action
             android:id="@+id/action_dashBoardFragment_to_sleepTrackerFragment"
