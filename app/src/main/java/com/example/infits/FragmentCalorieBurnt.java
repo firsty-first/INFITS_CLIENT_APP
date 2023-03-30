@@ -1,20 +1,34 @@
 package com.example.infits;
 
+import static android.content.ContentValues.TAG;
+
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.L;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -24,8 +38,16 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +64,8 @@ public class FragmentCalorieBurnt extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    String url = String.format("%scalorieBurnt.php", DataFromDatabase.ipConfig);
     PieChart pieChart;
     ImageView imgBack;
     ArrayList<calorieInfo> calorieInfos;
@@ -85,13 +109,145 @@ public class FragmentCalorieBurnt extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_calorie_burnt, container, false);
         calorieInfos=new ArrayList<>();
-
         hooks(view);
-        pieChart();
-        pastAcivity();
+        pieChart(30L,40L,40L);
+        String date = getCurrentDate(),calorie="823";
+
+        setTodayData("day");
+
         imgBack.setOnClickListener(v -> requireActivity().onBackPressed());
+
         return view;
     }
+
+    private void setTodayData(String purpose) {
+        String date = getCurrentDate(),calorie="823";
+//        pastAcivity(date,calorie,"45","42","452");
+
+        String clientID = DataFromDatabase.clientuserID; // as it will be in sharedpref using it temporarily
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(!jsonObject.getBoolean("error")){
+                                String running="0",walking="0",cycling="0",runtime="0",walktime="0",cyclingtime="0",runduration="0",cycleduration="0",walkduration="0";
+
+                                long Total = 0,rduration=0,cduration=0,wduration=0,runcal=0,walkcal=0,cyclingcal=0;
+
+                                String data = "0";
+
+                                try {
+                                    for(;;) {
+
+
+                                        JSONObject activityObj = jsonObject.getJSONObject(data);
+                                        data = Integer.toString(Integer.parseInt(data) + 1);
+
+                                        String activityName = activityObj.getString("activity_name");
+                                        String caloriesBurnt = activityObj.getString("calorie_burnt");
+                                        switch (activityName) {
+                                            case "running":
+                                                running = caloriesBurnt;
+                                                runcal += Long.parseLong(running);
+                                                runtime = activityObj.getString("time");
+                                                runduration = activityObj.getString("duration");
+                                                rduration += ConvertTimeToInt(runduration);
+                                                break;
+                                            case "walking":
+                                                walking = caloriesBurnt;
+                                                walkcal += Long.parseLong(walking);
+                                                walktime = activityObj.getString("time");
+                                                walkduration = activityObj.getString("duration");
+                                                wduration += ConvertTimeToInt(walkduration);
+                                                break;
+                                            case "cycling":
+                                                cycling = caloriesBurnt;
+                                                cyclingcal += Long.parseLong(cycling);
+                                                cyclingtime = activityObj.getString("time");
+                                                cycleduration = activityObj.getString("duration");
+                                                cduration += ConvertTimeToInt(cycleduration);
+                                                break;
+                                        }
+                                        Total += Integer.parseInt(caloriesBurnt);
+                                        String duration = activityObj.getString("duration");
+                                        String date = activityObj.getString("date");
+
+                                    }
+                                }
+                                catch (Exception e){
+                                    if(!purpose.equals("day")){
+                                        pastAcivity(date,Long.toString(Total),Long.toString(runcal),Long.toString(walkcal),Long.toString(cyclingcal),runtime,walktime,cyclingtime, timeToString(rduration),timeToString(wduration),timeToString(cduration));
+                                    }
+                                    else
+                                        pastAcivity(date,Long.toString(Total),running,walking,cycling,runtime,walktime,cyclingtime,runduration,walkduration,cycleduration);
+
+                                    pieChart(walkcal,runcal,cyclingcal);
+                                }
+
+                            }
+                            else{
+                                Toast.makeText(getActivity(),jsonObject.getString("message"),Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+//                            e.printStackTrace();
+                            Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "onResponse: "+e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(requireActivity(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }
+        ){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("clientID",clientID);
+                params.put("date",databaseDate());
+                params.put("for",purpose);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    private int ConvertTimeToInt(String timeStr){
+        String[] timeParts = timeStr.split(":");
+        int hours = Integer.parseInt(timeParts[0]);
+        int minutes = Integer.parseInt(timeParts[1]);
+        int seconds = Integer.parseInt(timeParts[2]);
+        int durationInSeconds = (hours * 3600) + (minutes * 60) + seconds;
+        return durationInSeconds;
+    }
+
+    private String timeToString(long durationInSeconds){
+//        long durationInSeconds = 1800; // 30 minutes
+        int hours = (int) durationInSeconds / 3600;
+        int minutes = (int) (durationInSeconds % 3600) / 60;
+        int seconds = (int) durationInSeconds % 60;
+
+        String durationString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return durationString;
+    }
+
+    private String databaseDate(){
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(currentDate);
+        return formattedDate;
+    }
+
+
     private void hooks(View view){
         pieChart=view.findViewById(R.id.piechart);
         calorieRecycleview=view.findViewById(R.id.calorierecycleView);
@@ -106,32 +262,33 @@ public class FragmentCalorieBurnt extends Fragment {
             @Override
             public void onClick(View v) {
                 SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
+                String date = getCurrentDate(),calorie="823";
+                setTodayData("day");
             }
         });
         week_btn_calorie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
+                setTodayData("week");
+
             }
         });
         year_btn_calorie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
+                setTodayData("year");
             }
         });
+
     }
-    private void pieChart(){
+
+    private void pieChart(Long walk,Long run,Long cycle){
         List<PieEntry> entries=new ArrayList<>();
-        entries.add(new PieEntry(40f, getResources().getDrawable(R.drawable.piechart_walk)));
-        entries.add(new PieEntry(30f, getResources().getDrawable(R.drawable.piechart_cycle)));
-        entries.add(new PieEntry(30f, getResources().getDrawable(R.drawable.piechart_run)));
+        entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
+        entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_cycle)));
+        entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
 
         pieChart.getLegend().setEnabled(false);
         PieDataSet dataSet = new PieDataSet(entries, "");
@@ -148,17 +305,25 @@ public class FragmentCalorieBurnt extends Fragment {
         pieChart.setData(data);
         pieChart.animateY(1000, Easing.EaseInOutCubic);
     }
-    private void pastAcivity(){
-        totalCalorieValue.setText("825");
-        caloriedisplaydate.setText("23 January, 2023");
+    private void pastAcivity(String date,String calorie,String runningk,String walkingk,String cyclingk,String runtime,
+                             String walktime,String cyclingtime,String runduration,String walkduration,String cycleduration){
+        totalCalorieValue.setText(calorie);
+        caloriedisplaydate.setText(date);
         calorieInfos.clear();
-        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_run_24,"Icon","Running","452 kcal","00:18:52","11:10 a.m."));
-        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_walk_24,"Icon","Walking","452 kcal","00:18:52","11:10 a.m."));
-        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_bike_24,"Icon","Cycling","452 kcal","00:18:52","11:10 a.m."));
+        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_run_24,"Icon","Running",runningk+" kcal",runduration,runtime));
+        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_walk_24,"Icon","Walking",walkingk+" kcal",walkduration,walktime));
+        calorieInfos.add(new calorieInfo(R.drawable.baseline_directions_bike_24,"Icon","Cycling",cyclingk+" kcal",cycleduration,cyclingtime));
         CalorieInfoAdapter calorieInfoAdapter=new CalorieInfoAdapter(getContext(),calorieInfos);
         calorieRecycleview.setAdapter(calorieInfoAdapter);
-
     }
+
+    private String getCurrentDate(){
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+        String formattedDate = dateFormat.format(currentDate);
+        return formattedDate;
+    }
+
     private void SetButtonBackground(View view){
         switch (view.getId()){
             case R.id.day_btn_calorie:
