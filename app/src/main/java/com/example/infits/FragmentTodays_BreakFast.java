@@ -167,8 +167,6 @@ public class FragmentTodays_BreakFast extends Fragment {
             JSONObject jsonObject1 = jsonArray.getJSONObject(jsonArray.length() - 1);
             String mealName=jsonObject1.getString("mealName");
             String Meal_Type=jsonObject1.getString("Meal_Type");
-//            String image=jsonObject1.getString("ClickedPhoto");
-
 
             SharedPreferences sharedPreferences1=getActivity().getSharedPreferences("BitMapInfo",Context.MODE_PRIVATE);
             Log.d("lastBreakFast", sharedPreferences1.getString("ClickedPhoto","").toString());

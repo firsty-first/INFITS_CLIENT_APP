@@ -98,22 +98,21 @@ public class CameraForCalorieTracker extends AppCompatActivity {
         saveImageButton.setOnClickListener(v -> {
             try {
                 JSONObject jsonObject1=new JSONObject(getIntent.getStringExtra("mealInfoForPhoto"));
-//                Bitmap bitmap = (Bitmap) getArguments().getString("ClickedPhoto");
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 food_eaten_photoBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
                 String base64String = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-//                saveBitMap.setBase64string(base64String);
+
+
                 Intent intent = new Intent(getApplicationContext(), Activity_Todays_Breakfast.class);
-//                jsonObject1.put("ClickedPhoto",base64String);
                 intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
 
+
+                //for saving bitmap
                 SharedPreferences sharedPreferences=getSharedPreferences("BitMapInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
 
                 editor.putString("ClickedPhoto",base64String);
                 editor.commit();
-
-
 
                 Log.d("ClickedPhoto", jsonObject1.toString());
                 startActivity(intent);
