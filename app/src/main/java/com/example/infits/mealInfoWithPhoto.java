@@ -73,6 +73,7 @@ public class mealInfoWithPhoto extends Fragment {
     ArrayList<String> mealInfotransfer;
     JSONObject mainJSONobj;
     JSONArray mainJsonArray;
+    String Meal_Type;
     NumberPicker numberPicker1, numberPicker2;
     RequestQueue requestQueue,requestQueue1,requestQueue2;
     ImageButton uparrow1, uparrow2, downarrow1, downarrow2, FavouriteMealButton;
@@ -125,11 +126,12 @@ public class mealInfoWithPhoto extends Fragment {
         //set TextView
         mainJsonArray=new JSONArray();
         mealName.setText(mealInfotransfer.get(0));
-        calorieValue.setText(mealInfotransfer.get(1));
-        carbsValue.setText(mealInfotransfer.get(2));
-        proteinValue.setText(mealInfotransfer.get(3) + " g");
-        fatValue.setText(mealInfotransfer.get(4) + " g");
+        Meal_Type=mealInfotransfer.get(1);
 
+        calorieValue.setText(mealInfotransfer.get(2));
+        carbsValue.setText(mealInfotransfer.get(3));
+        proteinValue.setText(mealInfotransfer.get(4) + " g");
+        fatValue.setText(mealInfotransfer.get(5) + " g");
 
         //delete shared preference
 
@@ -179,10 +181,11 @@ public class mealInfoWithPhoto extends Fragment {
         TakeaPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), CameraForMealTracker.class);
+                Intent intent = new Intent(requireActivity(), CameraForCalorieTracker.class);
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("mealName", mealName.getText().toString());
+                    jsonObject.put("Meal_Type",Meal_Type.toString());
                     jsonObject.put("calorieValue", calorieValue.getText().toString());
                     jsonObject.put("carbsValue", carbsValue.getText().toString());
                     jsonObject.put("fatValue", fatValue.getText().toString());
@@ -241,7 +244,7 @@ public class mealInfoWithPhoto extends Fragment {
             jsonObject1.put("protin", proteinValue.getText().toString());
             jsonObject1.put("carb", carbsValue.getText().toString());
             jsonObject1.put("fat", fatValue.getText().toString());
-            jsonObject1.put("icon",mealInfotransfer.get(5));
+            jsonObject1.put("icon",mealInfotransfer.get(6));
             mainJsonArray.put(jsonObject1);
             mainJSONobj.put("RecentMealInfo", mainJsonArray);
             SharedPreferences.Editor editor = sharedPreferences.edit();

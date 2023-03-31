@@ -45,10 +45,13 @@ public class Activity_Todays_Breakfast extends AppCompatActivity {
             editor.commit();
             Log.d("mealInfoForPhoto", sharedPreferences.getString("TodaysBreakFast","").toString());
 
+            Bundle bundle=new Bundle();
+//            bundle.putString("ClickedPhoto",intent.getStringExtra("ClickedPhoto"));
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             FragmentTodays_BreakFast fragmentTodays_breakFast = new FragmentTodays_BreakFast();
-            fragmentTransaction.add(R.id.frameLayout,fragmentTodays_breakFast).commit();
+//            fragmentTodays_breakFast.setArguments(bundle);
+            fragmentTransaction.replace(R.id.frameLayout,fragmentTodays_breakFast).commit();
         }catch (Exception e){
             Log.d("Exception", e.toString());
         }

@@ -54,16 +54,20 @@ public class AddMealAdapter extends RecyclerView.Adapter<AddMealAdapter.ViewHold
                 Bundle bundle=new Bundle();
                 int icon=addmealInfos.get(position).mealIocn;
                 String Meal_Name=addmealInfos.get(position).mealname;
+                String Meal_type=addmealInfos.get(position).mealType;
                 String calorie=addmealInfos.get(position).mealcalorie;
                 String carbs=addmealInfos.get(position).carb;
                 String protin=addmealInfos.get(position).protein;
                 String fat=addmealInfos.get(position).fat;
                 mealInfotransfer.add(Meal_Name);
+                mealInfotransfer.add(Meal_type);
                 mealInfotransfer.add(calorie);
                 mealInfotransfer.add(carbs);
                 mealInfotransfer.add(protin);
                 mealInfotransfer.add(fat);
                 mealInfotransfer.add(String.valueOf(icon));
+                Log.d("mealInfotransfer",mealInfotransfer.toString());
+
                 bundle.putStringArrayList("mealInfotransfer",mealInfotransfer);
                 if (addmealInfos.get(position).mealType == "BreakFast") {
                     Navigation.findNavController(v).navigate(R.id.action_calorieAddBreakfastFragment_to_mealInfoWithPhoto, bundle);
