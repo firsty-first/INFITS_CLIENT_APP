@@ -49,7 +49,7 @@ public class CameraForCalorieTracker extends AppCompatActivity {
     RelativeLayout camera_layout;
 
     ImageView saveImageButton, gallery,food_eaten_photo;
-    String jsonObject;
+    String jsonObject,Meal_Type;
     Button takePhoto;
     BarcodeDetector barcodeDetector;
 
@@ -60,6 +60,7 @@ public class CameraForCalorieTracker extends AppCompatActivity {
         setContentView(R.layout.activity_camera_for_calorie_tracker);
 
         Intent getIntent = getIntent();
+        Meal_Type=getIntent.getStringExtra("Meal_Type");
         jsonObject=getIntent.getStringExtra("mealInfoForPhoto");
 
 
@@ -101,10 +102,7 @@ public class CameraForCalorieTracker extends AppCompatActivity {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 food_eaten_photoBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
                 String base64String = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-
-
-                Intent intent = new Intent(getApplicationContext(), Activity_Todays_Breakfast.class);
-                intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
+                Log.d("Meal_tyepe",Meal_Type.toString());
 
 
                 //for saving bitmap
@@ -115,7 +113,32 @@ public class CameraForCalorieTracker extends AppCompatActivity {
                 editor.commit();
 
                 Log.d("ClickedPhoto", jsonObject1.toString());
-                startActivity(intent);
+
+                if (Meal_Type.equals("BreakFast")){
+                    Intent intent = new Intent(getApplicationContext(), Activity_Todays_Breakfast.class);
+                    intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
+                    startActivity(intent);
+                }
+                if (Meal_Type.equals("Lunch")){
+                    Intent intent = new Intent(getApplicationContext(), Activity_Todays_Lunch.class);
+                    intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
+                    startActivity(intent);
+                }
+                if (Meal_Type.equals("Dinner")){
+                    Intent intent = new Intent(getApplicationContext(), Activity_Todays_Dinner.class);
+                    intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
+                    startActivity(intent);
+                }
+                if (Meal_Type.equals("Snacks")){
+                    Intent intent = new Intent(getApplicationContext(), Activity_Todays_Snacks.class);
+                    intent.putExtra("mealInfoForPhoto", jsonObject1.toString());
+                    startActivity(intent);
+                }
+
+
+
+
+
             }catch (Exception e){
                 Log.d("Exception123",e.toString());
             }

@@ -184,7 +184,7 @@ public class FragmentAddSnacks extends Fragment {
                 JSONArray jsonArray1 = jsonObject.getJSONArray("RecentMealInfo");
                 for (int i = 0; i < jsonArray1.length(); i++) {
                     JSONObject jsonObject1=jsonArray1.getJSONObject(i);
-                    addmealInfos.add(new addmealInfo(Integer.parseInt(jsonObject1.getString("icon")),"BreakFast",jsonObject1.getString("name"),
+                    addmealInfos.add(new addmealInfo(Integer.parseInt(jsonObject1.getString("icon")),"Snacks",jsonObject1.getString("name"),
                             jsonObject1.getString("calorie"),jsonObject1.getString("protin"),jsonObject1.getString("carb"),
                             jsonObject1.getString("fat")));
                 }

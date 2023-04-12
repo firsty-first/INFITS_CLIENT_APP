@@ -33,11 +33,11 @@
         app:hintTextColor="@color/white"
         android:inputType="textPersonName" />
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/username"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <!--        <com.google.android.material.textfield.TextInputEditText-->
+    <!--            android:id="@+id/username"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"/>-->
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <EditText
         android:id="@+id/password"
@@ -90,13 +90,13 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/leftline"
-                />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:src="@drawable/leftline"
+            />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -127,7 +127,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/imageButton"
+            android:id="@+id/google"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:scaleType="fitXY"
@@ -142,7 +142,7 @@
             android:src="@drawable/twitter_sign"/>
 
         <ImageView
-            android:id="@+id/imageButton2"
+            android:id="@+id/fbbutton"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:scaleType="fitXY"

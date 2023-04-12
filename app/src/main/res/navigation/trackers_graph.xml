@@ -294,9 +294,8 @@
         <action
             android:id="@+id/action_mealInfoWithPhoto_to_calorieAddBreakfastFragment"
             app:destination="@id/calorieAddBreakFastFragment" />
-
-
     </fragment>
+
     <fragment
         android:id="@+id/calorieConsumedFragment"
         android:name="com.example.infits.FragmentCalorieConsumed"
@@ -305,10 +304,43 @@
         <action
             android:id="@+id/action_calorieConsumedFragment_to_calorieTrackerFragment"
             app:destination="@id/calorieTrackerFragment" />
-
-
     </fragment>
-
+    <fragment
+        android:id="@+id/FragmentTodaysBreakFast"
+        android:name="com.example.infits.FragmentTodays_BreakFast"
+        android:label="fragment_todays__break_fast"
+        tools:layout="@layout/fragment_todays__break_fast">
+        <action
+            android:id="@+id/action_FragmentTodaysBreakFast_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentTodaySnacks"
+        android:name="com.example.infits.FragmentTodays_Snacks"
+        android:label="fragment_todays__snacks"
+        tools:layout="@layout/fragment_todays__snacks">
+        <action
+            android:id="@+id/action_FragmentTodaysSnacks_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentTodaysDinner"
+        android:name="com.example.infits.FragmentTodays_Dinner"
+        android:label="fragment_todays__dinner"
+        tools:layout="@layout/fragment_todays__dinner">
+        <action
+            android:id="@+id/action_FragmentTodaysDinner_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentTodaysLunch"
+        android:name="com.example.infits.FragmentTodays_Lunch"
+        android:label="fragment_todays__lunch"
+        tools:layout="@layout/fragment_todays__lunch">
+        <action
+            android:id="@+id/action_FragmentTodaysLunch_to_calorieTrackerFragment"
+            app:destination="@id/calorieTrackerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/weightReminderFragment"
         android:name="com.example.infits.WeightReminderFragment"

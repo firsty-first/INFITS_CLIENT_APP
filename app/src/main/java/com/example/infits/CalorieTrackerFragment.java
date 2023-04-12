@@ -80,7 +80,7 @@ public class CalorieTrackerFragment extends Fragment {
         progressView4.setData(progressData4);
 
         circularProgressIndicatorCC.setProgress(4000,10000);
-        circularProgressIndicatorCB.setProgress(7000,10000);
+        circularProgressIndicatorCB.setProgress(1000,10000);
 
         BottomSheetBehavior.from(bottomSheetN).setPeekHeight(350);
         BottomSheetBehavior.from(bottomSheetN).setState(BottomSheetBehavior.STATE_COLLAPSED);

@@ -53,7 +53,7 @@ import java.util.Map;
  * Use the {@link FragmentTodays_BreakFast#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentTodays_BreakFast extends Fragment {
+public class FragmentTodays_Snacks extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,7 +75,7 @@ public class FragmentTodays_BreakFast extends Fragment {
     SimpleDateFormat todayDate;
     SimpleDateFormat todayTime;
     Date date;
-    public FragmentTodays_BreakFast() {
+    public FragmentTodays_Snacks() {
         // Required empty public constructor
     }
 
@@ -85,11 +85,11 @@ public class FragmentTodays_BreakFast extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentTodays_BreakFast.
+     * @return A new instance of fragment FragmentTodays_Snacks.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentTodays_BreakFast newInstance(String param1, String param2) {
-        FragmentTodays_BreakFast fragment = new FragmentTodays_BreakFast();
+    public static FragmentTodays_Snacks newInstance(String param1, String param2) {
+        FragmentTodays_Snacks fragment = new FragmentTodays_Snacks();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -113,7 +113,7 @@ public class FragmentTodays_BreakFast extends Fragment {
         todays_breakFast_infos = new ArrayList<>();
         todays_breakFast_infos.clear();
 
-        View view = inflater.inflate(R.layout.fragment_todays__break_fast, container, false);
+        View view = inflater.inflate(R.layout.fragment_todays__snacks, container, false);
         todayDate = new SimpleDateFormat("d MMM yyyy");
 
         todayTime = new SimpleDateFormat("h.m.s a");
@@ -131,10 +131,7 @@ public class FragmentTodays_BreakFast extends Fragment {
 
         //backbutton
         calorieImgback = view.findViewById(R.id.calorieImgback);
-        calorieImgback.setOnClickListener(v ->
-                requireActivity().onBackPressed()
-//                Activity_Todays_Breakfast.
-        );
+        calorieImgback.setOnClickListener(v -> requireActivity().onBackPressed());
 
         //DoneButtonView
         linear_layout1 = view.findViewById(R.id.linear_layout1);
@@ -147,7 +144,7 @@ public class FragmentTodays_BreakFast extends Fragment {
                 try {
                     linear_layout1.setVisibility(View.GONE);
                     linear_layout2.setVisibility(View.VISIBLE);
-                    AddDatatoTable(v);
+                    AddDatatoTable();
 
 
                 } catch (Exception e) {
@@ -162,24 +159,25 @@ public class FragmentTodays_BreakFast extends Fragment {
         return view;
     }
 
-
-    public void AddDatatoTable(View view1) {
+    public void AddDatatoTable() {
         try {
-            sharedPreferences = getActivity().getSharedPreferences("TodaysBreakFast", Context.MODE_PRIVATE);
-            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysBreakFast", ""));
-            JSONArray jsonArray = jsonObject.getJSONArray("TodaysBreakFast");
+            sharedPreferences = getActivity().getSharedPreferences("TodaysSnacks", Context.MODE_PRIVATE);
+            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysSnacks", ""));
+            JSONArray jsonArray = jsonObject.getJSONArray("TodaysSnacks");
             JSONObject jsonObject1 = jsonArray.getJSONObject(jsonArray.length() - 1);
-            String mealName = jsonObject1.getString("mealName");
-            String Meal_Type = jsonObject1.getString("Meal_Type");
+            String mealName=jsonObject1.getString("mealName");
+            String Meal_Type=jsonObject1.getString("Meal_Type");
 
-            SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("BitMapInfo", Context.MODE_PRIVATE);
-            Log.d("lastBreakFast", sharedPreferences1.getString("ClickedPhoto", "").toString());
-            String base64String = sharedPreferences1.getString("ClickedPhoto", "").toString();
+            SharedPreferences sharedPreferences1=getActivity().getSharedPreferences("BitMapInfo",Context.MODE_PRIVATE);
+            Log.d("lastBreakFast", sharedPreferences1.getString("ClickedPhoto","").toString());
+            String base64String=sharedPreferences1.getString("ClickedPhoto","").toString();
 
 
-            RequestQueue queue = Volley.newRequestQueue(requireContext());
+
+
+            RequestQueue queue=Volley.newRequestQueue(requireContext());
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-                Log.d("responseCalorie", response.toString());
+                Log.d("responseCalorie",response.toString());
                 if (response.equals("updated")) {
                     linear_layout2.setVisibility(View.GONE);
 
@@ -193,8 +191,8 @@ public class FragmentTodays_BreakFast extends Fragment {
 //                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                        CalorieTrackerFragment calorieTrackerFragment = new CalorieTrackerFragment();
-//                        fragmentTransaction.addToBackStack(null);
-//                        fragmentTransaction.replace(R.id.frameLayout, calorieTrackerFragment).commit();
+//                        fragmentTransaction.add(R.id.frameLayout, calorieTrackerFragment).commit();
+
                     }
                 }, 2000);
             },
@@ -214,17 +212,19 @@ public class FragmentTodays_BreakFast extends Fragment {
                     data.put("time", timeString);
                     //timeMeal is a Meal_Type
                     data.put("timeMeal", Meal_Type);
-                    data.put("description", "");
+                    data.put("description","");
                     data.put("clientID", DataFromDatabase.clientuserID.toString());
-                    data.put("position", String.valueOf(jsonArray.length()));
+                    data.put("position",String.valueOf(jsonArray.length()));
                     return data;
 
                 }
 
 
+
             };
 
             queue.add(stringRequest);
+
 
         } catch (Exception e) {
             Log.d("Exception", e.toString());
@@ -233,9 +233,9 @@ public class FragmentTodays_BreakFast extends Fragment {
 
     public void DisplayDataInList() {
         try {
-            sharedPreferences = getActivity().getSharedPreferences("TodaysBreakFast", Context.MODE_PRIVATE);
-            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysBreakFast", ""));
-            JSONArray jsonArray = jsonObject.getJSONArray("TodaysBreakFast");
+            sharedPreferences = getActivity().getSharedPreferences("TodaysSnacks", Context.MODE_PRIVATE);
+            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysSnacks", ""));
+            JSONArray jsonArray = jsonObject.getJSONArray("TodaysSnacks");
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
@@ -257,7 +257,7 @@ public class FragmentTodays_BreakFast extends Fragment {
 
         AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), NotificationReceiver.class);
-        intent.putExtra("tracker", "TodaysBreakFast");
+        intent.putExtra("tracker", "TodaysSnacks");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0L, 59 * 1000, pendingIntent);
     }

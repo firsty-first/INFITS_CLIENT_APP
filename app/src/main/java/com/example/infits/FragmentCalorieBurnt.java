@@ -284,26 +284,32 @@ public class FragmentCalorieBurnt extends Fragment {
 
     }
 
-    private void pieChart(Long walk,Long run,Long cycle){
-        List<PieEntry> entries=new ArrayList<>();
-        entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
-        entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_cycle)));
-        entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
+    public void pieChart(Long walk,Long run,Long cycle){
+        try {
+            List<PieEntry> entries = new ArrayList<>();
+            entries.clear();
+            entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
+            entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_cycle)));
+            entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
 
-        pieChart.getLegend().setEnabled(false);
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setColors(colors);
-        dataSet.setSliceSpace(2f);
-        PieData data = new PieData(dataSet);
-        pieChart.setDrawHoleEnabled(false);
-        data.setValueTextSize(0f);
-        Description description=new Description();
-        description.setText("");
-        pieChart.setDescription(description);
-        pieChart.setHoleRadius(0f);
-        pieChart.setRotationEnabled(false);
-        pieChart.setData(data);
-        pieChart.animateY(1000, Easing.EaseInOutCubic);
+            pieChart.getLegend().setEnabled(false);
+            PieDataSet dataSet = new PieDataSet(entries, "");
+            dataSet.setColors(colors);
+            dataSet.setSliceSpace(2f);
+            PieData data = new PieData(dataSet);
+            pieChart.setDrawHoleEnabled(false);
+            data.setValueTextSize(0f);
+            Description description = new Description();
+            description.setText("");
+            pieChart.setDescription(description);
+            pieChart.setHoleRadius(0f);
+            pieChart.setRotationEnabled(false);
+            pieChart.setData(data);
+            pieChart.animateY(1000, Easing.EaseInOutCubic);
+        }
+        catch (Error e){
+            Log.d("errorPieChart",e.toString());
+        }
     }
     private void pastAcivity(String date,String calorie,String runningk,String walkingk,String cyclingk,String runtime,
                              String walktime,String cyclingtime,String runduration,String walkduration,String cycleduration){

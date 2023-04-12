@@ -13,15 +13,15 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Activity_Todays_Breakfast extends AppCompatActivity {
-
+public class Activity_Todays_Lunch extends AppCompatActivity {
+    
     SharedPreferences sharedPreferences;
     JSONObject mainJsonobj;
     JSONArray mainJsonArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todays_breakfast);
+        setContentView(R.layout.activity_todays_lunch);
         try {
 
 
@@ -30,29 +30,28 @@ public class Activity_Todays_Breakfast extends AppCompatActivity {
             mainJsonArray=new JSONArray();
             mainJsonobj=new JSONObject();
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("mealInfoForPhoto"));
-            sharedPreferences=getSharedPreferences("TodaysBreakFast", Context.MODE_PRIVATE);
-            if(sharedPreferences.contains("TodaysBreakFast")) {
-                JSONObject jsonObject1=new JSONObject(sharedPreferences.getString("TodaysBreakFast", ""));
-                JSONArray jsonArray1=jsonObject1.getJSONArray("TodaysBreakFast");
+            sharedPreferences=getSharedPreferences("TodaysLunch", Context.MODE_PRIVATE);
+            if(sharedPreferences.contains("TodaysLunch")) {
+                JSONObject jsonObject1=new JSONObject(sharedPreferences.getString("TodaysLunch", ""));
+                JSONArray jsonArray1=jsonObject1.getJSONArray("TodaysLunch");
                 for (int i=0;i<jsonArray1.length();i++){
                     mainJsonArray.put(jsonArray1.getJSONObject(i));
                 }
             }
             mainJsonArray.put(jsonObject);
-            mainJsonobj.put("TodaysBreakFast",mainJsonArray);
+            mainJsonobj.put("TodaysLunch",mainJsonArray);
             SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString("TodaysBreakFast",mainJsonobj.toString());
+            editor.putString("TodaysLunch",mainJsonobj.toString());
             editor.commit();
-            Log.d("mealInfoForPhoto", sharedPreferences.getString("TodaysBreakFast","").toString());
+            Log.d("mealInfoForPhoto", sharedPreferences.getString("TodaysLunch","").toString());
 
             Bundle bundle=new Bundle();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            FragmentTodays_BreakFast fragmentTodays_breakFast = new FragmentTodays_BreakFast();
-            fragmentTransaction.replace(R.id.frameLayout,fragmentTodays_breakFast).commit();
+            FragmentTodays_Lunch fragmentTodays_lunch = new FragmentTodays_Lunch();
+            fragmentTransaction.replace(R.id.frameLayout,fragmentTodays_lunch).commit();
         }catch (Exception e){
             Log.d("Exception", e.toString());
         }
     }
-
 }

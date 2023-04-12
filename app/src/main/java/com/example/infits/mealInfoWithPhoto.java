@@ -182,6 +182,7 @@ public class mealInfoWithPhoto extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), CameraForCalorieTracker.class);
+                intent.putExtra("Meal_Type",Meal_Type.toString());
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("mealName", mealName.getText().toString());
