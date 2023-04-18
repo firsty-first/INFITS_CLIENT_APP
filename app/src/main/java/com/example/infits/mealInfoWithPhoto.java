@@ -185,8 +185,7 @@ public class mealInfoWithPhoto extends Fragment {
         AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(requireActivity(), CameraForCalorieTracker.class);
-//                intent.putExtra("Meal_Type",Meal_Type.toString());
+
                 try {
                     Bundle bundle=new Bundle();
                     JSONObject jsonObject = new JSONObject();
@@ -198,8 +197,7 @@ public class mealInfoWithPhoto extends Fragment {
                     jsonObject.put("proteinValue", proteinValue.getText().toString());
                     jsonObject.put("Quantity", numberPicker1List[numberPicker1.getValue()]);
                     jsonObject.put("Size", numberPicker2List[numberPicker2.getValue()]);
-//                    intent.putExtra("mealInfoForPhoto",jsonObject.toString());
-//                    startActivity(intent);
+
                     bundle.putString("mealInfoForPhoto",jsonObject.toString());
                     String sharedPreferencesName = "Todays" + Meal_Type;
                     sharedPreferences1 = requireContext().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
@@ -238,7 +236,7 @@ public class mealInfoWithPhoto extends Fragment {
                 }catch (Exception e){
                     Log.d("Exception", e.toString());
                 }
-//
+
             }
         });
 
