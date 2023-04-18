@@ -59,9 +59,10 @@ public class FragmentTodays_Dinner extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     ImageView calorieImgback;
+    JSONObject mainJsonobj;
     LinearLayout linear_layout1, linear_layout2;
-    Todays_BreakFast_info todays_breakFast_info;
-    ArrayList<Todays_BreakFast_info> todays_breakFast_infos;
+    Todays_Meal_info Todays_Meal_info;
+    ArrayList<Todays_Meal_info> todays_meal_infos;
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -73,6 +74,7 @@ public class FragmentTodays_Dinner extends Fragment {
     SharedPreferences sharedPreferences;
     RecyclerView recyclerView_Todays_breakfast;
     SimpleDateFormat todayDate;
+    Adapter_Todays_Meal adapter_todays_meal;
     SimpleDateFormat todayTime;
     Date date;
     public FragmentTodays_Dinner() {
@@ -110,28 +112,29 @@ public class FragmentTodays_Dinner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        todays_breakFast_infos = new ArrayList<>();
-        todays_breakFast_infos.clear();
+        todays_meal_infos = new ArrayList<>();
+        todays_meal_infos.clear();
 
         View view = inflater.inflate(R.layout.fragment_todays__dinner, container, false);
         todayDate = new SimpleDateFormat("d MMM yyyy");
 
+
         todayTime = new SimpleDateFormat("h.m.s a");
 
         date=new Date();
-
+//        RetriveData();
         //recycleview
         recyclerView_Todays_breakfast = view.findViewById(R.id.recyclerView_Todays_breakfast);
         recyclerView_Todays_breakfast.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         DisplayDataInList();
 //        todays_breakFast_infos.clear();
 
-        Adapter_Todays_BreakFast adapter_todays_breakFast = new Adapter_Todays_BreakFast(getContext(), todays_breakFast_infos);
-        recyclerView_Todays_breakfast.setAdapter(adapter_todays_breakFast);
-
+        adapter_todays_meal=new Adapter_Todays_Meal(getContext(),todays_meal_infos);
+        recyclerView_Todays_breakfast.setAdapter(adapter_todays_meal);
         //backbutton
         calorieImgback = view.findViewById(R.id.calorieImgback);
         calorieImgback.setOnClickListener(v -> requireActivity().onBackPressed());
+
 
         //DoneButtonView
         linear_layout1 = view.findViewById(R.id.linear_layout1);
@@ -144,7 +147,7 @@ public class FragmentTodays_Dinner extends Fragment {
                 try {
                     linear_layout1.setVisibility(View.GONE);
                     linear_layout2.setVisibility(View.VISIBLE);
-                    AddDatatoTable();
+//                    AddDatatoTable();
 
 
                 } catch (Exception e) {
@@ -159,87 +162,23 @@ public class FragmentTodays_Dinner extends Fragment {
         return view;
     }
 
-    public void AddDatatoTable() {
-        try {
-            sharedPreferences = getActivity().getSharedPreferences("TodaysDinner", Context.MODE_PRIVATE);
-            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysDinner", ""));
-            JSONArray jsonArray = jsonObject.getJSONArray("TodaysDinner");
-            JSONObject jsonObject1 = jsonArray.getJSONObject(jsonArray.length() - 1);
-            String mealName=jsonObject1.getString("mealName");
-            String Meal_Type=jsonObject1.getString("Meal_Type");
-
-            SharedPreferences sharedPreferences1=getActivity().getSharedPreferences("BitMapInfo",Context.MODE_PRIVATE);
-            Log.d("lastBreakFast", sharedPreferences1.getString("ClickedPhoto","").toString());
-            String base64String=sharedPreferences1.getString("ClickedPhoto","").toString();
-
-
-
-
-            RequestQueue queue=Volley.newRequestQueue(requireContext());
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-                Log.d("responseCalorie",response.toString());
-                if (response.equals("updated")) {
-                    linear_layout2.setVisibility(View.GONE);
-
-                }
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        linear_layout2.setVisibility(View.GONE);
-
-//                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                        CalorieTrackerFragment calorieTrackerFragment = new CalorieTrackerFragment();
-//                        fragmentTransaction.add(R.id.frameLayout, calorieTrackerFragment).commit();
-                    }
-                }, 2000);
-            },
-
-                    error -> {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    }) {
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> data = new HashMap<>();
-                    String timeString = todayTime.format(date);
-                    String dateString = todayDate.format(date);
-                    data.put("name", mealName.toString());
-                    data.put("image", base64String);
-                    data.put("date", dateString);
-                    data.put("time", timeString);
-                    //timeMeal is a Meal_Type
-                    data.put("timeMeal", Meal_Type);
-                    data.put("description","");
-                    data.put("clientID", DataFromDatabase.clientuserID.toString());
-                    data.put("position",String.valueOf(jsonArray.length()));
-                    return data;
-
-                }
-
-
-
-            };
-
-            queue.add(stringRequest);
-
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        }
-    }
-
     public void DisplayDataInList() {
         try {
+            todays_meal_infos.clear();
+//            RetriveData();
             sharedPreferences = getActivity().getSharedPreferences("TodaysDinner", Context.MODE_PRIVATE);
             JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysDinner", ""));
             JSONArray jsonArray = jsonObject.getJSONArray("TodaysDinner");
-            for (int i = 0; i < jsonArray.length(); i++) {
+
+            Log.d("JSONArray",jsonObject.toString());
+
+            for (int i =jsonArray.length()-1; i >=0; i--) {
 
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                todays_breakFast_infos.add(new Todays_BreakFast_info(getContext().getDrawable(R.drawable.pizza_img),
+                Log.d("jsonObject1",jsonObject1.toString());
+                todays_meal_infos.add(new Todays_Meal_info(getContext().getDrawable(R.drawable.pizza_img),
                         jsonObject1.getString("mealName"),
+                        jsonObject1.getString("Meal_Type"),
                         jsonObject1.getString("calorieValue"),
                         jsonObject1.getString("carbsValue"),
                         jsonObject1.getString("fatValue"),
@@ -247,16 +186,21 @@ public class FragmentTodays_Dinner extends Fragment {
                         jsonObject1.getString("Quantity"),
                         jsonObject1.getString("Size")));
             }
+
+//            adapter_todays_meal = new Adapter_Todays_Meal(getContext(), todays_meal_infos);
+//            recyclerView_Todays_breakfast.setAdapter(adapter_todays_meal);
         } catch (Exception e) {
-            Log.d("Exception", e.toString());
+            Log.d("Exception123", e.toString());
         }
     }
+
+
 
     private void DeleteSharedPreference() {
 
         AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), NotificationReceiver.class);
-        intent.putExtra("tracker", "TodaysDinner");
+        intent.putExtra("tracker", "TodaysMeal");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0L, 59 * 1000, pendingIntent);
     }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -74,10 +75,13 @@ public class mealInfoWithPhoto extends Fragment {
     JSONObject mainJSONobj;
     JSONArray mainJsonArray;
     String Meal_Type;
+    SharedPreferences sharedPreferences,sharedPreferences1;
+//    JSONArray MAINJSONARRAY;
+//    JSONObject mainJsonobj;
     NumberPicker numberPicker1, numberPicker2;
     RequestQueue requestQueue,requestQueue1,requestQueue2;
     ImageButton uparrow1, uparrow2, downarrow1, downarrow2, FavouriteMealButton;
-    TextView TakeaPhotoButton;
+    Button AddButton;
     String[] numberPicker1List = new String[]{"0.5", "1", "1.5", "2"};
     String[] numberPicker2List = new String[]{"Small", "Regular", "Large"};
     int REQUEST_IMAGE_CAPTURE = 1;
@@ -177,13 +181,14 @@ public class mealInfoWithPhoto extends Fragment {
                 numberPicker2.setValue(numberPicker2.getValue() - 1);
             }
         });
-        //TakeaPhotoButton
-        TakeaPhotoButton.setOnClickListener(new View.OnClickListener() {
+        //AddButton
+        AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), CameraForCalorieTracker.class);
-                intent.putExtra("Meal_Type",Meal_Type.toString());
+//                Intent intent = new Intent(requireActivity(), CameraForCalorieTracker.class);
+//                intent.putExtra("Meal_Type",Meal_Type.toString());
                 try {
+                    Bundle bundle=new Bundle();
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("mealName", mealName.getText().toString());
                     jsonObject.put("Meal_Type",Meal_Type.toString());
@@ -193,8 +198,43 @@ public class mealInfoWithPhoto extends Fragment {
                     jsonObject.put("proteinValue", proteinValue.getText().toString());
                     jsonObject.put("Quantity", numberPicker1List[numberPicker1.getValue()]);
                     jsonObject.put("Size", numberPicker2List[numberPicker2.getValue()]);
-                    intent.putExtra("mealInfoForPhoto",jsonObject.toString());
-                    startActivity(intent);
+//                    intent.putExtra("mealInfoForPhoto",jsonObject.toString());
+//                    startActivity(intent);
+                    bundle.putString("mealInfoForPhoto",jsonObject.toString());
+                    String sharedPreferencesName = "Todays" + Meal_Type;
+                    sharedPreferences1 = requireContext().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
+                    Log.d("mealInfoForPhoto0", sharedPreferences1.getString(sharedPreferencesName, "").toString());
+                    JSONArray MAINJSONARRAY=new JSONArray();
+                    JSONObject mainJsonobj=new JSONObject();
+                    if (sharedPreferences1.contains(sharedPreferencesName)) {
+                        JSONObject jsonObject1 = new JSONObject(sharedPreferences1.getString(sharedPreferencesName, ""));
+                        JSONArray jsonArray1 = jsonObject1.getJSONArray(sharedPreferencesName);
+                        for (int i = 0; i < jsonArray1.length(); i++) {
+                            MAINJSONARRAY.put(jsonArray1.getJSONObject(i));
+                        }
+                    }
+
+                    MAINJSONARRAY.put(jsonObject);
+                    mainJsonobj = new JSONObject();
+                    mainJsonobj.put(sharedPreferencesName, MAINJSONARRAY);
+                    SharedPreferences.Editor editor = sharedPreferences1.edit();
+                    editor.putString(sharedPreferencesName, mainJsonobj.toString());
+                    editor.commit();
+                    if(Meal_Type=="BreakFast") {
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysBreakFast, bundle);
+                    }
+                    if (Meal_Type.equals("Lunch")){
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysLunch, bundle);
+
+                    }
+                    if (Meal_Type.equals("Dinner")){
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysDinner, bundle);
+
+                    }
+                    if (Meal_Type.equals("Snacks")){
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysSnacks, bundle);
+
+                    }
                 }catch (Exception e){
                     Log.d("Exception", e.toString());
                 }
@@ -336,7 +376,7 @@ public class mealInfoWithPhoto extends Fragment {
         numberPicker1 = view.findViewById(R.id.numberPicker1);
         numberPicker2 = view.findViewById(R.id.numberPicker2);
 
-        TakeaPhotoButton = view.findViewById(R.id.TakeaPhotoButton);
+        AddButton = view.findViewById(R.id.AddButton);
 
 
         FavouriteMealButton = view.findViewById(R.id.favouriteMealButton);

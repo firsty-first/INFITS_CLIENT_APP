@@ -13,42 +13,60 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.8">
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/calorieImgback"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:scaleType="center"
                 android:layout_gravity="center"
                 android:layout_weight="1.5"
-                android:padding="8dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp"
+
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:scaleType="fitEnd"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
                 app:tint="#F6B566" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="12"
                 android:fontFamily="@font/nats_regular"
-                android:gravity="center|start"
-                android:paddingStart="15dp"
-                android:layout_marginStart="40dp"
-                android:text="Today’s Lunch"
+                android:gravity="center"
+                android:text="Lunch"
                 android:textAlignment="gravity"
-                android:textColor="#000000"
+                android:textColor="#F0A344"
                 android:textFontWeight="400"
                 android:textSize="35sp" />
-        </LinearLayout>
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:padding="5dp"
+            android:layout_height="0dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Confirm your food selection"
+                android:textSize="22dp"
+                android:fontFamily="@font/nats_regular"
+                android:textColor="@color/black"
+                android:gravity="center|start"
+                android:textFontWeight="400"
+                android:layout_marginStart="28dp"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="4"
             android:orientation="vertical">
@@ -147,110 +165,79 @@
         <LinearLayout
             android:id="@+id/linear_layout1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_marginBottom="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="130dp"
-            android:layout_marginEnd="130dp">
+            android:layout_marginEnd="130dp"
+            android:layout_marginBottom="25dp">
 
 
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="top"
-                android:elevation="10dp"
-                app:cardCornerRadius="10dp"
-
-                app:cardUseCompatPadding="true">
-
-                <TextView
-                    android:id="@+id/DoneButtonView"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/white"
-                    android:fontFamily="@font/baloo2"
-                    android:text="Done"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="#F6B566"
-                    android:textSize="25dp" />
-            </androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/DoneButtonView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/calorie_tracker_button_background"
+                android:fontFamily="@font/nats_regular"
+                android:text="Done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="25sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linear_layout2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:visibility="gone"
+            android:layout_gravity="bottom"
             android:layout_marginStart="25dp"
-            android:layout_marginBottom="25dp"
             android:layout_marginEnd="25dp"
-            android:translationZ="1dp"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="2"
             android:orientation="horizontal"
-            android:layout_gravity="bottom">
+            android:translationZ="1dp"
+            android:visibility="gone">
 
 
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:elevation="10dp"
-                android:layout_weight="1"
-                app:cardUseCompatPadding="true"
-                android:minHeight="76dp"
-                android:backgroundTint="#FF7777"
-                app:cardCornerRadius="15dp"
-                android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="25dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:scaleX="1.1"
+                    android:scaleY="1.3"
+                    android:src="@drawable/calorie_tracker_button_background" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/approval"
-                        android:paddingStart="15dp"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingEnd="5dp"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:text="Meal Tracker and"
-                            android:textSize="22sp"
-                            android:fontFamily="@font/baloo2"
-                            android:textColor="#FFFFFF"
-                            android:textAlignment="gravity"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
-                        <TextView
-                            android:id="@+id/done_meal"
-                            android:text="Lunch"
-                            android:textSize="22sp"
-                            android:fontFamily="@font/baloo2"
-                            android:textColor="#FFFFFF"
-                            android:textAlignment="gravity"
-                            android:paddingStart="8dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
-
-                    </LinearLayout>
-                    <TextView
-                        android:text="Calories updated!"
-                        android:textSize="22sp"
-                        android:fontFamily="@font/baloo2"
-                        android:textColor="#FFFFFF"
-                        android:textAlignment="gravity"
-                        android:gravity="center_horizontal"
-                        android:paddingStart="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingTop="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/approval" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nats_regular"
+                        android:text="Lunch Calories updated!"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="25sp" />
+
                 </LinearLayout>
 
 

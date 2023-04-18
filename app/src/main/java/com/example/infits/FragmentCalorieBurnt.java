@@ -336,26 +336,26 @@ public class FragmentCalorieBurnt extends Fragment {
                 day_btn_calorie.setTextColor(Color.WHITE);
                 week_btn_calorie.setTextColor(Color.BLACK);
                 year_btn_calorie.setTextColor(Color.BLACK);
-                day_btn_calorie.getBackground().setTint(Color.parseColor("#ED9B37"));
-                week_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
-                year_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
+                day_btn_calorie.setBackground(getActivity().getDrawable(R.drawable.btn_background));
+                week_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
+                year_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
                 break;
             case R.id.week_btn_calorie:
                 week_btn_calorie.setTextColor(Color.WHITE);
                 day_btn_calorie.setTextColor(Color.BLACK);
                 year_btn_calorie.setTextColor(Color.BLACK);
 
-                day_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
-                week_btn_calorie.getBackground().setTint(Color.parseColor("#ED9B37"));
-                year_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
+                day_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
+                week_btn_calorie.setBackground(getActivity().getDrawable(R.drawable.btn_background));
+                year_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
                 break;
             case R.id.year_btn_calorie:
                 year_btn_calorie.setTextColor(Color.WHITE);
                 week_btn_calorie.setTextColor(Color.BLACK);
                 day_btn_calorie.setTextColor(Color.BLACK);
-                day_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
-                week_btn_calorie.getBackground().setTint(Color.TRANSPARENT);
-                year_btn_calorie.getBackground().setTint(Color.parseColor("#ED9B37"));
+                day_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
+                week_btn_calorie.setBackgroundColor(Color.TRANSPARENT);
+                year_btn_calorie.setBackground(getActivity().getDrawable(R.drawable.btn_background));
                 break;
             default:
                 break;

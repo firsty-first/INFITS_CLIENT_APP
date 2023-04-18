@@ -252,7 +252,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_14sdp"
+            android:layout_marginTop="10dp"
             android:layout_width="@dimen/_270sdp">
 
             <androidx.cardview.widget.CardView
@@ -384,7 +384,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13sdp"
+            android:layout_marginTop="10dp"
             android:layout_width="@dimen/_270sdp">
 
             <androidx.cardview.widget.CardView
@@ -514,7 +514,25 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
 
+            android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/setGoalsButton"
+                        android:layout_width="match_parent"
+                        android:fontFamily="@font/nats_regular"
+                        android:textFontWeight="400"
+                        android:paddingBottom="15dp"
+                        android:textSize="22dp"
+                        android:textColor="@color/white"
+
+                        android:background="@drawable/set_goals_for_macronutrients_background"
+                        android:textAllCaps="false"
+                        android:text="Set Goals for Macronutrients"
+                        android:layout_height="match_parent"/>
+        </LinearLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -523,6 +541,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
@@ -643,14 +662,14 @@
                                 android:id="@+id/add_breakfast"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                app:cardCornerRadius="@dimen/_3sdp"
+                                app:cardCornerRadius="10dp"
                                 android:layout_marginBottom="@dimen/_12sdp"
                                 android:elevation="@dimen/_3sdp"
                                 android:layout_alignParentBottom="true">
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:gravity="center"
-                                    android:background="#FF8610"
+                                    android:background="@drawable/frame_480955208"
                                     android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
@@ -733,14 +752,14 @@
                                 android:id="@+id/add_lunch"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                app:cardCornerRadius="@dimen/_3sdp"
+                                app:cardCornerRadius="10dp"
                                 android:layout_marginBottom="@dimen/_12sdp"
                                 android:elevation="@dimen/_3sdp"
                                 android:layout_alignParentBottom="true">
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:gravity="center"
-                                    android:background="#FF8610"
+                                    android:background="@drawable/frame_480955208"
                                     android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
@@ -821,14 +840,14 @@
                                 android:id="@+id/add_snack"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                app:cardCornerRadius="@dimen/_3sdp"
+                                app:cardCornerRadius="10dp"
                                 android:layout_marginBottom="@dimen/_12sdp"
                                 android:elevation="@dimen/_3sdp"
                                 android:layout_alignParentBottom="true">
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:gravity="center"
-                                    android:background="#FF8610"
+                                    android:background="@drawable/frame_480955208"
                                     android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
@@ -910,14 +929,14 @@
                                 android:id="@+id/add_dinner"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                app:cardCornerRadius="@dimen/_3sdp"
+                                app:cardCornerRadius="10dp"
                                 android:layout_marginBottom="@dimen/_12sdp"
                                 android:elevation="@dimen/_3sdp"
                                 android:layout_alignParentBottom="true">
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:gravity="center"
-                                    android:background="#FF8610"
+                                    android:background="@drawable/frame_480955208"
                                     android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"

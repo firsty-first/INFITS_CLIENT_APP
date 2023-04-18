@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-
-    <size android:height="40dp" android:width="40dp" />
-    <solid android:color="#5A84FE" />
-
-    <corners android:radius="20dp" />
-
-</shape>
+<vector android:autoMirrored="true" android:height="30dp"
+    android:viewportHeight="30" android:viewportWidth="75"
+    android:width="75dp" xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#ED9B37" android:pathData="M15.09,0.812L60.157,0.812A14.58,14.58 0,0 1,74.738 15.393L74.738,15.393A14.58,14.58 0,0 1,60.157 29.973L15.09,29.973A14.58,14.58 0,0 1,0.51 15.393L0.51,15.393A14.58,14.58 0,0 1,15.09 0.812z"/>
+    <path android:pathData="M15.09,0.812L60.157,0.812A14.58,14.58 0,0 1,74.738 15.393L74.738,15.393A14.58,14.58 0,0 1,60.157 29.973L15.09,29.973A14.58,14.58 0,0 1,0.51 15.393L0.51,15.393A14.58,14.58 0,0 1,15.09 0.812z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="94.486" android:endY="14.819"
+                android:startX="0.51" android:startY="15.095" android:type="linear">
+                <item android:color="#FFFF9937" android:offset="0"/>
+                <item android:color="#FFECFF78" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

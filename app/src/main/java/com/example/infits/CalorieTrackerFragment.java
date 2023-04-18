@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
@@ -29,7 +30,7 @@ public class CalorieTrackerFragment extends Fragment {
     private String mParam1;
     CardView calorieConsumed,calorieBurnt,addBreakfast,addLunch,addSnacks,addDinner;
     private String mParam2;
-
+    Button setGoalsButton;
     public  CalorieTrackerFragment(){
         // Required Empty Constructor.
     }
@@ -101,25 +102,31 @@ public class CalorieTrackerFragment extends Fragment {
         addBreakfast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddBreakFastFragment); // To be continued...
+                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddBreakFastFragment); 
             }
         });
         addLunch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddLunchFragment); // To be continued...
+                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddLunchFragment); 
             }
         });
         addSnacks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddSnacksFragment); // To be continued...
+                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddSnacksFragment); 
             }
         });
         addDinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddDinnerFragment); // To be continued...
+                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_tocalorieAddDinnerFragment); 
+            }
+        });
+        setGoalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_calorieTrackerFragment_toFragment_Set_Goals); 
             }
         });
 
@@ -171,6 +178,7 @@ public class CalorieTrackerFragment extends Fragment {
         addDinner = view.findViewById(R.id.add_dinner);
         calorieConsumed=view.findViewById(R.id.calorieConsumed);
         calorieBurnt=view.findViewById(R.id.calorieBurnt);
+        setGoalsButton=view.findViewById(R.id.setGoalsButton);
         imgBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
     }

@@ -104,6 +104,7 @@ public class FragmentAddBreakFast extends Fragment {
         View view=inflater.inflate(R.layout.fragment_add_break_fast, container, false);
         addmealInfos=new ArrayList<>();
         hooks(view);
+
         jsonArray=new JSONArray();
         mainJSONobj=new JSONObject();
         AddFrequentMeal();

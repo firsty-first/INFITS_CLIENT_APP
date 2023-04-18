@@ -67,19 +67,7 @@
         android:theme="@style/Theme.Infits"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Activity_Todays_Snacks"
-            android:exported="false" />
-        <activity
-            android:name=".Activity_Todays_Dinner"
-            android:exported="false" />
-        <activity
-            android:name=".Activity_Todays_Lunch"
-            android:exported="false" />
-        <activity
             android:name=".CameraForCalorieTracker"
-            android:exported="false" />
-        <activity
-            android:name=".Activity_Todays_Breakfast"
             android:exported="false" />
         <activity
             android:name=".EditProfile"

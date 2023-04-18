@@ -12,8 +12,13 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,7 +37,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             case "weight" : weight(context);
 
             case "RecentMealInfo":DeleteRecentMealInfo(context);
-            case "TodaysBreakFast":DeleteRecentMealInfo1(context);
+            case "TodaysMeal":DeleteTodaysMeal(context);
         }
     }
 
@@ -191,25 +196,36 @@ public class NotificationReceiver extends BroadcastReceiver {
             Log.d("RecentMealInfo deleted", "RecentMealInfo delete");
         }
     }
-    private void DeleteRecentMealInfo1(Context context) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        Log.d("calender Time", String.valueOf(calendar.getTime()));
-        DateFormat obj = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
-        // we create instance of the Date and pass milliseconds to the constructor
-        Date res = new Date(System.currentTimeMillis());
-        Log.d("System Time", String.valueOf(res));
+    private void DeleteTodaysMeal(Context context) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Log.d("calender Time", String.valueOf(calendar.getTime()));
+            DateFormat obj = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
+            // we create instance of the Date and pass milliseconds to the constructor
+            Date res = new Date(System.currentTimeMillis());
+            Log.d("System Time", String.valueOf(res));
+            String[] mealsType = {"BreakFast", "Lunch", "Dinner", "Snacks"};
+            Log.d("Differenece", String.valueOf(System.currentTimeMillis() - calendar.getTimeInMillis()));
+            if ((System.currentTimeMillis() - calendar.getTimeInMillis()) <= 60000) {
+                for (int i = 0; i < mealsType.length; i++) {
+                    String sharedPreferencesName = "Todays" + mealsType[i];
+                    SharedPreferences preferences = context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
+                    JSONObject jsonObject = new JSONObject(preferences.getString(sharedPreferencesName, ""));
+                    JSONArray jsonArray = jsonObject.getJSONArray(sharedPreferencesName);
+                    jsonObject.remove(sharedPreferencesName);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(sharedPreferencesName, jsonObject.toString());
+                    editor.commit();
+                    Log.d("MealDeleted deleted", sharedPreferencesName + "  delete");
+                }
+            }
+        }catch (Exception e){
+            Log.d("MealDeleted deleted error",  e.toString());
 
-        Log.d("Differenece",String.valueOf(System.currentTimeMillis()- calendar.getTimeInMillis()));
-        if ((System.currentTimeMillis()- calendar.getTimeInMillis())<=60000) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.remove("TodaysBreakFast");
-            editor.apply();
-            Log.d("TodaysBreakFast deleted", "TodaysBreakFast delete");
         }
     }
 }
