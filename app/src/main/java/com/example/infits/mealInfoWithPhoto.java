@@ -187,7 +187,6 @@ public class mealInfoWithPhoto extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    Bundle bundle=new Bundle();
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("mealName", mealName.getText().toString());
                     jsonObject.put("Meal_Type",Meal_Type.toString());
@@ -198,7 +197,6 @@ public class mealInfoWithPhoto extends Fragment {
                     jsonObject.put("Quantity", numberPicker1List[numberPicker1.getValue()]);
                     jsonObject.put("Size", numberPicker2List[numberPicker2.getValue()]);
 
-                    bundle.putString("mealInfoForPhoto",jsonObject.toString());
                     String sharedPreferencesName = "Todays" + Meal_Type;
                     sharedPreferences1 = requireContext().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
                     Log.d("mealInfoForPhoto0", sharedPreferences1.getString(sharedPreferencesName, "").toString());
@@ -219,18 +217,18 @@ public class mealInfoWithPhoto extends Fragment {
                     editor.putString(sharedPreferencesName, mainJsonobj.toString());
                     editor.commit();
                     if(Meal_Type=="BreakFast") {
-                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysBreakFast, bundle);
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysBreakFast);
                     }
                     if (Meal_Type.equals("Lunch")){
-                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysLunch, bundle);
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysLunch);
 
                     }
                     if (Meal_Type.equals("Dinner")){
-                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysDinner, bundle);
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysDinner);
 
                     }
                     if (Meal_Type.equals("Snacks")){
-                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysSnacks, bundle);
+                        Navigation.findNavController(v).navigate(R.id.action_mealInfoWithPhoto_to_FragmentTodaysSnacks);
 
                     }
                 }catch (Exception e){

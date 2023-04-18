@@ -117,7 +117,6 @@ public class FragmentTodays_BreakFast extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_todays__break_fast, container, false);
         todayDate = new SimpleDateFormat("d MMM yyyy");
-//        RetriveData();
         todayTime = new SimpleDateFormat("h.m.s a");
 
         date=new Date();

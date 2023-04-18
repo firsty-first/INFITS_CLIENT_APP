@@ -122,7 +122,6 @@ public class FragmentTodays_Dinner extends Fragment {
         todayTime = new SimpleDateFormat("h.m.s a");
 
         date=new Date();
-//        RetriveData();
         //recycleview
         recyclerView_Todays_breakfast = view.findViewById(R.id.recyclerView_Todays_breakfast);
         recyclerView_Todays_breakfast.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

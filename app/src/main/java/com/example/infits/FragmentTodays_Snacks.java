@@ -115,7 +115,6 @@ public class FragmentTodays_Snacks extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_todays__snacks, container, false);
         todayDate = new SimpleDateFormat("d MMM yyyy");
-//        RetriveData();
 
         todayTime = new SimpleDateFormat("h.m.s a");
 
