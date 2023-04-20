@@ -42,8 +42,12 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,10 +72,11 @@ public class FragmentTodays_BreakFast extends Fragment {
     private String mParam1;
     private String mParam2;
     TextView DoneButtonView;
-    String url = String.format("%ssaveMeal.php", DataFromDatabase.ipConfig);
-
+    String url=String.format("%sAddMealTocalorieTrackertable.php",DataFromDatabase.ipConfig);
     SharedPreferences sharedPreferences;
-    RecyclerView recyclerView_Todays_breakfast;
+    JSONObject jsonObject;
+    JSONArray jsonArray;
+    RecyclerView recyclerView_Todays_meal;
     SimpleDateFormat todayDate;
     SimpleDateFormat todayTime;
     JSONObject mainJsonobj;
@@ -122,13 +127,13 @@ public class FragmentTodays_BreakFast extends Fragment {
         date=new Date();
 
         //recycleview
-        recyclerView_Todays_breakfast = view.findViewById(R.id.recyclerView_Todays_breakfast);
-        recyclerView_Todays_breakfast.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView_Todays_meal = view.findViewById(R.id.recyclerView_Todays_meal);
+        recyclerView_Todays_meal.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         DisplayDataInList();
 //        todays_meal_infos.clear();
 
         Adapter_Todays_Meal Adapter_Todays_Meal = new Adapter_Todays_Meal(getContext(), todays_meal_infos);
-        recyclerView_Todays_breakfast.setAdapter(Adapter_Todays_Meal);
+        recyclerView_Todays_meal.setAdapter(Adapter_Todays_Meal);
 
         //backbutton
         calorieImgback = view.findViewById(R.id.calorieImgback);
@@ -146,6 +151,9 @@ public class FragmentTodays_BreakFast extends Fragment {
                 try {
                     linear_layout1.setVisibility(View.GONE);
                     linear_layout2.setVisibility(View.VISIBLE);
+                    AddMealToTable(v);
+
+
 
 
                 } catch (Exception e) {
@@ -159,13 +167,72 @@ public class FragmentTodays_BreakFast extends Fragment {
         DeleteSharedPreference();
         return view;
     }
+    public void AddMealToTable(View v){
+        RequestQueue requestQueue=Volley.newRequestQueue(getContext());
+
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            JSONObject jsonObject2 = jsonArray.getJSONObject(jsonArray.length() - 1);
+            String mealName=jsonObject2.getString("mealName");
+            String Meal_Type=jsonObject2.getString("Meal_Type");
+            String caloriesconsumed=jsonObject2.getString("calorieValue");
+            String carbs=jsonObject2.getString("carbsValue");
+            String protein=jsonObject2.getString("proteinValue");
+            String fats=jsonObject2.getString("fatValue");
+            String Quantity=jsonObject2.getString("Quantity");
+            String Size=jsonObject2.getString("Size");
+            Log.d("nkcncnlnclaclmc", jsonObject2.toString());
+            StringRequest stringRequest=new StringRequest(Request.Method.POST,url,
+                    response -> {
+                        Log.d("response",response.toString());
+                        if(response.toString().equals("success")){
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Navigation.findNavController(v).navigate(R.id.action_FragmentTodaysBreakFast_to_calorieTrackerFragment);
+
+                                }
+                            },2000);
+                        }
+                        else {
+                            Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    },
+                    error -> {
+                        Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }){
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("clientID", DataFromDatabase.clientuserID);
+                    params.put("Meal_Type",Meal_Type);
+                    params.put("Meal_Name",mealName);
+                    params.put("caloriesconsumed",caloriesconsumed);
+                    params.put("carbs",carbs);
+                    params.put("protein",protein);
+                    params.put("time",dtf.format(now).toString());
+                    params.put("fats",fats);
+                    params.put("Quantity",Quantity);
+                    params.put("Size",Size);
+                    return params;
+                }
+            };
+
+        requestQueue.add(stringRequest);
+        }catch (Exception e){
+            Log.d("Exception", e.toString());
+
+        }
+    }
 
     public void DisplayDataInList() {
         try {
             todays_meal_infos.clear();
             sharedPreferences = getActivity().getSharedPreferences("TodaysBreakFast", Context.MODE_PRIVATE);
-            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("TodaysBreakFast", ""));
-            JSONArray jsonArray = jsonObject.getJSONArray("TodaysBreakFast");
+            jsonObject = new JSONObject(sharedPreferences.getString("TodaysBreakFast", ""));
+            jsonArray = jsonObject.getJSONArray("TodaysBreakFast");
             for (int i = jsonArray.length()-1; i >=0; i--) {
 
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);

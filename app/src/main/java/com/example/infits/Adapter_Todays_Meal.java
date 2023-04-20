@@ -43,6 +43,7 @@ public class Adapter_Todays_Meal extends RecyclerView.Adapter<Adapter_Todays_Mea
         holder.mealName.setText(todays_meal_infos.get(position).mealName);
         holder.calorieValue.setText(todays_meal_infos.get(position).calorieValue);
         holder.fatvalue.setText(todays_meal_infos.get(position).fatvalue);
+        holder.protinValue.setText(todays_meal_infos.get(position).protinValue);
         holder.carbsValue.setText(todays_meal_infos.get(position).carbsValue);
         holder.quantityValue.setText(todays_meal_infos.get(position).quantityValue);
         holder.sizeValue.setText(todays_meal_infos.get(position).sizeValue);

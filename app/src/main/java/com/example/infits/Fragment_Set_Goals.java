@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -20,10 +21,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.slider.RangeSlider;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +47,9 @@ public class Fragment_Set_Goals extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
+    String url=String.format("%sClient_Goals_Calorie_Tracker.php", DataFromDatabase.ipConfig);
     private static final String ARG_PARAM2 = "param2";
+    RequestQueue requestQueue,requestQueue1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -43,7 +57,10 @@ public class Fragment_Set_Goals extends Fragment {
     String[] values = {"0", "100", "200", "300", "400", "500"};
     RangeSlider carbsSlider, fatSlider, proteinSlider, fiberSlider;
     ImageView calorieImgback;
+    float Carbs=0f,fiber=0f,protein=0f,fats=0f;
+    String operationToDo="get";
     Button SetButton;
+    Boolean ValueExist=false;
     TextView carbsSliderValue, fiberSliderValue, proteinSliderValue, fatSliderValue;
     LinearLayout linear_layout1,linear_layout2;
     public Fragment_Set_Goals() {
@@ -89,23 +106,14 @@ public class Fragment_Set_Goals extends Fragment {
                 requireActivity().onBackPressed();
             }
         });
-
+        GetData();
         //slider Backend
-        carbsSlider.setValues(50f);
-        fatSlider.setValues(100f);
-        proteinSlider.setValues(40f);
-        fiberSlider.setValues(70f);
-
-        carbsSliderValue.setText("50 g");
-        fiberSliderValue.setText("50 g");
-        proteinSliderValue.setText("50 g");
-        fatSliderValue.setText("50 g");
-
 
         carbsSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
                 carbsSlider.setValues(value);
+                Carbs=value;
                 carbsSliderValue.setText(String.valueOf(Math.round(value))+" g");
             }
         });
@@ -113,6 +121,7 @@ public class Fragment_Set_Goals extends Fragment {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
                 fiberSlider.setValues(value);
+                fiber=value;
                 fiberSliderValue.setText(String.valueOf(Math.round(value))+" g");
             }
         });
@@ -120,6 +129,7 @@ public class Fragment_Set_Goals extends Fragment {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
                 proteinSlider.setValues(value);
+                protein=value;
                 proteinSliderValue.setText(String.valueOf(Math.round(value))+" g");
             }
         });
@@ -127,6 +137,7 @@ public class Fragment_Set_Goals extends Fragment {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
                 fatSlider.setValues(value);
+                fats=value;
                 fatSliderValue.setText(String.valueOf(Math.round(value))+" g");
             }
         });
@@ -139,6 +150,7 @@ public class Fragment_Set_Goals extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        peroformOperation();
                         Navigation.findNavController(v).navigate(R.id.action_fragment_Set_Goals_toCalorieTracker);
                     }
                 },2000);
@@ -147,7 +159,40 @@ public class Fragment_Set_Goals extends Fragment {
         });
         return view;
     };
+    public void peroformOperation(){
+        Log.d("dieteddddm",DataFromDatabase.dietitianuserID);
+        requestQueue1=Volley.newRequestQueue(getContext());
+        StringRequest stringRequest1=new StringRequest(Request.Method.POST,url,
+                response -> {
+                    Log.d("response153",response.toString());
+                    if (response.contains("failed")){
+                        Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
+                    }
 
+                },
+                error -> {
+                    Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("clientID", DataFromDatabase.clientuserID);
+                params.put("dietitianuserID",DataFromDatabase.dietitianuserID);
+                params.put("carbs",String.valueOf(Carbs));
+                params.put("fiber",String.valueOf(fiber));
+                params.put("protein",String.valueOf(protein));
+                params.put("fats",String.valueOf(fats));
+                params.put("operationToDo",operationToDo);
+                return params;
+            }
+        };
+        requestQueue1.add(stringRequest1);
+//        if(operationToDo.equals("ADD")){
+//
+//        }
+
+    }
     public void hooks(View view) {
         //sliders code
         carbsSlider = view.findViewById(R.id.CarbsGoalSlider);
@@ -174,7 +219,62 @@ public class Fragment_Set_Goals extends Fragment {
 
 
     }
+    public void GetData(){
+        requestQueue= Volley.newRequestQueue(getContext());
 
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,url, response -> {
+            try {
+
+                JSONObject jsonObject = new JSONObject(response);
+                JSONObject Goals=jsonObject.getJSONObject("Goals");
+                if(Goals.getString("message").equals("values does exist")){
+                    operationToDo="add";
+                    ValueExist=false;
+                }
+                else {
+                    JSONObject values=Goals.getJSONObject("values");
+
+                    Carbs=Float.parseFloat(values.getString("Carbs"));
+                    fats=Float.parseFloat(values.getString("fats"));
+                    protein=Float.parseFloat(values.getString("Protein"));
+                    fiber=Float.parseFloat(values.getString("Fiber"));
+
+                    operationToDo="update";
+                    ValueExist=true;
+
+                }
+                carbsSlider.setValues(Carbs);
+                fatSlider.setValues(fats);
+                proteinSlider.setValues(protein);
+                fiberSlider.setValues(fiber);
+
+                carbsSliderValue.setText(String.valueOf(Math.round(Carbs))+" g");
+                fiberSliderValue.setText(String.valueOf(Math.round(fiber))+" g");
+                proteinSliderValue.setText(String.valueOf(Math.round(protein))+" g");
+                fatSliderValue.setText(String.valueOf(Math.round(fats))+" g");
+
+            }catch (JSONException e){
+                Log.d("error",e.toString());
+            }
+        },error -> {
+            Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("clientID", DataFromDatabase.clientuserID);
+                params.put("dietitianuserID",DataFromDatabase.dietitianuserID);
+                params.put("carbs",String.valueOf(Carbs));
+                params.put("fiber",String.valueOf(fiber));
+                params.put("protein",String.valueOf(protein));
+                params.put("fats",String.valueOf(fats));
+                params.put("operationToDo",operationToDo);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
     public void setProgressBarView(RangeSlider rangeSlider, int progressColor) {
 
         rangeSlider.setTrackActiveTintList(ColorStateList.valueOf(progressColor));
@@ -184,7 +284,5 @@ public class Fragment_Set_Goals extends Fragment {
         rangeSlider.setThumbElevation(10);
         rangeSlider.setThumbRadius(18);
         rangeSlider.setTickVisible(false);
-
-
     }
 }
