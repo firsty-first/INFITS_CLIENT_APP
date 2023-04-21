@@ -298,6 +298,7 @@
                         android:layout_marginTop="@dimen/_2sdp">
 
                         <TextView
+                            android:id="@+id/carbsValueTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="150g "
@@ -308,6 +309,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Left"
+
+                            android:layout_marginStart="7dp"
                             android:textColor="#0C9900"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -360,6 +363,8 @@
                         android:layout_marginTop="@dimen/_2sdp">
 
                         <TextView
+                            android:id="@+id/fiberValueTextview"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="150g "
@@ -370,6 +375,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Left"
+                            android:layout_marginStart="7dp"
+
                             android:textColor="#DD4200"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -429,6 +436,8 @@
                         android:layout_marginTop="@dimen/_2sdp">
 
                         <TextView
+                            android:id="@+id/proteinValueTextview"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -441,6 +450,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="Left"
+                            android:layout_marginStart="7dp"
+
                             android:textColor="#9500DB"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -493,6 +504,8 @@
                         android:layout_marginTop="@dimen/_2sdp">
 
                         <TextView
+                            android:id="@+id/fatsValueTextview"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -505,6 +518,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="Left"
+                            android:layout_marginStart="7dp"
+
                             android:textColor="#7098FF"
                             android:textStyle="bold" />
                     </LinearLayout>
