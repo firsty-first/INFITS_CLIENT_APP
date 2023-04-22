@@ -159,21 +159,21 @@ public class CalorieTrackerFragment extends Fragment {
                         fiberGoals = Float.parseFloat(Goals.getString("FiberGoal"));
                         Log.d("nlancnc",data.toString());
                         JSONObject Value = data.getJSONObject("Values");
-                        Log.d("fkn",Goals.get("CarbsGoal").toString());
+                        Log.d("fkn",Goals.toString());
 
                         calorieBurntValue=Float.parseFloat(data.getString("CalorieBurnt"));
 
-                        Log.d("fkn",Value.toString());
+                        Log.d("value123",Value.toString());
                         CarbsValue = Float.parseFloat(Value.getString("carbs"));
                         fatsValue = Float.parseFloat(Value.getString("fat"));
                         ProteinValue = Float.parseFloat(Value.getString("protein"));
                         fiberValue = Float.parseFloat(Value.getString("fiber"));
                         calorieConsumedValue = Float.parseFloat(Value.getString("caloriesconsumed"));
-                        Log.d("carbsValue",String.valueOf(CarbsGoals));
+//                        Log.d("carbsValue",String.valueOf(Value));
                         SetProgress();
 
                     }catch (Exception exception){
-                        Toast.makeText(getContext(), exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "exception"+exception.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {

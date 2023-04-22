@@ -110,7 +110,7 @@ public class FragmentCalorieBurnt extends Fragment {
         View view=inflater.inflate(R.layout.fragment_calorie_burnt, container, false);
         calorieInfos=new ArrayList<>();
         hooks(view);
-        pieChart(30L,40L,40L);
+//        pieChart(30L,40L,40L);
         String date = getCurrentDate(),calorie="823";
 
         setTodayData("day");
@@ -278,7 +278,7 @@ public class FragmentCalorieBurnt extends Fragment {
             @Override
             public void onClick(View v) {
                 SetButtonBackground(v);
-                setTodayData("year");
+                setTodayData("month");
             }
         });
 

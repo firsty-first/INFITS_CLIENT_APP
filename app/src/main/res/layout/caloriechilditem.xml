@@ -165,7 +165,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:fontFamily="@font/nats_regular"
-                        android:paddingStart="45dp"
                         android:paddingBottom="5dp"
                         android:text="11:10 a.m."
                         android:gravity="end|center"

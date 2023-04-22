@@ -4,17 +4,25 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -22,8 +30,16 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,17 +56,27 @@ public class FragmentCalorieConsumed extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    String url = String.format("%scalorieConsumed.php", DataFromDatabase.ipConfig);
+
     PieChart pieChart;
     ImageView imgBack;
     ArrayList<calorieInfo> calorieInfos;
+    int BreakFastCalorieConsumed=0,LunchCalorieConsumed=0,DinnerCalorieConsumed=0,SnacksCalorieConsumed=0;
+    int TotalCalorieConsumed=0;
     ArrayList<calorieconsumedInfo> BreakFast;
     ArrayList<calorieconsumedInfo> Lunch;
     ArrayList<calorieconsumedInfo> Dinner;
     ArrayList<calorieconsumedInfo> Snacks;
+
     int[] colors={Color.parseColor("#FCFF72"),Color.parseColor("#ACAFFD"),Color.parseColor("#FF6262"),Color.parseColor("#FFA361")   };
     RecyclerView calorieRecycleview;
+    SimpleDateFormat dateFormat;
+    SimpleDateFormat dateFormat1;
     Button day_btn_calorie,week_btn_calorie,year_btn_calorie;
+    JSONObject BreakFastObject,LunchObject,SnacksObject,DinnerObject;
     TextView totalCalorieValue,caloriedisplaydate;
+    StringRequest stringRequest;
+    RequestQueue requestQueue;
     public FragmentCalorieConsumed() {
         // Required empty public constructor
     }
@@ -90,11 +116,91 @@ public class FragmentCalorieConsumed extends Fragment {
         Lunch=new ArrayList<>();
         Dinner=new ArrayList<>();
         Snacks=new ArrayList<>();
+         dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+         dateFormat1 = new SimpleDateFormat("hh:mm aa");
         hooks(view);
+        RetriveData("today");
+        day_btn_calorie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RetriveData("today");
+                SetButtonBackground(v);
+//                pieChart();
+//                pastAcivity();
+
+            }
+        });
+        week_btn_calorie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RetriveData("week");
+                SetButtonBackground(v);
+//                pieChart();
+//                pastAcivity();
+            }
+        });
+        year_btn_calorie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RetriveData("month");
+                SetButtonBackground(v);
+//                pieChart();
+//                pastAcivity();
+            }
+        });
+
         pieChart();
         pastAcivity();
         imgBack.setOnClickListener(v -> requireActivity().onBackPressed());
         return view;
+    }
+
+    public void RetriveData(String duration){
+
+        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
+            StringRequest stringRequest=new StringRequest(Request.Method.POST,url,
+                    response -> {
+                    try {
+
+
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONObject value = jsonObject.getJSONObject("value");
+                        TotalCalorieConsumed= Integer.parseInt(value.getString("total_caloriesconsumed"));
+                        BreakFastObject=value.getJSONObject("BreakFast");
+                        LunchObject=value.getJSONObject("Lunch");
+                        DinnerObject=value.getJSONObject("Dinner");
+                        SnacksObject=value.getJSONObject("Snacks");
+
+                        DinnerCalorieConsumed=Integer.parseInt(DinnerObject.getString("MealType_caloriesconsumed"));
+                        SnacksCalorieConsumed=Integer.parseInt(SnacksObject.getString("MealType_caloriesconsumed"));
+                        BreakFastCalorieConsumed=Integer.parseInt(BreakFastObject.getString("MealType_caloriesconsumed"));
+                        LunchCalorieConsumed=Integer.parseInt(LunchObject.getString("MealType_caloriesconsumed"));
+
+                        pastAcivity();
+                        pieChart();
+                        BreakFastInfo(BreakFastObject);
+                        LunchInfo(LunchObject);
+                        SnacksInfo(SnacksObject);
+                        DinnerInfo(DinnerObject);
+                        Log.d("values", String.valueOf(LunchObject));
+                    }catch (JSONException e){
+                        Toast.makeText(getContext(),"Error is "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
+
+                    }
+                    },
+                    error -> {
+                        Toast.makeText(getContext(),"Error is "+error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }){
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String ,String> params=new HashMap<>();
+                    params.put("clientID",DataFromDatabase.clientuserID);
+                    params.put("for",duration);
+                    return params;
+                }
+            };
+            requestQueue.add(stringRequest);
     }
     private void hooks(View view){
         pieChart=view.findViewById(R.id.piechart);
@@ -106,37 +212,14 @@ public class FragmentCalorieConsumed extends Fragment {
         caloriedisplaydate=view.findViewById(R.id.caloriedisplaydate);
         totalCalorieValue=view.findViewById(R.id.totalCalorieValue);
         imgBack=view.findViewById(R.id.calorieImgback);
-        day_btn_calorie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
-            }
-        });
-        week_btn_calorie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
-            }
-        });
-        year_btn_calorie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SetButtonBackground(v);
-                pieChart();
-                pastAcivity();
-            }
-        });
+
     }
     private void pieChart(){
         List<PieEntry> entries=new ArrayList<>();
-        entries.add(new PieEntry(49f,"D"));
-        entries.add(new PieEntry(20f,"S"));
-        entries.add(new PieEntry(20f,"B"));
-        entries.add(new PieEntry(11f,"L"));
+        entries.add(new PieEntry(Float.intBitsToFloat(DinnerCalorieConsumed),"D"));
+        entries.add(new PieEntry(Float.intBitsToFloat(SnacksCalorieConsumed),"S"));
+        entries.add(new PieEntry(Float.intBitsToFloat(BreakFastCalorieConsumed),"B"));
+        entries.add(new PieEntry(Float.intBitsToFloat(LunchCalorieConsumed),"L"));
 
 
         pieChart.getLegend().setEnabled(false);
@@ -162,44 +245,117 @@ public class FragmentCalorieConsumed extends Fragment {
         pieChart.setDrawEntryLabels(true);
         pieChart.setEntryLabelColor(Color.WHITE);
     }
+    private String getCurrentDate(){
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+        String formattedDate = dateFormat.format(currentDate);
+        return formattedDate;
+    }
     private void pastAcivity(){
-        totalCalorieValue.setText("825");
-        caloriedisplaydate.setText("23 January, 2023");
+        totalCalorieValue.setText(String.valueOf(TotalCalorieConsumed));
+        caloriedisplaydate.setText(String.valueOf(getCurrentDate()));
         calorieInfos.clear();
         BreakFast.clear();
         Lunch.clear();
         Dinner.clear();
         Snacks.clear();
-        BreakFastInfo();
-        LunchInfo();
-        SnacksInfo();
-        DinnerInfo();
-        calorieInfos.add(new calorieInfo(R.string.breakfast,"String","BREAKFAST","452 kcal","00:18:52","11:10 a.m.",BreakFast));
-        calorieInfos.add(new calorieInfo(R.string.lunch,"String","LUNCH","452 kcal","00:18:52","11:10 a.m.",Lunch));
-        calorieInfos.add(new calorieInfo(R.string.snacks,"String","SNACKS","452 kcal","00:18:52","11:10 a.m.",Snacks));
-        calorieInfos.add(new calorieInfo(R.string.dinner,"String","DINNER","452 kcal","00:18:52","11:10 a.m.",Dinner));
+
+        calorieInfos.add(new calorieInfo(R.string.breakfast,"String","BREAKFAST",String.valueOf(BreakFastCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",BreakFast));
+        calorieInfos.add(new calorieInfo(R.string.lunch,"String","LUNCH",String.valueOf(LunchCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Lunch));
+        calorieInfos.add(new calorieInfo(R.string.snacks,"String","SNACKS",String.valueOf(SnacksCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Snacks));
+        calorieInfos.add(new calorieInfo(R.string.dinner,"String","DINNER",String.valueOf(DinnerCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Dinner));
 
         CalorieInfoAdapter calorieInfoAdapter=new CalorieInfoAdapter(getContext(),calorieInfos);
         calorieRecycleview.setAdapter(calorieInfoAdapter);
 
     }
-    private void BreakFastInfo(){
-        String mealType="BreakFast";
-        BreakFast.add(new calorieconsumedInfo(R.drawable.istockphoto_860224944_612x612_removebg_preview_1,mealType,
-                "Blueberry Pancake","452 kcal","1","Small","11:10 a.m."));
+    private void BreakFastInfo(JSONObject BreakFastObject) {
+        String mealType = "BreakFast";
+        try {
+            JSONArray data = BreakFastObject.getJSONArray("data");
+            if (data.length() > 0) {
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject jsonObject = data.getJSONObject(i);
+                    Date date=dateFormat.parse(jsonObject.getString("time"));
+                    String date1=dateFormat1.format(date);
+
+                    BreakFast.add(new calorieconsumedInfo(R.drawable.istockphoto_860224944_612x612_removebg_preview_1, mealType,
+                            jsonObject.getString("Meal_Name"),
+                            jsonObject.getString("caloriesconsumed") + " kcal",
+                            jsonObject.getString("Quantity"),
+                            jsonObject.getString("Size"),
+                             date1));
+                }
+            }
+        }catch (Exception jsonException){
+            Log.d("jsonException",jsonException.toString());
+        }
     }
-    private void LunchInfo(){
+    private void LunchInfo(JSONObject LunchObject){
         String mealType="Lunch";
-        Lunch.add(new calorieconsumedInfo(R.drawable.rice,mealType,
-                "Rice","452 kcal","1","Medium","11:10 a.m."));
-        Lunch.add(new calorieconsumedInfo(R.drawable.noodles,mealType,
-                "Noodles","452 kcal","1","Large","11:10 a.m."));
+        try {
+            JSONArray data = LunchObject.getJSONArray("data");
+            if (data.length() > 0) {
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject jsonObject = data.getJSONObject(i);
+                    Date date=dateFormat.parse(jsonObject.getString("time"));
+                    String date1=dateFormat1.format(date);
+
+                    Lunch.add(new calorieconsumedInfo(R.drawable.istockphoto_860224944_612x612_removebg_preview_1, mealType,
+                            jsonObject.getString("Meal_Name"),
+                            jsonObject.getString("caloriesconsumed") + " kcal",
+                            jsonObject.getString("Quantity"),
+                            jsonObject.getString("Size"),
+                            date1));
+                }
+            }
+        }catch (Exception jsonException){
+            Log.d("jsonException",jsonException.toString());
+        }
     }
-    private void DinnerInfo(){
+    private void DinnerInfo(JSONObject DinnerObject){
         String mealType="Dinner";
+        try {
+            JSONArray data = DinnerObject.getJSONArray("data");
+            if (data.length() > 0) {
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject jsonObject = data.getJSONObject(i);
+                    Date date=dateFormat.parse(jsonObject.getString("time"));
+                    String date1=dateFormat1.format(date);
+
+                    Dinner.add(new calorieconsumedInfo(R.drawable.istockphoto_860224944_612x612_removebg_preview_1, mealType,
+                            jsonObject.getString("Meal_Name"),
+                            jsonObject.getString("caloriesconsumed") + " kcal",
+                            jsonObject.getString("Quantity"),
+                            jsonObject.getString("Size"),
+                            date1));
+                }
+            }
+        }catch (Exception jsonException){
+            Log.d("jsonException",jsonException.toString());
+        }
     }
-    private void SnacksInfo(){
+    private void SnacksInfo(JSONObject SnacksObject){
         String mealType="Snacks";
+        try {
+            JSONArray data = SnacksObject.getJSONArray("data");
+            if (data.length() > 0) {
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject jsonObject = data.getJSONObject(i);
+                    Date date=dateFormat.parse(jsonObject.getString("time"));
+                    String date1=dateFormat1.format(date);
+
+                    Snacks.add(new calorieconsumedInfo(R.drawable.istockphoto_860224944_612x612_removebg_preview_1, mealType,
+                            jsonObject.getString("Meal_Name"),
+                            jsonObject.getString("caloriesconsumed") + " kcal",
+                            jsonObject.getString("Quantity"),
+                            jsonObject.getString("Size"),
+                            date1));
+                }
+            }
+        }catch (Exception jsonException){
+            Log.d("jsonException",jsonException.toString());
+        }
     }
     private void SetButtonBackground(View view){
         switch (view.getId()){

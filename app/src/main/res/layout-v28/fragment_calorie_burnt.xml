@@ -90,7 +90,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/year_btn_calorie"
                 android:layout_width="0dp"
-                android:text="Year"
+                android:text="Month"
                 android:layout_weight="1"
                 android:outlineProvider="none"
                 android:textAllCaps="false"
