@@ -182,7 +182,6 @@ public class FragmentCalorieConsumed extends Fragment {
                         LunchInfo(LunchObject);
                         SnacksInfo(SnacksObject);
                         DinnerInfo(DinnerObject);
-                        Log.d("values", String.valueOf(LunchObject));
                     }catch (JSONException e){
                         Toast.makeText(getContext(),"Error is "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
 

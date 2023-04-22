@@ -157,13 +157,10 @@ public class CalorieTrackerFragment extends Fragment {
                         fatsGoals = Float.parseFloat(Goals.getString("fatsGoal"));
                         ProteinGoals = Float.parseFloat(Goals.getString("ProteinGoal"));
                         fiberGoals = Float.parseFloat(Goals.getString("FiberGoal"));
-                        Log.d("nlancnc",data.toString());
                         JSONObject Value = data.getJSONObject("Values");
-                        Log.d("fkn",Goals.toString());
 
                         calorieBurntValue=Float.parseFloat(data.getString("CalorieBurnt"));
 
-                        Log.d("value123",Value.toString());
                         CarbsValue = Float.parseFloat(Value.getString("carbs"));
                         fatsValue = Float.parseFloat(Value.getString("fat"));
                         ProteinValue = Float.parseFloat(Value.getString("protein"));
