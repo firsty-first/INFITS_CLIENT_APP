@@ -67,14 +67,16 @@ public class FragmentCalorieConsumed extends Fragment {
     ArrayList<calorieconsumedInfo> Lunch;
     ArrayList<calorieconsumedInfo> Dinner;
     ArrayList<calorieconsumedInfo> Snacks;
+    int colors[]=new int[4];
 
-    int[] colors={Color.parseColor("#FCFF72"),Color.parseColor("#ACAFFD"),Color.parseColor("#FF6262"),Color.parseColor("#FFA361")   };
+//    int[] colors={Color.parseColor("#FCFF72"),Color.parseColor("#ACAFFD"),Color.parseColor("#FF6262"),Color.parseColor("#FFA361")   };
     RecyclerView calorieRecycleview;
     SimpleDateFormat dateFormat;
     SimpleDateFormat dateFormat1;
     Button day_btn_calorie,week_btn_calorie,year_btn_calorie;
     JSONObject BreakFastObject,LunchObject,SnacksObject,DinnerObject;
     TextView totalCalorieValue,caloriedisplaydate;
+    String BreakFast_Last_UpadatedTime,Lunch_Last_UpadatedTime,Dinner_Last_UpadatedTime,Snacks_Last_UpadatedTime;
     StringRequest stringRequest;
     RequestQueue requestQueue;
     public FragmentCalorieConsumed() {
@@ -125,9 +127,6 @@ public class FragmentCalorieConsumed extends Fragment {
             public void onClick(View v) {
                 RetriveData("today");
                 SetButtonBackground(v);
-//                pieChart();
-//                pastAcivity();
-
             }
         });
         week_btn_calorie.setOnClickListener(new View.OnClickListener() {
@@ -135,8 +134,7 @@ public class FragmentCalorieConsumed extends Fragment {
             public void onClick(View v) {
                 RetriveData("week");
                 SetButtonBackground(v);
-//                pieChart();
-//                pastAcivity();
+
             }
         });
         year_btn_calorie.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +142,7 @@ public class FragmentCalorieConsumed extends Fragment {
             public void onClick(View v) {
                 RetriveData("month");
                 SetButtonBackground(v);
-//                pieChart();
-//                pastAcivity();
+
             }
         });
 
@@ -175,13 +172,13 @@ public class FragmentCalorieConsumed extends Fragment {
                         SnacksCalorieConsumed=Integer.parseInt(SnacksObject.getString("MealType_caloriesconsumed"));
                         BreakFastCalorieConsumed=Integer.parseInt(BreakFastObject.getString("MealType_caloriesconsumed"));
                         LunchCalorieConsumed=Integer.parseInt(LunchObject.getString("MealType_caloriesconsumed"));
-
-                        pastAcivity();
-                        pieChart();
                         BreakFastInfo(BreakFastObject);
                         LunchInfo(LunchObject);
                         SnacksInfo(SnacksObject);
                         DinnerInfo(DinnerObject);
+                        pastAcivity();
+                        pieChart();
+
                     }catch (JSONException e){
                         Toast.makeText(getContext(),"Error is "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
 
@@ -214,12 +211,31 @@ public class FragmentCalorieConsumed extends Fragment {
 
     }
     private void pieChart(){
+        int i=0;
         List<PieEntry> entries=new ArrayList<>();
-        entries.add(new PieEntry(Float.intBitsToFloat(DinnerCalorieConsumed),"D"));
-        entries.add(new PieEntry(Float.intBitsToFloat(SnacksCalorieConsumed),"S"));
-        entries.add(new PieEntry(Float.intBitsToFloat(BreakFastCalorieConsumed),"B"));
-        entries.add(new PieEntry(Float.intBitsToFloat(LunchCalorieConsumed),"L"));
-
+        if(Float.intBitsToFloat(DinnerCalorieConsumed)!=0){
+            entries.add(new PieEntry(Float.intBitsToFloat(DinnerCalorieConsumed),"D"));
+            colors[i]=Color.parseColor("#F9FC88");
+            i++;
+        }
+        if(Float.intBitsToFloat(SnacksCalorieConsumed)!=0){
+            entries.add(new PieEntry(Float.intBitsToFloat(SnacksCalorieConsumed),"S"));
+            colors[i]=Color.parseColor("#ACAFFD");
+            i++;
+        }
+        if(Float.intBitsToFloat(BreakFastCalorieConsumed)!=0){
+            entries.add(new PieEntry(Float.intBitsToFloat(BreakFastCalorieConsumed),"B"));
+            colors[i]=Color.parseColor("#FF6262");//FFA361
+            i++;
+        }
+        if(Float.intBitsToFloat(LunchCalorieConsumed)!=0){
+            entries.add(new PieEntry(Float.intBitsToFloat(LunchCalorieConsumed),"L"));
+            colors[i]=Color.parseColor("#FFAB6E");//
+            i++;
+        }
+//        entries.add(new PieEntry(Float.intBitsToFloat(SnacksCalorieConsumed),"S"));
+//        entries.add(new PieEntry(Float.intBitsToFloat(BreakFastCalorieConsumed),"B"));
+//        entries.add(new PieEntry(Float.intBitsToFloat(LunchCalorieConsumed),"L"));
 
         pieChart.getLegend().setEnabled(false);
         PieDataSet dataSet = new PieDataSet(entries, "");
@@ -254,21 +270,23 @@ public class FragmentCalorieConsumed extends Fragment {
         totalCalorieValue.setText(String.valueOf(TotalCalorieConsumed));
         caloriedisplaydate.setText(String.valueOf(getCurrentDate()));
         calorieInfos.clear();
-        BreakFast.clear();
-        Lunch.clear();
-        Dinner.clear();
-        Snacks.clear();
 
-        calorieInfos.add(new calorieInfo(R.string.breakfast,"String","BREAKFAST",String.valueOf(BreakFastCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",BreakFast));
-        calorieInfos.add(new calorieInfo(R.string.lunch,"String","LUNCH",String.valueOf(LunchCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Lunch));
-        calorieInfos.add(new calorieInfo(R.string.snacks,"String","SNACKS",String.valueOf(SnacksCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Snacks));
-        calorieInfos.add(new calorieInfo(R.string.dinner,"String","DINNER",String.valueOf(DinnerCalorieConsumed)+" kcal","00:18:52","11:10 a.m.",Dinner));
+
+        calorieInfos.add(new calorieInfo(R.string.breakfast,"String","BREAKFAST",String.valueOf(BreakFastCalorieConsumed)+" kcal", "",
+                BreakFast_Last_UpadatedTime,BreakFast));
+        calorieInfos.add(new calorieInfo(R.string.lunch,"String","LUNCH",String.valueOf(LunchCalorieConsumed)+" kcal","",
+                Lunch_Last_UpadatedTime,Lunch));
+        calorieInfos.add(new calorieInfo(R.string.snacks,"String","SNACKS",String.valueOf(SnacksCalorieConsumed)+" kcal","",
+                Snacks_Last_UpadatedTime,Snacks));
+        calorieInfos.add(new calorieInfo(R.string.dinner,"String","DINNER",String.valueOf(DinnerCalorieConsumed)+" kcal","",
+                Dinner_Last_UpadatedTime,Dinner));
 
         CalorieInfoAdapter calorieInfoAdapter=new CalorieInfoAdapter(getContext(),calorieInfos);
         calorieRecycleview.setAdapter(calorieInfoAdapter);
 
     }
     private void BreakFastInfo(JSONObject BreakFastObject) {
+        BreakFast.clear();
         String mealType = "BreakFast";
         try {
             JSONArray data = BreakFastObject.getJSONArray("data");
@@ -285,12 +303,14 @@ public class FragmentCalorieConsumed extends Fragment {
                             jsonObject.getString("Size"),
                              date1));
                 }
+                BreakFast_Last_UpadatedTime=BreakFast.get(0).mealTime;
             }
         }catch (Exception jsonException){
             Log.d("jsonException",jsonException.toString());
         }
     }
     private void LunchInfo(JSONObject LunchObject){
+        Lunch.clear();
         String mealType="Lunch";
         try {
             JSONArray data = LunchObject.getJSONArray("data");
@@ -307,12 +327,14 @@ public class FragmentCalorieConsumed extends Fragment {
                             jsonObject.getString("Size"),
                             date1));
                 }
+                Lunch_Last_UpadatedTime=Lunch.get(0).mealTime;
             }
         }catch (Exception jsonException){
             Log.d("jsonException",jsonException.toString());
         }
     }
     private void DinnerInfo(JSONObject DinnerObject){
+        Dinner.clear();
         String mealType="Dinner";
         try {
             JSONArray data = DinnerObject.getJSONArray("data");
@@ -329,12 +351,14 @@ public class FragmentCalorieConsumed extends Fragment {
                             jsonObject.getString("Size"),
                             date1));
                 }
+                Dinner_Last_UpadatedTime=Dinner.get(0).mealTime;
             }
         }catch (Exception jsonException){
             Log.d("jsonException",jsonException.toString());
         }
     }
     private void SnacksInfo(JSONObject SnacksObject){
+        Snacks.clear();
         String mealType="Snacks";
         try {
             JSONArray data = SnacksObject.getJSONArray("data");
@@ -351,7 +375,9 @@ public class FragmentCalorieConsumed extends Fragment {
                             jsonObject.getString("Size"),
                             date1));
                 }
+                Snacks_Last_UpadatedTime=Snacks.get(0).mealTime;
             }
+
         }catch (Exception jsonException){
             Log.d("jsonException",jsonException.toString());
         }

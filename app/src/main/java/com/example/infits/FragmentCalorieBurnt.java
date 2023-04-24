@@ -69,7 +69,9 @@ public class FragmentCalorieBurnt extends Fragment {
     PieChart pieChart;
     ImageView imgBack;
     ArrayList<calorieInfo> calorieInfos;
-    int[] colors={Color.parseColor("#FCFF72"),Color.parseColor("#FF6262"),Color.parseColor("#FFA361")};
+//    int[] colors={Color.parseColor("#FCFF72"),Color.parseColor("#FF6262"),Color.parseColor("#FFA361")};
+    int colors[]=new int[4];
+
     RecyclerView calorieRecycleview;
     Button day_btn_calorie,week_btn_calorie,year_btn_calorie;
     TextView totalCalorieValue,caloriedisplaydate;
@@ -286,11 +288,30 @@ public class FragmentCalorieBurnt extends Fragment {
 
     public void pieChart(Long walk,Long run,Long cycle){
         try {
+            int i=0;
             List<PieEntry> entries = new ArrayList<>();
             entries.clear();
-            entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
-            entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_cycle)));
-            entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
+            if(walk!=0){
+                entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
+                colors[i]=Color.parseColor("#FFA361");
+                i++;
+            }
+            if (run != 0) {
+                entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_walk)));
+                colors[i]=Color.parseColor("#FCFF72");
+                i++;
+
+            }
+            if(cycle!=0){
+                entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
+                colors[i]=Color.parseColor("#ACAFFD");
+                i++;
+
+            }
+//            entries.add(new PieEntry(walk, getResources().getDrawable(R.drawable.piechart_walk)));
+//            entries.add(new PieEntry(run, getResources().getDrawable(R.drawable.piechart_cycle)));
+//            entries.add(new PieEntry(cycle, getResources().getDrawable(R.drawable.piechart_run)));
+
 
             pieChart.getLegend().setEnabled(false);
             PieDataSet dataSet = new PieDataSet(entries, "");
