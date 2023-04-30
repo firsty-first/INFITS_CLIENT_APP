@@ -149,9 +149,6 @@
             android:name=".EnterFoodDetails"
             android:exported="false" />
         <activity
-            android:name=".CameraForMealTracker"
-            android:exported="false" />
-        <activity
             android:name=".LiveListAct"
             android:exported="false" />
         <activity

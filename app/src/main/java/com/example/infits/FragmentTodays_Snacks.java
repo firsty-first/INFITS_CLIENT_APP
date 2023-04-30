@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
+import java.time.LocalDate;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -224,9 +224,9 @@ public class FragmentTodays_Snacks extends Fragment {
     public void DisplayDataInList() {
         try {
             todays_meal_infos.clear();
-            sharedPreferences = getActivity().getSharedPreferences("TodaysSnacks", Context.MODE_PRIVATE);
-             jsonObject = new JSONObject(sharedPreferences.getString("TodaysSnacks", ""));
-             jsonArray = jsonObject.getJSONArray("TodaysSnacks");
+            sharedPreferences = getActivity().getSharedPreferences("TodaysSnacks"+String.valueOf(LocalDate.now()), Context.MODE_PRIVATE);
+             jsonObject = new JSONObject(sharedPreferences.getString("TodaysSnacks"+String.valueOf(LocalDate.now()), ""));
+             jsonArray = jsonObject.getJSONArray("TodaysSnacks"+String.valueOf(LocalDate.now()));
             for (int i = jsonArray.length()-1; i >=0; i--) {
 
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);

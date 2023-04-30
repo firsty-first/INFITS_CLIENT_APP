@@ -41,6 +41,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -197,7 +199,7 @@ public class mealInfoWithPhoto extends Fragment {
                     jsonObject.put("Quantity", numberPicker1List[numberPicker1.getValue()]);
                     jsonObject.put("Size", numberPicker2List[numberPicker2.getValue()]);
 
-                    String sharedPreferencesName = "Todays" + Meal_Type;
+                    String sharedPreferencesName = "Todays" + Meal_Type+ String.valueOf(LocalDate.now());
                     sharedPreferences1 = requireContext().getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
                     Log.d("mealInfoForPhoto0", sharedPreferences1.getString(sharedPreferencesName, "").toString());
                     JSONArray MAINJSONARRAY=new JSONArray();

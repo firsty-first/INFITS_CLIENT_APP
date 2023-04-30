@@ -1,5 +1,4 @@
 package com.example.infits;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
