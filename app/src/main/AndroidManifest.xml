@@ -67,7 +67,10 @@
         android:theme="@style/Theme.Infits"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CameraForCalorieTracker"
+            android:name=".CameraForMealTracker"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_Todays_Breakfast"
             android:exported="false" />
         <activity
             android:name=".EditProfile"

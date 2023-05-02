@@ -2,11 +2,13 @@ package com.example.infits;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,10 +28,13 @@ public class Adapter_Todays_Meal extends RecyclerView.Adapter<Adapter_Todays_Mea
 
     Context context;
     ArrayList<Todays_Meal_info> todays_meal_infos;
+    ArrayList<String> mealInfotransfer;
+
 
     public Adapter_Todays_Meal(Context context,ArrayList<Todays_Meal_info> todays_meal_infos){
         this.todays_meal_infos=todays_meal_infos;
         this.context=context;
+        mealInfotransfer=new ArrayList<>();
     }
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.todays_breakfast_detail,parent,false);
@@ -102,6 +107,51 @@ public class Adapter_Todays_Meal extends RecyclerView.Adapter<Adapter_Todays_Mea
                 }
             }
         });
+        holder.addTomealTrackerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mealInfotransfer.clear();
+
+                Drawable icon=todays_meal_infos.get(position).icon;
+                String Meal_Name=todays_meal_infos.get(position).mealName;
+                String Meal_type=todays_meal_infos.get(position).Meal_Type;
+                String calorie=todays_meal_infos.get(position).calorieValue;
+                String carbs=todays_meal_infos.get(position).carbsValue;
+                String protin=todays_meal_infos.get(position).protinValue;
+                String fat=todays_meal_infos.get(position).fatvalue;
+
+                mealInfotransfer.add(Meal_Name);
+                mealInfotransfer.add(Meal_type);
+                mealInfotransfer.add(calorie);
+                mealInfotransfer.add(carbs);
+                mealInfotransfer.add(protin);
+                mealInfotransfer.add(fat);
+                mealInfotransfer.add(String.valueOf(icon));
+                mealInfotransfer.add("1");
+
+                Bundle bundle=new Bundle();
+                bundle.putStringArrayList("mealInfotransfer",mealInfotransfer);
+                Log.d("mealInfotransfer",mealInfotransfer.toString());
+
+                if(Meal_type.equals("BreakFast")){
+
+                    Navigation.findNavController(v).navigate(R.id.action_FragmentTodaysBreakFast_to_mealInfoWithPhoto_meal_tracker,bundle);
+                }
+                if(Meal_type.equals("Lunch")){
+
+                    Navigation.findNavController(v).navigate(R.id.action_FragmentTodaysLunch_to_mealInfoWithPhoto_meal_tracker,bundle);
+                }
+                if(Meal_type.equals("Dinner")){
+
+
+                    Navigation.findNavController(v).navigate(R.id.action_FragmentTodaysDinner_to_mealInfoWithPhoto_meal_tracker,bundle);
+                }
+                if(Meal_type.equals("Snacks")){
+
+                    Navigation.findNavController(v).navigate(R.id.action_FragmentTodaysSnacks_to_mealInfoWithPhoto_meal_tracker,bundle);
+                }
+            }
+        });
     }
 
     @Override
@@ -112,6 +162,7 @@ public class Adapter_Todays_Meal extends RecyclerView.Adapter<Adapter_Todays_Mea
     class ViewHolder extends RecyclerView.ViewHolder{
         ImageView icon;
         ImageButton deleteButton;
+        Button addTomealTrackerButton;
         TextView mealName, calorieValue, fatvalue, protinValue, carbsValue,  quantityValue, sizeValue;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
@@ -124,6 +175,7 @@ public class Adapter_Todays_Meal extends RecyclerView.Adapter<Adapter_Todays_Mea
             quantityValue=itemView.findViewById(R.id.quantityValue);
             sizeValue=itemView.findViewById(R.id.sizeValue);
             deleteButton=itemView.findViewById(R.id.deleteButton);
+            addTomealTrackerButton=itemView.findViewById(R.id.addTomealTrackerButton);
         }
     }
 }
