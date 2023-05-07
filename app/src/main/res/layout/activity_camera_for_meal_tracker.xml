@@ -178,11 +178,12 @@
 
                         <ImageView
                             android:id="@+id/saveImageButton"
+
                             android:layout_width="64dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:layout_height="56dp"
-                            android:visibility="visible"
+                            android:visibility="invisible"
                             android:layout_alignTop="@+id/take"
                             android:layout_alignBottom="@+id/take"
                             android:layout_marginStart="55dp"

@@ -79,6 +79,7 @@ public class CameraForMealTracker extends AppCompatActivity {
 
         saveImageButton = findViewById(R.id.saveImageButton);
         saveImageButton.setEnabled(false);
+        saveImageButton.setVisibility(View.INVISIBLE);
 
         gallery = findViewById(R.id.gallery);
 
