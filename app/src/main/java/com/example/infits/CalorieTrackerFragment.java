@@ -48,7 +48,7 @@ public class CalorieTrackerFragment extends Fragment {
     private String mParam1;
     CardView calorieConsumed,calorieBurnt,addBreakfast,addLunch,addSnacks,addDinner;
     float CarbsValue=0f,fiberValue=0f,ProteinValue=0f,fatsValue=0f,calorieConsumedValue=0f,calorieBurntValue=0f;
-    float CarbsGoals=0f,fiberGoals=0f,ProteinGoals=0f,fatsGoals=0f;
+    float CarbsGoals=0f,fiberGoals=0f,ProteinGoals=0f,fatsGoals=0f,calorieConsumedGoals=0f,calorieBurntGoals=0f;
     private String mParam2;
     Button setGoalsButton;
     TextView fatsValueTextview,proteinValueTextview,fiberValueTextview,carbsValueTextView;
@@ -149,18 +149,21 @@ public class CalorieTrackerFragment extends Fragment {
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
+                        Log.d("Values1253",jsonObject.toString());
 
                         JSONObject data = jsonObject.getJSONObject("Data");
 
                         JSONObject Goals = data.getJSONObject("Goals");
                         CarbsGoals = Float.parseFloat(Goals.getString("CarbsGoal"));
                         fatsGoals = Float.parseFloat(Goals.getString("fatsGoal"));
+
                         ProteinGoals = Float.parseFloat(Goals.getString("ProteinGoal"));
                         fiberGoals = Float.parseFloat(Goals.getString("FiberGoal"));
+                        calorieConsumedGoals=Float.parseFloat(Goals.getString("calorieConsumed"));
+                        calorieBurntGoals=Float.parseFloat(Goals.getString("calorieBurnt"));
                         JSONObject Value = data.getJSONObject("Values");
 
                         calorieBurntValue=Float.parseFloat(data.getString("CalorieBurnt"));
-
                         CarbsValue = Float.parseFloat(Value.getString("carbs"));
                         fatsValue = Float.parseFloat(Value.getString("fat"));
                         ProteinValue = Float.parseFloat(Value.getString("protein"));
@@ -203,8 +206,8 @@ public class CalorieTrackerFragment extends Fragment {
         ProgressData progressData4 = new ProgressData("Fats",fatsValue,fatsGoals,R.color.progressBlueColor);
         progressView4.setData(progressData4);
 
-        circularProgressIndicatorCC.setProgress(calorieConsumedValue,10000);
-        circularProgressIndicatorCB.setProgress(calorieBurntValue,10000);
+        circularProgressIndicatorCC.setProgress(calorieConsumedValue,calorieConsumedGoals);
+        circularProgressIndicatorCB.setProgress(calorieBurntValue,calorieBurntGoals);
 
 
         carbsValueTextView.setText(String.valueOf(CarbsGoals-CarbsValue)+"g");

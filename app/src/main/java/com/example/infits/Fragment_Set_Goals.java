@@ -55,13 +55,13 @@ public class Fragment_Set_Goals extends Fragment {
     private String mParam1;
     private String mParam2;
     String[] values = {"0", "100", "200", "300", "400", "500"};
-    RangeSlider carbsSlider, fatSlider, proteinSlider, fiberSlider;
+    RangeSlider carbsSlider, fatSlider, proteinSlider, fiberSlider,calorieConsumedSlider,calorieBurntSlider;
     ImageView calorieImgback;
-    float Carbs=0f,fiber=0f,protein=0f,fats=0f;
+    float Carbs=0f,fiber=0f,protein=0f,fats=0f,calorieConsumed=0f,calorieBurnt=0f;
     String operationToDo="get";
     Button SetButton;
     Boolean ValueExist=false;
-    TextView carbsSliderValue, fiberSliderValue, proteinSliderValue, fatSliderValue;
+    TextView carbsSliderValue, fiberSliderValue, proteinSliderValue, fatSliderValue,calorieBurntSliderValue,calorieConsumedSliderValue;
     LinearLayout linear_layout1,linear_layout2;
     public Fragment_Set_Goals() {
         // Required empty public constructor
@@ -141,7 +141,22 @@ public class Fragment_Set_Goals extends Fragment {
                 fatSliderValue.setText(String.valueOf(Math.round(value))+" g");
             }
         });
-
+        calorieConsumedSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+                calorieConsumedSlider.setValues(value);
+                calorieConsumed=value;
+                calorieConsumedSliderValue.setText(String.valueOf(Math.round(value))+" g");
+            }
+        });
+        calorieBurntSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+                calorieBurntSlider.setValues(value);
+                calorieBurnt=value;
+                calorieBurntSliderValue.setText(String.valueOf(Math.round(value))+" g");
+            }
+        });
         SetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,15 +175,14 @@ public class Fragment_Set_Goals extends Fragment {
         return view;
     };
     public void peroformOperation(){
-        Log.d("dieteddddm",DataFromDatabase.dietitianuserID);
+//        Log.d("dieteddddm",DataFromDatabase.dietitianuserID);
         requestQueue1=Volley.newRequestQueue(getContext());
         StringRequest stringRequest1=new StringRequest(Request.Method.POST,url,
                 response -> {
-                    Log.d("response153",response.toString());
+                Log.d("response5555",response.toString());
                     if (response.contains("failed")){
                         Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
                     }
-
                 },
                 error -> {
                     Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
@@ -182,6 +196,8 @@ public class Fragment_Set_Goals extends Fragment {
                 params.put("carbs",String.valueOf(Carbs));
                 params.put("fiber",String.valueOf(fiber));
                 params.put("protein",String.valueOf(protein));
+                params.put("calorieConsumed",String.valueOf(calorieConsumed));
+                params.put("calorieBurnt",String.valueOf(calorieBurnt));
                 params.put("fats",String.valueOf(fats));
                 params.put("operationToDo",operationToDo);
                 return params;
@@ -199,16 +215,23 @@ public class Fragment_Set_Goals extends Fragment {
         fatSlider = view.findViewById(R.id.fatSlider);
         proteinSlider = view.findViewById(R.id.proteinSlider);
         fiberSlider = view.findViewById(R.id.fiberSlider);
+        calorieConsumedSlider=view.findViewById(R.id.calorieConsumedSlider);
+        calorieBurntSlider=view.findViewById(R.id.calorieBurntSlider);
 
         setProgressBarView(carbsSlider, getResources().getColor(R.color.progressGreenColor));
         setProgressBarView(fatSlider, getResources().getColor(R.color.progressBlueColor));
         setProgressBarView(proteinSlider, getResources().getColor(R.color.progressPurpleColor));
         setProgressBarView(fiberSlider, getResources().getColor(R.color.progressRedColor));
+        setProgressBarView(calorieConsumedSlider, getResources().getColor(R.color.progressGreenColor));
+        setProgressBarView(calorieBurntSlider, getResources().getColor(R.color.progressGreenColor));
+
 
         carbsSliderValue = view.findViewById(R.id.carbsSliderValue);
         fiberSliderValue = view.findViewById(R.id.fiberSliderValue);
         proteinSliderValue = view.findViewById(R.id.proteinSliderValue);
         fatSliderValue = view.findViewById(R.id.fatSliderValue);
+        calorieConsumedSliderValue=view.findViewById(R.id.calorieConsumedValue);
+        calorieBurntSliderValue=view.findViewById(R.id.caloriesBurntValue);
 
         linear_layout1=view.findViewById(R.id.linear_layout1);
         linear_layout2=view.findViewById(R.id.linear_layout2);
@@ -227,18 +250,22 @@ public class Fragment_Set_Goals extends Fragment {
 
                 JSONObject jsonObject = new JSONObject(response);
                 JSONObject Goals=jsonObject.getJSONObject("Goals");
+                Log.d("response153",Goals.toString());
+
                 if(Goals.getString("message").equals("values does exist")){
                     operationToDo="add";
                     ValueExist=false;
                 }
                 else {
                     JSONObject values=Goals.getJSONObject("values");
-
+                    Log.d("values123",values.toString());
+                    calorieBurnt=Float.parseFloat(values.getString("calorieBurnt"));
+                    calorieConsumed=Float.parseFloat(values.getString("calorieConsumed"));
                     Carbs=Float.parseFloat(values.getString("Carbs"));
                     fats=Float.parseFloat(values.getString("fats"));
                     protein=Float.parseFloat(values.getString("Protein"));
                     fiber=Float.parseFloat(values.getString("Fiber"));
-
+                    
                     operationToDo="update";
                     ValueExist=true;
 
@@ -247,11 +274,16 @@ public class Fragment_Set_Goals extends Fragment {
                 fatSlider.setValues(fats);
                 proteinSlider.setValues(protein);
                 fiberSlider.setValues(fiber);
+                calorieBurntSlider.setValues(calorieBurnt);
+                calorieConsumedSlider.setValues(calorieConsumed);
 
                 carbsSliderValue.setText(String.valueOf(Math.round(Carbs))+" g");
                 fiberSliderValue.setText(String.valueOf(Math.round(fiber))+" g");
                 proteinSliderValue.setText(String.valueOf(Math.round(protein))+" g");
                 fatSliderValue.setText(String.valueOf(Math.round(fats))+" g");
+                calorieBurntSliderValue.setText(String.valueOf(Math.round(calorieBurnt))+" g");
+                calorieConsumedSliderValue.setText(String.valueOf(Math.round(calorieConsumed))+" g");
+
 
             }catch (JSONException e){
                 Log.d("error",e.toString());
@@ -268,6 +300,8 @@ public class Fragment_Set_Goals extends Fragment {
                 params.put("carbs",String.valueOf(Carbs));
                 params.put("fiber",String.valueOf(fiber));
                 params.put("protein",String.valueOf(protein));
+                params.put("calorieConsumed",String.valueOf(calorieConsumed));
+                params.put("calorieBurnt",String.valueOf(calorieBurnt));
                 params.put("fats",String.valueOf(fats));
                 params.put("operationToDo",operationToDo);
                 return params;
