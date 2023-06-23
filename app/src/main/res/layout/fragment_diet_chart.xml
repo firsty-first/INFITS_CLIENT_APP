@@ -596,7 +596,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="450dp"
-        android:layout_marginBottom="-10dp"
         android:background="@drawable/white_bg_3rd_scn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -605,7 +604,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/view2"
@@ -645,32 +644,32 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/nats_regular"
                 android:text="Today's Meals"
                 android:textColor="#000000"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toStartOf="@id/button8"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
                 android:background="@drawable/rect_break_fast"
                 android:drawableEnd="@drawable/drop_down_arrow_heart"
                 android:paddingStart="8dp"
-                android:paddingEnd="18dp"
+                android:paddingEnd="10dp"
                 android:text="Breakfast"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.755"
                 app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/button6" />
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
 
 

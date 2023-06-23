@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="5dp"
+    app:cardCornerRadius="12dp"
+    app:cardBackgroundColor="#F7F8F8"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/dietDate"
+        android:layout_width="50dp"
+        android:layout_height="70dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:padding="3dp"
+            tools:text="Fri"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            tools:text="10"
+            android:padding="3dp"
+            android:textAlignment="center"
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

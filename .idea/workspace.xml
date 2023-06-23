@@ -9,7 +9,19 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2aac381d-1e75-4f05-95d2-1f36e0826556" name="Changes" comment="diet_chart_work_in_progress" />
+    <list default="true" id="2aac381d-1e75-4f05-95d2-1f36e0826556" name="Changes" comment="Latest updates merged">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/diet_chart_calAdapte.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/diet_chart_date.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/diet_chart_date_selected.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/meal_schedule_calendar_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Infits.app.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/Infits.app.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DataFromDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DataFromDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/diet_fourth.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/diet_fourth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_diet_chart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_diet_chart.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_diet_fourth.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_diet_fourth.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,9 +75,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="valueResourceFile" />
-        <option value="resourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="Class" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -339,7 +351,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686238171520</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Latest updates merged">
+      <created>1687247052433</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1687247052433</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -397,9 +416,10 @@
     <MESSAGE value="meal_tracker_working" />
     <MESSAGE value="conflict_master_solved" />
     <MESSAGE value="bugfix_login_not_recognizing_prouser" />
-    <MESSAGE value="MealtrackerTodays_Breakfast.java-modified" />
     <MESSAGE value="meal_tracker_navigation_fixes" />
     <MESSAGE value="diet_chart_integrated" />
-    <option name="LAST_COMMIT_MESSAGE" value="diet_chart_integrated" />
+    <MESSAGE value="MealtrackerTodays_Breakfast.java-modified" />
+    <MESSAGE value="Latest updates merged" />
+    <option name="LAST_COMMIT_MESSAGE" value="Latest updates merged" />
   </component>
 </project>
