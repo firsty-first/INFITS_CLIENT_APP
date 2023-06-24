@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class DataFromDatabase {
 
-    public static String ipConfig = "http://192.168.243.117/infits/";
+    public static String ipConfig = "http://172.18.174.181/infits/";
 
     public static boolean flag= false;
     public static String profilePhoto="default.jpg";

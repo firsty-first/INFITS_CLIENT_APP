@@ -148,6 +148,7 @@
                 android:id="@+id/messageRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -188,7 +189,10 @@
                 android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:padding="8dp"
                 android:src="@drawable/send_icon_live_stream" />
 

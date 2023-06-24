@@ -1,19 +1,25 @@
 package com.example.infits;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,6 +29,15 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.agora.rtc2.*;
 import io.agora.rtc2.video.VideoCanvas;
@@ -54,13 +69,14 @@ public class LiveScreen extends AppCompatActivity {
     //SurfaceView to render Remote video in a Container.
     private SurfaceView remoteSurfaceView;
 
-
     private static final int PERMISSION_REQ_ID = 22;
     private static final String[] REQUESTED_PERMISSIONS =
             {
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.CAMERA
             };
+
+    private static final int DELAY = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +98,62 @@ public class LiveScreen extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+
+        Handler handler = new Handler();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                String url=String.format("%sliveMessageFeed.php",DataFromDatabase.ipConfig);
+
+                StringRequest request = new StringRequest(Request.Method.POST,url, response -> {
+                    if (!response.equals("failure")) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            String messageby = null;
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String clientUser= jsonObject.getString("clientuserID");
+                                    String messageLive = jsonObject.getString("message");
+
+                                    Message message = new Message(messageLive, clientUser);
+                                    messages.add(message);
+                                    adapter.notifyItemInserted(messages.size() - 1);
+                                    recyclerView.scrollToPosition(messages.size() - 1);
+
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else if (response.equals("failure")) {
+                        Toast.makeText(getApplicationContext(), "Live Message failed", Toast.LENGTH_SHORT).show();
+                    }
+                },error -> {
+                    Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                })
+                {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> data = new HashMap<>();
+                        data.put("client_id",DataFromDatabase.client_id);
+                        data.put("dietitian_id", DataFromDatabase.dietitian_id);
+                        return data;
+                    }
+                };
+                Volley.newRequestQueue(getApplicationContext().getApplicationContext()).add(request);
+                Toast.makeText(getApplicationContext(),"check 1",Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        handler.postDelayed(runnable, 5000);
+        handler.post(runnable);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +164,38 @@ public class LiveScreen extends AppCompatActivity {
                     adapter.notifyItemInserted(messages.size() - 1);
                     recyclerView.scrollToPosition(messages.size() - 1);
                     editText.getText().clear();
+
+                    String url=String.format("%sclientLiveMessage.php",DataFromDatabase.ipConfig);
+
+                    StringRequest request = new StringRequest(Request.Method.POST,url, response -> {
+                        if (response.equals("updated")){
+                            Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            System.out.println(response);
+                            Toast.makeText(getApplicationContext(), "Not working" + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                        }
+                    },error -> {
+                        Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                    })
+                    {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String,String> data = new HashMap<>();
+                            data.put("client_id",DataFromDatabase.client_id);
+                            data.put("clientuserID",DataFromDatabase.clientuserID);
+                            data.put("dietitian_id", DataFromDatabase.dietitian_id);
+                            data.put("message",String.valueOf(text));
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            LocalDateTime now = LocalDateTime.now();
+                            data.put("date",dtf.format(now));
+                            return data;
+                        }
+                    };
+                    Volley.newRequestQueue(getApplicationContext().getApplicationContext()).add(request);
+                    Toast.makeText(getApplicationContext(),"check 1",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -99,6 +203,7 @@ public class LiveScreen extends AppCompatActivity {
         closeLiveScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacks(runnable);
                 startActivity(new Intent(getApplicationContext(), EndedLiveScreen.class));
             }
         });
@@ -179,6 +284,8 @@ public class LiveScreen extends AppCompatActivity {
     }
 
 
+
+
     public void joinChannel(View view) {
         if (checkSelfPermission()) {
             ChannelMediaOptions options = new ChannelMediaOptions();
@@ -225,6 +332,7 @@ public class LiveScreen extends AppCompatActivity {
             agoraEngine = null;
         }).start();
     }
+
 
 
 }
