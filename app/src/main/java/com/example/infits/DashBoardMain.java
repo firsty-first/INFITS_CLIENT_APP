@@ -1,6 +1,6 @@
 package com.example.infits;
-
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,10 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentContainerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DashBoardMain extends AppCompatActivity implements DashBoardFragment.OnMenuClicked, UpdateStepCard {
 
@@ -34,9 +39,11 @@ public class DashBoardMain extends AppCompatActivity implements DashBoardFragmen
     String cardClicked;
     String hours, minutes, secs;
     TextView drawerusername,draweruserplan;
+    CircleImageView profilePicNav;
 
 
-//    String url ="http://192.168.1.7/infits/recipiesDisplay.php";
+    String profilePicimg = "https://infits.in/androidApi/upload/default.jpg";
+    String url ="http://192.168.29.222/infits/recipiesDisplay.php";g
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +65,12 @@ public class DashBoardMain extends AppCompatActivity implements DashBoardFragmen
 
         nav = findViewById(R.id.navmenu);
         drawerLayout = findViewById(R.id.drawer);
+        profilePicNav = findViewById(R.id.drawer_profile_pic);
 
         toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_open,R.string.navigation_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
 
         drawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
             @Override
@@ -79,6 +88,9 @@ public class DashBoardMain extends AppCompatActivity implements DashBoardFragmen
                 drawerState = false;
             }
         });
+
+//        Navigation profile pic
+        Glide.with(DashBoardMain.this).load(profilePicimg).fitCenter().into(profilePicNav);
 
         /*
         if (!DataFromDatabase.proUser){
