@@ -40,6 +40,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -179,7 +181,12 @@ public class DashBoardFragment extends Fragment {
         SharedPreferences prefs = requireContext().getSharedPreferences("loginDetails", Context.MODE_PRIVATE);
         String clientuserID = prefs.getString("clientuserID", DataFromDatabase.clientuserID);
 
+
+        // Dashboard Profile pic from server
         ImageView profileImageView = view.findViewById(R.id.profile1);
+        String DashboardprofilePic = "https://infits.in/androidApi/upload/default.jpg";
+
+        Glide.with(this).load(DashboardprofilePic).fitCenter().into(profileImageView);
 
         // Execute the query using a Volley StringRequest
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url1, response -> {
