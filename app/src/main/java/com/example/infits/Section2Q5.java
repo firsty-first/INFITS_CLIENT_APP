@@ -1,13 +1,12 @@
 package com.example.infits;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,27 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,6 +115,8 @@ public class Section2Q5 extends Fragment {
 
         diagtv = view.findViewById(R.id.textView77);
 
+
+
         dia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,20 +187,87 @@ public class Section2Q5 extends Fragment {
             }
         });
 
-        /*
 
-        for(int i=0; i<diagnosed.size();i++) {
-            Log.d(TAG,"Diagnosed with: " + diagnosed.get(i));
-        }
 
-         */
+
+
+
+        //String url = "http://192.168.0.114/section2Q5Read.php";
+        String url = "https://infits.in/androidApi/section2Q5Read.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            Log.e("Checking", "Checking");
+            System.out.println(DataFromDatabase.clientuserID);
+            System.out.println(response);
+
+            JSONObject jsonResponse = null;
+
+            try {
+                jsonResponse = new JSONObject(response);
+                JSONArray cast = jsonResponse.getJSONArray("answer");
+                for(int i=0; i<cast.length(); i++)
+                {
+                    JSONObject actor = cast.getJSONObject(i);
+                    String answer = actor.getString("answer");
+                    diagnosed.add(answer);
+                    if(answer.equals("Diabetes")) dia.setChecked(true);
+                    else if(answer.equals("Hyperthyroidism")) hyperthy.setChecked(true);
+                    else if(answer.equals("Hypothyroidism")) hypothy.setChecked(true);
+                    else if(answer.equals("Hypertension")) hyperten.setChecked(true);
+                    else if(answer.equals("PCOD/PCOS")) pcod.setChecked(true);
+                    else if(answer.equals("Fatty liver")) fattyl.setChecked(true);
+                    else if(answer.equals("Lactose intolerance")) lactose.setChecked(true);
+                    else oth.setText(answer);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Log.d("Data", error.toString().trim());
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> dataVol = new HashMap<>();
+                Log.e("Checking", "Checking");
+                dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                return dataVol;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
 
 
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String other = oth.getText().toString();
+                Log.d("diagnosed Array1", diagnosed.toString());
+                if (!TextUtils.isEmpty(oth.getText())){ //!other.matches("")){
+                    diagnosed.add(oth.getText().toString());
+                    Log.e("other added check", "Added");
+                    Log.d("diagnosed Array", diagnosed.toString());
+                }
+
+
 
                 DataSectionTwo.s2q5 = diagtv.getText().toString();
                 if ((!dia.isChecked()) && (!hyperten.isChecked()) && (!hyperthy.isChecked())
@@ -192,16 +276,156 @@ public class Section2Q5 extends Fragment {
                     Toast.makeText(getContext(), "Select atleast one of the given options", Toast.LENGTH_SHORT).show();
                 }
                 else {
+
                     DataSectionTwo.diagnosed = diagnosed;
                     ConsultationFragment.psection2 += 1;
+
+
+
+
+
+
+
+                    //Updating Sections Progress
+                    //String urlProgress = "http://192.168.0.114/sectionProgressUpdate.php";
+                    String urlProgress = "https://infits.in/androidApi/sectionProgressUpdate.php";
+                    StringRequest stringRequestPro = new StringRequest(Request.Method.POST, urlProgress, response -> {
+                        Log.e("Checking", "Checking1");
+
+                    }, error -> {
+                        Log.d("Data", error.toString().trim());
+                    }) {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> dataVol = new HashMap<>();
+                            Log.e("Checking", "Checking");
+                            dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                            dataVol.put("newAnswer", Integer.toString(ConsultationFragment.psection2));
+                            dataVol.put("sectionNo", "section2");
+
+
+                            return dataVol;
+                        }
+                    };
+                    stringRequestPro.setRetryPolicy(new RetryPolicy() {
+                        @Override
+                        public int getCurrentTimeout() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public int getCurrentRetryCount() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public void retry(VolleyError error) throws VolleyError {
+
+                        }
+                    });
+                    Volley.newRequestQueue(getActivity()).add(stringRequestPro);
+
+
+
+
+
+
+
+
+
                     Navigation.findNavController(v).navigate(R.id.action_section2Q5_to_section2Q6);
+
+                    //String url1 = "http://192.168.0.114/section2Q5delete.php";
+                    String url1 = "https://infits.in/androidApi/section2Q5delete.php";
+                    StringRequest stringRequest2 = new StringRequest(Request.Method.POST, url1, response -> {
+                        Log.e("Checking", "Checking1");
+
+                    }, error -> {
+                        Log.d("Data", error.toString().trim());
+                    }) {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> dataVol = new HashMap<>();
+                            Log.e("Checking", "Checking");
+                            dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+
+                            return dataVol;
+                        }
+                    };
+                    stringRequest2.setRetryPolicy(new RetryPolicy() {
+                        @Override
+                        public int getCurrentTimeout() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public int getCurrentRetryCount() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public void retry(VolleyError error) throws VolleyError {
+
+                        }
+                    });
+                    Volley.newRequestQueue(getActivity()).add(stringRequest2);
+
+
+
+
+
+                    // Assuming you have the URL for your PHP script where you want to send the array
+                    //String url = "http://192.168.0.114/section2Q5Update.php";
+                    String url = "https://infits.in/androidApi/section2Q5Update.php";
+
+                    for(String disease: diagnosed)
+                    {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+                            Log.e("Checking", "Checking1(TOP)");
+
+                        }, error -> {
+                            Log.d("Data", error.toString().trim());
+                        }) {
+                            @Nullable
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+
+                                Map<String, String> dataVol = new HashMap<>();
+                                Log.e("Checking", "Checking(FOR)");
+                                dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                                dataVol.put("newAnswer", disease);
+
+
+
+                                return dataVol;
+                            }
+                        };
+                        stringRequest.setRetryPolicy(new RetryPolicy() {
+                            @Override
+                            public int getCurrentTimeout() {
+                                return 50000;
+                            }
+
+                            @Override
+                            public int getCurrentRetryCount() {
+                                return 50000;
+                            }
+
+                            @Override
+                            public void retry(VolleyError error) throws VolleyError {
+
+                            }
+                        });
+                        Volley.newRequestQueue(getActivity()).add(stringRequest);
+
+                    }
+
                 }
-                if (!other.isEmpty()){
-                    diagnosed.add(other);
-                    DataSectionTwo.diagnosed = diagnosed;
-                    ConsultationFragment.psection2 += 1;
-                    Navigation.findNavController(v).navigate(R.id.action_section2Q5_to_section2Q6);
-                }
+
             }
         });
 

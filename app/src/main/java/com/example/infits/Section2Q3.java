@@ -2,9 +2,11 @@ package com.example.infits;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +95,63 @@ public class Section2Q3 extends Fragment {
 
         uweighttv = view.findViewById(R.id.textView80);
 
+        final String[] storeAnswer = new String[1];
+
+        String url = "https://infits.in/androidApi/sectionRead.php";
+        //String url = "http://192.168.0.114/sectionRead.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            Log.e("Checking", "Checking1");
+            System.out.println(DataFromDatabase.clientuserID);
+            System.out.println(response);
+
+            JSONObject jsonResponse = null;
+
+            try {
+                jsonResponse = new JSONObject(response);
+                JSONArray cast = jsonResponse.getJSONArray("answer");
+                JSONObject actor = cast.getJSONObject(0);
+                String answer = actor.getString("answer");
+                storeAnswer[0] = answer;
+
+                eTextuWeight.setText(answer);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Log.d("Data", error.toString().trim());
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> dataVol = new HashMap<>();
+                Log.e("Checking", "Checking");
+                dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                dataVol.put("table", "section2Q3");
+                return dataVol;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+
 
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +166,105 @@ public class Section2Q3 extends Fragment {
                     Toast.makeText(getContext(), "Enter your usual weight", Toast.LENGTH_SHORT).show();
                 else {
                     ConsultationFragment.psection2 += 1;
+
+
+
+
+
+
+
+                    //Updating Sections Progress
+                    //String urlProgress = "http://192.168.0.114/sectionProgressUpdate.php";
+                    String urlProgress = "https://infits.in/androidApi/sectionProgressUpdate.php";
+                    StringRequest stringRequestPro = new StringRequest(Request.Method.POST, urlProgress, response -> {
+                        Log.e("Checking", "Checking1");
+
+                    }, error -> {
+                        Log.d("Data", error.toString().trim());
+                    }) {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> dataVol = new HashMap<>();
+                            Log.e("Checking", "Checking");
+                            dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                            dataVol.put("newAnswer", Integer.toString(ConsultationFragment.psection2));
+                            dataVol.put("sectionNo", "section2");
+
+
+                            return dataVol;
+                        }
+                    };
+                    stringRequestPro.setRetryPolicy(new RetryPolicy() {
+                        @Override
+                        public int getCurrentTimeout() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public int getCurrentRetryCount() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public void retry(VolleyError error) throws VolleyError {
+
+                        }
+                    });
+                    Volley.newRequestQueue(getActivity()).add(stringRequestPro);
+
+
+
+
+
+
+
+
+
+
                     Navigation.findNavController(v).navigate(R.id.action_section2Q3_to_section2Q4);
+
+                    String url = "https://infits.in/androidApi/sectionUpdate.php";
+                    //String url = "http://192.168.0.114/sectionUpdate.php";
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+                        Log.e("Checking", "Checking1");
+
+                    }, error -> {
+                        Log.d("Data", error.toString().trim());
+                    }) {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> dataVol = new HashMap<>();
+                            Log.e("Checking", "Checking");
+                            dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                            dataVol.put("newAnswer", eTextuWeight.getText().toString());
+                            dataVol.put("table", "section2Q3");
+
+
+                            return dataVol;
+                        }
+                    };
+                    stringRequest.setRetryPolicy(new RetryPolicy() {
+                        @Override
+                        public int getCurrentTimeout() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public int getCurrentRetryCount() {
+                            return 50000;
+                        }
+
+                        @Override
+                        public void retry(VolleyError error) throws VolleyError {
+
+                        }
+                    });
+                    Volley.newRequestQueue(getActivity()).add(stringRequest);
                 }
             }
         });

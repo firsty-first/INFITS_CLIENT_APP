@@ -226,9 +226,12 @@ public class WaterFragment extends Fragment {
             NoOfEmp.removeAll(NoOfEmp);
             //String url = String.format("%swaterMonthGraph.php", DataFromDatabase.ipConfig);
             String url = "https://infits.in/androidApi/waterMonthGraph.php";
+
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
                 System.out.println(DataFromDatabase.clientuserID);
                 System.out.println(response);
+                Log.d("water response", response);
                 List<String> allNames = new ArrayList<>();
                 JSONObject jsonResponse = null;
                 ArrayList<String> mons = new ArrayList<>();
@@ -279,8 +282,10 @@ public class WaterFragment extends Fragment {
             NoOfEmp.removeAll(NoOfEmp);
             System.out.println("In btn");
             //String urlWater = String.format("%swaterYearGraph.php", DataFromDatabase.ipConfig);
-//            String urlWater = "http://192.168.219.91/infits/waterYearGraph.php";
+            //String urlWater = "http://192.168.219.91/infits/waterYearGraph.php";
             String urlWater = "https://infits.in/androidApi/waterYearGraph.php";
+
+
             StringRequest stringRequestWater = new StringRequest(Request.Method.POST, urlWater, response -> {
                 System.out.println("In request");
                 List<String> allNames = new ArrayList<>();
@@ -351,10 +356,12 @@ public class WaterFragment extends Fragment {
 
         done.setOnClickListener(vi -> {
             List<Date> dates = calendarPickerView.getSelectedDates();
-            SimpleDateFormat sf = new SimpleDateFormat("MMM dd,yyyy");
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             String from = sf.format(dates.get(0));
             String to = sf.format(dates.get(dates.size() - 1));
-            String url = String.format("%scustomwater.php", DataFromDatabase.ipConfig);
+            //String url = String.format("%scustomwater.php", DataFromDatabase.ipConfig);
+            String url = "https://infits.in/androidApi/customwater.php";
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
                 System.out.println(DataFromDatabase.clientuserID);
                 System.out.println(response);

@@ -374,10 +374,11 @@ public class StepsFragment extends Fragment {
 
             done.setOnClickListener(vi -> {
                 List<Date> dates = calendarPickerView.getSelectedDates();
-                SimpleDateFormat sf = new SimpleDateFormat("MMM dd,yyyy");
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
                 String from = sf.format(dates.get(0));
                 String to = sf.format(dates.get(dates.size() - 1));
-                String url = String.format("%scustom.php", DataFromDatabase.ipConfig);
+                //String url = String.format("%scustom.php", DataFromDatabase.ipConfig);
+                String url = "https://infits.in/androidApi/customStep.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
                     System.out.println(DataFromDatabase.clientuserID);
                     System.out.println(response);
@@ -418,9 +419,11 @@ public class StepsFragment extends Fragment {
                     protected Map<String, String> getParams() throws AuthFailureError {
 
                         Map<String, String> dataVol = new HashMap<>();
-                        dataVol.put("clientID", getClientId());
+                        dataVol.put("clientID", DataFromDatabase.clientuserID);
                         dataVol.put("from", from);
                         dataVol.put("to", to);
+                        Log.d("steps", "from:" + from);
+                        Log.d("steps", "to:" + to);
                         return dataVol;
                     }
                 };
