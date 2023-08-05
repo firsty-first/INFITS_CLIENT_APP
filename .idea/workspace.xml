@@ -9,15 +9,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2aac381d-1e75-4f05-95d2-1f36e0826556" name="Changes" comment="MealtrackerTodays_Breakfast.java-modified">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Infits.app.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/Infits.app.androidTest.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Infits.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/Infits.app.main.iml" afterDir="false" />
+    <list default="true" id="2aac381d-1e75-4f05-95d2-1f36e0826556" name="Changes" comment="Minor bug fixex in diet chart , DashBoardFragment and connectingDietitian">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DashBoardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DashBoardFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/connectingDietitian.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/connectingDietitian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/diet_fourth.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/diet_fourth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/fragment_diet_chart.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/fragment_diet_chart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/StepTrackerFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/StepTrackerFragment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,6 +207,14 @@
       <option name="presentableId" value="Default" />
       <updated>1689358288903</updated>
     </task>
+    <task id="LOCAL-00001" summary="Minor bug fixex in diet chart , DashBoardFragment and connectingDietitian">
+      <created>1691249502705</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1691249502705</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,5 +227,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Minor bug fixex in diet chart , DashBoardFragment and connectingDietitian" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor bug fixex in diet chart , DashBoardFragment and connectingDietitian" />
   </component>
 </project>

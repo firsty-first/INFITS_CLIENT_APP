@@ -367,8 +367,8 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
 
                         }
                     }
-                    //String url = String.format("%supdatestepgoal.php", DataFromDatabase.ipConfig);
-                    String url = "https://infits.in/androidApi/updatestepgoal.php";
+
+                    String url = String.format("%supdatestepgoal.php", DataFromDatabase.ipConfig);
                     final StringRequest requestGoal = new StringRequest(Request.Method.POST, url, response -> {
                         try {
                             Toast.makeText(requireContext(),"Updated Goal", Toast.LENGTH_LONG).show();
@@ -390,13 +390,18 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
                                 ).addTag("WORKUPDATESTEP").setConstraints(constraints).build();
                                 saveTotalInPref(getActivity(),workRequest.getStringId(),"Steps_db");
                                 WorkManager.getInstance(requireActivity()).enqueue(workRequest);
+                                FetchTrackerInfos.currentSteps = 1;
+                                FetchTrackerInfos.Distance = 0.00F;
+                                FetchTrackerInfos.Calories = 0.00F;
+                                FetchTrackerInfos.Avg_speed = "0" ;
                                 Toast.makeText(requireActivity(), "Worker Set", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Toast.makeText(requireContext(), "Response error :-"+e, Toast.LENGTH_SHORT).show();
                         }
                     }, error -> {
-                        Toast.makeText(requireContext(), "Updated Goal error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Step Update error :- "+error.toString(), Toast.LENGTH_SHORT).show();
                         Log.d("Error", error.toString());
                         Log.e("goal","error");
                     }) {
@@ -412,7 +417,7 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
                             return data;
                         }
                     };
-                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    requestGoal.setRetryPolicy(new DefaultRetryPolicy(
                             30000,
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
