@@ -27,11 +27,11 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.1">
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:backgroundTint="#00FFFFFF"
             android:src="@drawable/back"
             tools:ignore="SpeakableTextPresentCheck">
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:gravity="center_horizontal"
+            android:fontFamily="@font/nats_regular"
             android:text="CONNECT WITH DIETITIAN"
             android:textColor="@color/black"
             android:textSize="30sp">
@@ -54,17 +55,34 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Enter the verification code to connect with the dietitian"
+        android:text="Enter the verification code to "
         android:textColor="#000000"
-        android:textSize="25sp"
+        android:textSize="30sp"
+        android:fontFamily="@font/nats_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.081" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nats_regular"
+        android:text="connect with the dietitian"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.001" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -77,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView1"
         app:layout_constraintVertical_bias="0.1"
         tools:ignore="MissingConstraints">
 
@@ -94,6 +112,7 @@
             android:text=""
             android:textColorHint="#D7D7D7"
             tools:ignore="MissingConstraints" />
+
     </androidx.cardview.widget.CardView>
 
 
@@ -162,9 +181,10 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:hint=""
+                android:fontFamily="@font/nats_regular"
                 android:text="John Wayne"
                 android:textColor="#000000"
-                android:textSize="20sp"/>
+                android:textSize="22sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -176,11 +196,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
+                    android:fontFamily="@font/nats_regular"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="31|Male"
                     android:textColor="#78C3FF"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     />
                 <TextView
                     android:id="@+id/textView3"
@@ -190,8 +211,9 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="Professional Dietitian"
+                    android:fontFamily="@font/nats_regular"
                     android:textColor="#78C3FF"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     />
 
             </LinearLayout>
@@ -210,8 +232,9 @@
                     android:drawableLeft="@drawable/baseline_email_24_1"
                     android:singleLine="true"
                     android:text="john@gmail.com"
+                    android:fontFamily="@font/nats_regular"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     />
                 <TextView
                     android:id="@+id/textViewMobile"
@@ -221,9 +244,10 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="9876543210"
+                    android:fontFamily="@font/nats_regular"
                     android:drawableLeft="@drawable/baseline_local_phone_24_1"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     />
 
             </LinearLayout>
@@ -280,6 +304,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

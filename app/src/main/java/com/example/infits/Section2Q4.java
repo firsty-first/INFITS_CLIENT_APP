@@ -123,6 +123,7 @@ public class Section2Q4 extends Fragment {
 
                 DataSectionTwo.s2q4 = reporttv.getText().toString();
                 try {
+                    Navigation.findNavController(v).navigate(R.id.action_section2Q4_to_section2Q5);
                     if (imgpath.equals("") || imgpath.equals(" "))
                         Toast.makeText(getContext(), "Upload an image", Toast.LENGTH_SHORT).show();
                     else {
@@ -177,7 +178,7 @@ public class Section2Q4 extends Fragment {
                     //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     // bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
                     ivUploadimg.setImageBitmap(bitmap);
-                   imgpath = getRealPathFromURI(selectedImage);
+                    imgpath = getRealPathFromURI(selectedImage);
                     destination = new File(imgpath.toString());
                     //Toast.makeText(getActivity(), "Path: "+imgPath, Toast.LENGTH_SHORT).show();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
