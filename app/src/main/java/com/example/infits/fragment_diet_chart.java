@@ -241,22 +241,28 @@ public class fragment_diet_chart extends Fragment {
                             JSONObject data_response = new JSONObject(response);
                             String data = data_response.getString("data");
                             JSONArray jsonArrayData = new JSONArray(data);
-                            JSONObject jsonObjectData = jsonArrayData.getJSONObject(0);
-                            //for day_name for e.g sunday monday tuesday etc..
-                            Format fdn = new SimpleDateFormat("EEEE");
-                            JSONObject day_name = new JSONObject(jsonObjectData.getString(fdn.format(new Date()).toLowerCase()));
-                            JSONObject key1_data = new JSONObject(day_name.getString(key1));
-                            JSONArray key2_data = new JSONArray(key1_data.getString(key2));
-                            JSONArray key3_data = new JSONArray(key1_data.getString(key3));
-                            for (int i = 0; i < key2_data.length(); i++) {
-                                    todayMealDietChartModel = new TodayMealDietChartModel(getRecipeName(key2_data.getString(i)),fdn.format(new Date()),time1);
-                                viewListModels.add(todayMealDietChartModel);
+                            if (!jsonArrayData.isNull(0)) {
+
+
+                                JSONObject jsonObjectData = jsonArrayData.getJSONObject(0);
+                                //for day_name for e.g sunday monday tuesday etc..
+                                Format fdn = new SimpleDateFormat("EEEE");
+                                JSONObject day_name = new JSONObject(jsonObjectData.getString(fdn.format(new Date()).toLowerCase()));
+                                JSONObject key1_data = new JSONObject(day_name.getString(key1));
+                                JSONArray key2_data = new JSONArray(key1_data.getString(key2));
+                                JSONArray key3_data = new JSONArray(key1_data.getString(key3));
+                                for (int i = 0; i < key2_data.length(); i++) {
+                                    todayMealDietChartModel = new TodayMealDietChartModel(getRecipeName(key2_data.getString(i)), fdn.format(new Date()), time1);
+                                    viewListModels.add(todayMealDietChartModel);
+                                }
+                                for (int i = 0; i < key3_data.length(); i++) {
+                                    todayMealDietChartModel = new TodayMealDietChartModel(getRecipeName(key3_data.getString(i)), fdn.format(new Date()), time2);
+                                    viewListModels.add(todayMealDietChartModel);
+                                }
+                                todayMealDietChartModelAdapter.notifyDataSetChanged();
+                            }else {
+                                Toast.makeText(requireActivity(),"Data is empty", Toast.LENGTH_SHORT).show();
                             }
-                            for (int i = 0; i < key3_data.length(); i++) {
-                                todayMealDietChartModel = new TodayMealDietChartModel(getRecipeName(key3_data.getString(i)),fdn.format(new Date()),time2);
-                                viewListModels.add(todayMealDietChartModel);
-                            }
-                            todayMealDietChartModelAdapter.notifyDataSetChanged();
 
                         } catch (Exception e) {
                             processBar.setVisibility(View.GONE);
@@ -398,6 +404,10 @@ public class fragment_diet_chart extends Fragment {
                             JSONObject data_response = new JSONObject(response);
                             String data = data_response.getString("data");
                             JSONArray jsonArrayData = new JSONArray(data);
+                            if (jsonArrayData.isNull(0)){
+                                Toast.makeText(requireActivity(),"Data is empty",Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             JSONObject jsonObjectData = jsonArrayData.getJSONObject(0);
                             //for day_name for e.g sunday monday tuesday etc..
                             Format fdn = new SimpleDateFormat("EEEE");

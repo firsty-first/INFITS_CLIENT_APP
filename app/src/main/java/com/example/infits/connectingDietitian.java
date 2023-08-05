@@ -72,7 +72,7 @@ public class connectingDietitian extends AppCompatActivity {
 
     private void fetchDataFromPhpFile() {
         progressBar.setVisibility(View.VISIBLE);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,String.format("%sverify_1.php",DataFromDatabase.ipConfig),
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,String.format("%sverify.php",DataFromDatabase.ipConfig),
                 response->{
             progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(connectingDietitian.this,response,Toast.LENGTH_SHORT).show();
@@ -112,7 +112,7 @@ public class connectingDietitian extends AppCompatActivity {
     }
     private void dietitianUpdate(){
         progressBar.setVisibility(View.VISIBLE);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,String.format("%sdietitianUpdated_1.php",DataFromDatabase.ipConfig),
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,String.format("%sdietitianUpdated.php",DataFromDatabase.ipConfig),
                 response->{
                     progressBar.setVisibility(View.INVISIBLE);
 
