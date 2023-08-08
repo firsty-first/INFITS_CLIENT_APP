@@ -1,4 +1,5 @@
 package com.example.infits;
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.infits.StepTrackerFragment.goalVal;
 import android.app.Dialog;
 import android.content.Context;
@@ -163,7 +164,7 @@ public class DashBoardFragment extends Fragment {
 
         hooks(view);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("DateForSteps", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("DateForSteps", MODE_PRIVATE);
 
 
         Date dateForSteps = new Date();
@@ -178,7 +179,7 @@ public class DashBoardFragment extends Fragment {
         myEdit.putBoolean("verified",false);
         myEdit.apply();
 
-        SharedPreferences prefs = requireContext().getSharedPreferences("loginDetails", Context.MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences("loginDetails", MODE_PRIVATE);
         String clientuserID = prefs.getString("clientuserID", DataFromDatabase.clientuserID);
 
         // Dashboard Profile pic from server
@@ -250,7 +251,7 @@ public class DashBoardFragment extends Fragment {
         }
 
 
-        SharedPreferences inAppPrefs = requireActivity().getSharedPreferences("inAppNotification", Context.MODE_PRIVATE);
+        SharedPreferences inAppPrefs = requireActivity().getSharedPreferences("inAppNotification", MODE_PRIVATE);
         boolean newNotification = inAppPrefs.getBoolean("newNotification", false);
 
         if(newNotification) {
@@ -288,7 +289,7 @@ public class DashBoardFragment extends Fragment {
 
         sleepcard.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_dashBoardFragment_to_sleepTrackerFragment));
 
-        SharedPreferences sleepPrefs = requireActivity().getSharedPreferences("sleepPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sleepPrefs = requireActivity().getSharedPreferences("sleepPrefs", MODE_PRIVATE);
         String sleepGoalText = sleepPrefs.getString("goal", "8") + " Hours";
         String sleepText = sleepPrefs.getString("hours", "00") + " hr " + sleepPrefs.getString("minutes", "00") + " mins";
 
@@ -301,7 +302,7 @@ public class DashBoardFragment extends Fragment {
         weightcard.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_dashBoardFragment_to_weightTrackerFragment));
         getLatestWeightData();
 
-        SharedPreferences weightPrefs = requireContext().getSharedPreferences("weightPrefs", Context.MODE_PRIVATE);
+        SharedPreferences weightPrefs = requireContext().getSharedPreferences("weightPrefs", MODE_PRIVATE);
 
         caloriecard.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_dashBoardFragment_to_calorieTrackerFragment));
         getLatestCalorieData();
@@ -810,6 +811,11 @@ public class DashBoardFragment extends Fragment {
                     JSONObject dietitianData = jsonObject.getJSONObject("DietitianData");
                     DataFromDatabase.dietitian_id = dietitianData.getString("dietitianID");
                     DataFromDatabase.dietitianuserID = dietitianData.getString("dietitianuserID");
+                    SharedPreferences loginDetails = getActivity().getSharedPreferences("loginDetails",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = loginDetails.edit();
+                    editor.putBoolean("proUser",true);
+                    DataFromDatabase.proUser = true;
+                    editor.apply();
                     System.out.println(DataFromDatabase.dietitian_id);
                     System.out.println(DataFromDatabase.dietitianuserID);
                 }
