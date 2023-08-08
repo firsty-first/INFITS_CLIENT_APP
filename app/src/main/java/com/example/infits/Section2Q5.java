@@ -271,7 +271,7 @@ public class Section2Q5 extends Fragment {
 
                 DataSectionTwo.s2q5 = diagtv.getText().toString();
                 if ((!dia.isChecked()) && (!hyperten.isChecked()) && (!hyperthy.isChecked())
-                && (!hypothy.isChecked()) && (!pcod.isChecked()) && (!fattyl.isChecked()) &&
+                        && (!hypothy.isChecked()) && (!pcod.isChecked()) && (!fattyl.isChecked()) &&
                         (!lactose.isChecked())){
                     Toast.makeText(getContext(), "Select atleast one of the given options", Toast.LENGTH_SHORT).show();
                 }

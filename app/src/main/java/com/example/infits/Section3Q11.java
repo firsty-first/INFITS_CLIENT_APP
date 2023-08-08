@@ -350,7 +350,7 @@ public class Section3Q11 extends Fragment {
 
 
 
-                    
+
 
                     Navigation.findNavController(v).navigate(R.id.action_section3Q11_to_consultationFragment);
 

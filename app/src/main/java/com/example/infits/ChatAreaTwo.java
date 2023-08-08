@@ -73,102 +73,102 @@ public class ChatAreaTwo extends AppCompatActivity {
             new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
-                Log.d("response ChatArea32",result.toString());
+                    Log.d("response ChatArea32",result.toString());
                     if (result != null) {
-                                try {
-                                    System.out.println(result);
-                                    try {
-                                        System.out.println("In try");
-                                        File file = getFile(getApplicationContext(), result);
-                                        System.out.println("after file");
-                                        Scanner myReader = new Scanner(file);
-                                        System.out.println("after scan");
+                        try {
+                            System.out.println(result);
+                            try {
+                                System.out.println("In try");
+                                File file = getFile(getApplicationContext(), result);
+                                System.out.println("after file");
+                                Scanner myReader = new Scanner(file);
+                                System.out.println("after scan");
 //                     byte[] fileContent = Files.readAllBytes(file.toPath());
-                                        int size = (int) file.length();
-                                        byte[] bytes = new byte[size];
-                                        try {
-                                            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-                                            buf.read(bytes, 0, bytes.length);
-                                            buf.close();
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
+                                int size = (int) file.length();
+                                byte[] bytes = new byte[size];
+                                try {
+                                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                                    buf.read(bytes, 0, bytes.length);
+                                    buf.close();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
 
-                                        encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
+                                encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
 
-                                        System.out.println(encoded);
+                                System.out.println(encoded);
 
-                                        String[] arr = getApplicationContext().getContentResolver().getType(result).split("/");
-                                        type = arr[1];
+                                String[] arr = getApplicationContext().getContentResolver().getType(result).split("/");
+                                type = arr[1];
 
-                                        System.out.println(getApplicationContext().getContentResolver().getType(result));
-                                        while (myReader.hasNextLine()) {
-                                            System.out.println("in while");
-                                            String data = myReader.nextLine();
-                                            System.out.println(data);
-                                        }
-                                        myReader.close();
-                                    } catch (FileNotFoundException e) {
-                                        System.out.println("An error occurred.");
-                                        e.printStackTrace();
-                                    } catch (IOException e) {
-                                        System.out.println("some error occurred.");
-                                        e.printStackTrace();
-                                    }
-                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url3, response -> {
-                                        System.out.println(response);
-                                        if (response.equals("success")) {
-                                            Log.d("ChatArea3", "success");
-                                            Log.d("response ChatArea32", response);
-                                        } else if (response.equals("failure")) {
-                                            Log.d("ChatArea3", "failure");
-                                            Toast.makeText(getApplicationContext(), "unable to send message!! try again", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }, error -> {
-                                        Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
-                                    }) {
-                                        @Nullable
-                                        @Override
-                                        protected Map<String, String> getParams() throws AuthFailureError {
-                                            Map<String, String> data = new HashMap<>();
+                                System.out.println(getApplicationContext().getContentResolver().getType(result));
+                                while (myReader.hasNextLine()) {
+                                    System.out.println("in while");
+                                    String data = myReader.nextLine();
+                                    System.out.println(data);
+                                }
+                                myReader.close();
+                            } catch (FileNotFoundException e) {
+                                System.out.println("An error occurred.");
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                System.out.println("some error occurred.");
+                                e.printStackTrace();
+                            }
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url3, response -> {
+                                System.out.println(response);
+                                if (response.equals("success")) {
+                                    Log.d("ChatArea3", "success");
+                                    Log.d("response ChatArea32", response);
+                                } else if (response.equals("failure")) {
+                                    Log.d("ChatArea3", "failure");
+                                    Toast.makeText(getApplicationContext(), "unable to send message!! try again", Toast.LENGTH_SHORT).show();
+                                }
+                            }, error -> {
+                                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                            }) {
+                                @Nullable
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> data = new HashMap<>();
                                            /* data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
                                             data.put("clientuserID", DataFromDatabase.clientuserID);
                                             data.put("message", encoded);
                                             data.put("time",dtf.format(now));
                                             data.put("messageBy","client");*/
 
-                                            LocalDateTime now = LocalDateTime.now();// gets the current date and time
-                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s");
-                                            data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
-                                            data.put("clientuserID", DataFromDatabase.clientuserID);
-                                            data.put("message", encoded);
-                                            Log.d("response ChatArea32",encoded);
-                                            data.put("type",type);
-                                            data.put("time",dtf.format(now));
-                                            Log.d("response ChatArea32",dtf.format(now));
-                                            data.put("messageBy","client");
-                                            return data;
-                                        }
-                                    };
-                                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                                    requestQueue.add(stringRequest);
-
-                                    Log.d("tag1","tag1");
-                                    String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                                    ChatMessage obj = new ChatMessage(DataFromDatabase.dietitianuserID, DataFromDatabase.clientuserID, encoded, String.valueOf(currentTime.substring(0,5)), "client", "U",type);
-                                    msg.add(obj);
-                                    ad1 = new ChatMessageAdapter(msg,"client");
-                                    LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
-                                    manager.setStackFromEnd(true);
-                                    r1.setLayoutManager(manager);
-                                    r1.setAdapter(ad1);
-                                    r1.setVisibility(View.VISIBLE);
-                                    Log.d("tag2","tag2");
-                                }catch (Exception memoryError){
-                                    Toast.makeText(getApplicationContext().getApplicationContext(),"Too big file",Toast.LENGTH_LONG).show();
+                                    LocalDateTime now = LocalDateTime.now();// gets the current date and time
+                                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s");
+                                    data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
+                                    data.put("clientuserID", DataFromDatabase.clientuserID);
+                                    data.put("message", encoded);
+                                    Log.d("response ChatArea32",encoded);
+                                    data.put("type",type);
+                                    data.put("time",dtf.format(now));
+                                    Log.d("response ChatArea32",dtf.format(now));
+                                    data.put("messageBy","client");
+                                    return data;
                                 }
+                            };
+                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                            requestQueue.add(stringRequest);
+
+                            Log.d("tag1","tag1");
+                            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                            ChatMessage obj = new ChatMessage(DataFromDatabase.dietitianuserID, DataFromDatabase.clientuserID, encoded, String.valueOf(currentTime.substring(0,5)), "client", "U",type);
+                            msg.add(obj);
+                            ad1 = new ChatMessageAdapter(msg,"client");
+                            LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+                            manager.setStackFromEnd(true);
+                            r1.setLayoutManager(manager);
+                            r1.setAdapter(ad1);
+                            r1.setVisibility(View.VISIBLE);
+                            Log.d("tag2","tag2");
+                        }catch (Exception memoryError){
+                            Toast.makeText(getApplicationContext().getApplicationContext(),"Too big file",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             }
@@ -254,7 +254,7 @@ public class ChatAreaTwo extends AppCompatActivity {
         mSocket.emit("new-user",DataFromDatabase.clientuserID);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-             Log.d("ChatArea1",response);
+            Log.d("ChatArea1",response);
             if (!response.equals("failure")) {
                 Log.d("ChatArea", "success");
                 Log.d("ChatArea1", response);

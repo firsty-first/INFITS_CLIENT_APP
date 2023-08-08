@@ -337,46 +337,46 @@ public class SectionOneQEight extends Fragment {
 
 
 
-                        //String url = "http://192.168.0.114/sectionUpdate.php";
+                    //String url = "http://192.168.0.114/sectionUpdate.php";
                     String url = "https://infits.in/androidApi/sectionUpdate.php";
 
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-                            Log.e("Checking", "Checking1");
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+                        Log.e("Checking", "Checking1");
 
-                        }, error -> {
-                            Log.d("Data", error.toString().trim());
-                        }) {
-                            @Nullable
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
+                    }, error -> {
+                        Log.d("Data", error.toString().trim());
+                    }) {
+                        @Nullable
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
 
-                                Map<String, String> dataVol = new HashMap<>();
-                                Log.e("Checking", "Checking");
-                                dataVol.put("clientuserID", DataFromDatabase.clientuserID);
-                                dataVol.put("newAnswer", shift);
-                                dataVol.put("table", "section1Q8");
+                            Map<String, String> dataVol = new HashMap<>();
+                            Log.e("Checking", "Checking");
+                            dataVol.put("clientuserID", DataFromDatabase.clientuserID);
+                            dataVol.put("newAnswer", shift);
+                            dataVol.put("table", "section1Q8");
 
 
-                                return dataVol;
-                            }
-                        };
-                        stringRequest.setRetryPolicy(new RetryPolicy() {
-                            @Override
-                            public int getCurrentTimeout() {
-                                return 50000;
-                            }
+                            return dataVol;
+                        }
+                    };
+                    stringRequest.setRetryPolicy(new RetryPolicy() {
+                        @Override
+                        public int getCurrentTimeout() {
+                            return 50000;
+                        }
 
-                            @Override
-                            public int getCurrentRetryCount() {
-                                return 50000;
-                            }
+                        @Override
+                        public int getCurrentRetryCount() {
+                            return 50000;
+                        }
 
-                            @Override
-                            public void retry(VolleyError error) throws VolleyError {
+                        @Override
+                        public void retry(VolleyError error) throws VolleyError {
 
-                            }
-                        });
-                        Volley.newRequestQueue(getActivity()).add(stringRequest);
+                        }
+                    });
+                    Volley.newRequestQueue(getActivity()).add(stringRequest);
 
                 }
             }

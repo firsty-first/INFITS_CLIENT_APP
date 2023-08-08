@@ -157,29 +157,33 @@ public class diet_fourth extends Fragment implements CalMealScheduleAdapter.OnDa
                             JSONObject data_response = new JSONObject(response);
                             String data = data_response.getString("data");
                             JSONArray jsonArrayData = new JSONArray(data);
-                            JSONObject jsonObjectData = jsonArrayData.getJSONObject(0);
-                            JSONObject day_name = new JSONObject(jsonObjectData.getString(day));
+                            if (!jsonArrayData.isNull(0)){
+                                JSONObject jsonObjectData = jsonArrayData.getJSONObject(0);
+                                JSONObject day_name = new JSONObject(jsonObjectData.getString(day));
 
-                            addDetails(day_name,"breakfast","breakfast_morning","breakfast_after","breakfast_morning","breakfast_after");
+                                addDetails(day_name,"breakfast","breakfast_morning","breakfast_after","breakfast_morning","breakfast_after");
 
-                            addDetails(day_name,"lunch","afternoon","Afternoon time");
+                                addDetails(day_name,"lunch","afternoon","Afternoon time");
 
-                            addDetails(day_name,"snacks","High Tea and Snacks","Snacks time");
+                                addDetails(day_name,"snacks","High Tea and Snacks","Snacks time");
 
-                            addDetails(day_name,"dinner","night","late_night","night","late night");
+                                addDetails(day_name,"dinner","night","late_night","night","late night");
 
-                            itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutTwo,"Today's Meal Nutrition",""));
-                            //layout 3
-                            itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fire,"Calories","300kCal",""));
-                            //layout 3
-                            itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fish,"Protein","300 g",""));
-                            //layout 3
-                            itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.carbs_diet_chart,"Carbs","300 g",""));
-                            //layout 3
-                            itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fats,"Fats","210 g",""));
+                                itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutTwo,"Today's Meal Nutrition",""));
+                                //layout 3
+                                itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fire,"Calories","300kCal",""));
+                                //layout 3
+                                itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fish,"Protein","300 g",""));
+                                //layout 3
+                                itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.carbs_diet_chart,"Carbs","300 g",""));
+                                //layout 3
+                                itemClasses.add(new MealScheduleItemClass(MealScheduleItemClass.LayoutThree,R.drawable.fats,"Fats","210 g",""));
 
-                            mealScheduleAdapter = new MealScheduleAdapter(itemClasses);
-                            recyclerView2.setAdapter(mealScheduleAdapter);
+                                mealScheduleAdapter = new MealScheduleAdapter(itemClasses);
+                                recyclerView2.setAdapter(mealScheduleAdapter);
+                            }else {
+                                Toast.makeText(requireActivity(),"Data is empty", Toast.LENGTH_SHORT).show();
+                            }
 
 
                         } catch (Exception e) {
@@ -291,8 +295,12 @@ public class diet_fourth extends Fragment implements CalMealScheduleAdapter.OnDa
     public void onDateSelected(Date date) {
         Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( date );
-        itemClasses.clear();
-        mealScheduleAdapter.notifyDataSetChanged();
+        try {
+            itemClasses.clear();
+            mealScheduleAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         req(dayName(new SimpleDateFormat ( "E" , Locale.getDefault () ).format ( date )));
     }
     private String dayName(String str){

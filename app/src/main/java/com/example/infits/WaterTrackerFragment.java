@@ -227,32 +227,32 @@ public class WaterTrackerFragment extends Fragment {
                                     public void onResponse(String response) {
 
 
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    String message = jsonObject.getString("message");
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            String message = jsonObject.getString("message");
 
-                                    int newGoal = jsonObject.getInt("goal");
+                                            int newGoal = jsonObject.getInt("goal");
 
 
-                                    // Update the UI with the new goal value if the operation was successful
-                                    if (goal!=newGoal) {
-                                        goaltxt.setText(String.valueOf(newGoal));
-                                        waterGoalPercent.setText(String.valueOf(calculateGoal(newGoal)));
-                                        getLatestWaterData();
+                                            // Update the UI with the new goal value if the operation was successful
+                                            if (goal!=newGoal) {
+                                                goaltxt.setText(String.valueOf(newGoal));
+                                                waterGoalPercent.setText(String.valueOf(calculateGoal(newGoal)));
+                                                getLatestWaterData();
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Log.d("response;;", "JSON parsing error.");
+                                        }
                                     }
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Log.d("response;;", "JSON parsing error.");
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("response1;;","error");
+                                    }
                                 }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("response1;;","error");
-                            }
-                        }
 
 
                         ){

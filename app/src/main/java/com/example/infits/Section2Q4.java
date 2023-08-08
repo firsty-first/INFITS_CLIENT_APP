@@ -284,7 +284,7 @@ public class Section2Q4 extends Fragment {
                     //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     // bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
                     ivUploadimg.setImageBitmap(bitmap);
-                   imgpath = getRealPathFromURI(selectedImage);
+                    imgpath = getRealPathFromURI(selectedImage);
                     destination = new File(imgpath.toString());
                     //Toast.makeText(getActivity(), "Path: "+imgPath, Toast.LENGTH_SHORT).show();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
