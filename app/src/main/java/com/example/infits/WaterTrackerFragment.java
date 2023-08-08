@@ -162,11 +162,13 @@ public class WaterTrackerFragment extends Fragment {
             waterGoal.setText(DataFromDatabase.waterGoal + " ml");
             try {
                 goal = Integer.parseInt(DataFromDatabase.waterGoal);
+
                 // Log.d("Goal",String.valueOf(goal));
             } catch (NumberFormatException ex) {
                 goal = 1800;
                 waterGoal.setText(1800 + " ml");
                 // Log.d("Goal",String.valueOf(goal));
+
                 System.out.println(ex);
             }
         }
@@ -207,45 +209,52 @@ public class WaterTrackerFragment extends Fragment {
                 setGoalBtn.setOnClickListener(v -> {
                     if (!goaltxt.getText().toString().equals("")) {
                         goal = Integer.parseInt(goaltxt.getText().toString());
+
                         // Log.d("Goal",String.valueOf(goal));
+
                         waterGoal.setText(goaltxt.getText().toString() + " ml");
                         waterGoalPercent.setText(String.valueOf(calculateGoal(goal)));
                         consumedInDay = 0;
                         //String url = String.format("%supdatewatergoal.php",DataFromDatabase.ipConfig);
-                        //String url =  DataFromDatabase.ipConfig +"updatewatergoal.php";
-                        String url = "https://infits.in/androidApi/updatewatergoal.php";
+
+                        String url =  DataFromDatabase.ipConfig +"updatewatergoal.php";
+
+
                         StringRequest stringRequest=new StringRequest(Request.Method.POST,
                                 url,
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
 
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(response);
-                                            String message = jsonObject.getString("message");
 
-                                            int newGoal = jsonObject.getInt("goal");
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String message = jsonObject.getString("message");
+
+                                    int newGoal = jsonObject.getInt("goal");
 
 
-                                            // Update the UI with the new goal value if the operation was successful
-                                            if (goal!=newGoal) {
-                                                goaltxt.setText(String.valueOf(newGoal));
-                                                waterGoalPercent.setText(String.valueOf(calculateGoal(newGoal)));
-                                                getLatestWaterData();
-                                            }
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            Log.d("response;;", "JSON parsing error.");
-                                        }
+                                    // Update the UI with the new goal value if the operation was successful
+                                    if (goal!=newGoal) {
+                                        goaltxt.setText(String.valueOf(newGoal));
+                                        waterGoalPercent.setText(String.valueOf(calculateGoal(newGoal)));
+                                        getLatestWaterData();
                                     }
-                                },
-                                new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Log.d("response1;;","error");
-                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Log.d("response;;", "JSON parsing error.");
                                 }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("response1;;","error");
+                            }
+                        }
+
+
                         ){
                             @Nullable
                             @Override
@@ -409,8 +418,9 @@ public class WaterTrackerFragment extends Fragment {
 //                    updateLastRecord();
 
                     //String url = String.format("%supdatewatertracker.php", DataFromDatabase.ipConfig);
-                    //String url = DataFromDatabase.ipConfig+"updateWatertracker.php";
-                    String url = "https://infits.in/androidApi/updatewatergoal.php";
+
+                    String url = DataFromDatabase.ipConfig+"updateWatertracker.php";
+
 
                     StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
                         try {
@@ -432,7 +442,9 @@ public class WaterTrackerFragment extends Fragment {
                                                           }
                                                       },durationOfWaterAnimation
                             );
+
                             // consumed.setText(String.valueOf(consumedInDay));
+
                             pastActivity();
                         } catch (JSONException e) {
                             Log.d("response","error");
@@ -461,6 +473,7 @@ public class WaterTrackerFragment extends Fragment {
 
                             //  Log.d("update", "consumed: " + consumedInDay);
                             // Log.d("update", "amount: " + amt);
+
                             return data;
                         }
                     };
