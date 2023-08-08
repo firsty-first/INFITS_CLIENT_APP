@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class Login extends AppCompatActivity {
 
     TextView reg, fpass;
     Button loginbtn;
+    ProgressBar prgbar;
     ImageView btnGoogle, btnFacebook, btnTwitter;
     String passwordStr,usernameStr;
     //String url = String.format("%slogin_client.php",DataFromDatabase.ipConfig);
@@ -127,6 +129,7 @@ public class Login extends AppCompatActivity {
         btnGoogle = (ImageView) findViewById(R.id.google);
         btnTwitter = (ImageView) findViewById(R.id.twitter);
         btnFacebook = (ImageView) findViewById(R.id.facebook);
+        prgbar = (ProgressBar) findViewById(R.id.progressBar);
 
         queue = Volley.newRequestQueue(this);
 
@@ -151,6 +154,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                prgbar.setVisibility(View.VISIBLE);
+
 
 
                 EditText username= findViewById(R.id.username);
@@ -166,6 +171,7 @@ public class Login extends AppCompatActivity {
                     if(response.equals("failure")){
                         Toast.makeText(Login.this,"Login failed",Toast.LENGTH_SHORT).show();
                         loginbtn.setClickable(true);
+                        prgbar.setVisibility(View.INVISIBLE);
                     }else{
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_LONG).show();
                         Intent id = new Intent(Login.this, DashBoardMain.class);

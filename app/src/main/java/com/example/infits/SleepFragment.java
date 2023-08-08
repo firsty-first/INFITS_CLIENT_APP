@@ -220,9 +220,11 @@ public class SleepFragment extends Fragment {
             NoOfEmp.removeAll(NoOfEmp);
             //String url = String.format("%ssleepMonthGraph.php",DataFromDatabase.ipConfig);
             String url = "https://infits.in/androidApi/sleepMonthGraph.php";
+            //String url = "http://192.168.0.114/sleepMonthGraph.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST,url,response -> {
                 System.out.println(DataFromDatabase.clientuserID);
                 System.out.println(response);
+                Log.d("sleep response", response);
                 List<String> allNames = new ArrayList<>();
                 JSONObject jsonResponse = null;
                 ArrayList<String> mons = new ArrayList<>();
@@ -273,12 +275,15 @@ public class SleepFragment extends Fragment {
             NoOfEmp.removeAll(NoOfEmp);
             //String url = String.format("%ssleepYearGraph.php", DataFromDatabase.ipConfig);
             String url = "https://infits.in/androidApi/sleepYearGraph.php";
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
                 System.out.println("In request");
+                Log.e("In String Request","running");
                 List<String> allNames = new ArrayList<>();
                 JSONObject jsonResponse = null;
                 ArrayList<String> mons = new ArrayList<>();
                 try {
+                    Log.e("In try block","running");
                     jsonResponse = new JSONObject(response);
                     JSONArray cast = jsonResponse.getJSONArray("sleep");
                     for (int i = 0; i < cast.length(); i++) {
@@ -299,11 +304,14 @@ public class SleepFragment extends Fragment {
                         lineChart.getData().notifyDataChanged();
                         lineChart.notifyDataSetChanged();
                         lineChart.invalidate();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("In Catch block","running");
                 }
             }, error -> {
+
                 Log.d("Data", error.toString().trim());
             }) {
                 @Nullable
@@ -319,6 +327,9 @@ public class SleepFragment extends Fragment {
             };
             Volley.newRequestQueue(getActivity()).add(stringRequest);
         });
+
+
+
         custom_radioButton.setOnClickListener(v -> {
             NoOfEmp.removeAll(NoOfEmp);
             final Dialog dialog = new Dialog(getActivity());
@@ -340,10 +351,11 @@ public class SleepFragment extends Fragment {
 
             done.setOnClickListener(vi -> {
                 List<Date> dates = calendarPickerView.getSelectedDates();
-                SimpleDateFormat sf = new SimpleDateFormat("MMM dd,yyyy");
+                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
                 String from = sf.format(dates.get(0));
                 String to = sf.format(dates.get(dates.size() - 1));
                 //String url = String.format("%scustomsleep.php", DataFromDatabase.ipConfig);
+                //Log.e("example url","%scustomsleep.php" + DataFromDatabase.ipConfig );
                 String url = "https://infits.in/androidApi/customsleep.php";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
                     System.out.println(DataFromDatabase.clientuserID);
@@ -388,6 +400,8 @@ public class SleepFragment extends Fragment {
                         dataVol.put("clientID", DataFromDatabase.clientuserID);
                         dataVol.put("from", from);
                         dataVol.put("to", to);
+                        Log.d("sleep", "from:" + from);
+                        Log.d("sleep", "to:" + to);
                         return dataVol;
                     }
                 };
