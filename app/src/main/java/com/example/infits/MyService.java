@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
@@ -37,6 +38,8 @@ import com.google.android.material.button.MaterialButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -69,7 +72,6 @@ public class MyService extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
 
     }
 
@@ -122,7 +124,7 @@ public class MyService extends Service implements SensorEventListener {
 
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
         notificationBuilder = new NotificationCompat.Builder(this, Channel_id)
-                .setContentText("Service is running" + FetchTrackerInfos.currentSteps + " steps")
+                .setContentText("Service is running" + FetchTrackerInfos.currentSteps + "   steps")
                 .setContentTitle("Step Count")
                 .setSmallIcon(R.drawable.ic_launcher_background);
         startForeground(101, notificationBuilder.build());
@@ -142,8 +144,10 @@ public class MyService extends Service implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if(FetchTrackerInfos.currentSteps>=FetchTrackerInfos.stop_steps-1 && FetchTrackerInfos.currentSteps!=1)
-                onDestroy();
+        if(FetchTrackerInfos.currentSteps >= FetchTrackerInfos.stop_steps && FetchTrackerInfos.currentSteps!=1) {
+            onDestroy();
+            displayNotification("Step Status","You have completed your steps goal",FetchTrackerInfos.stop_steps+"");
+        };
         Log.d("service", "sensorChng");
         if (FetchTrackerInfos.flag_steps == 0) {
             pre_step = (int) event.values[0] - 1;
@@ -158,7 +162,7 @@ public class MyService extends Service implements SensorEventListener {
             FetchTrackerInfos.Distance= (float)0.0005*FetchTrackerInfos.currentSteps;
             Log.d("steps",String.valueOf(FetchTrackerInfos.currentSteps));
             FetchTrackerInfos.Calories=(float)0.05*FetchTrackerInfos.currentSteps;
-            notificationBuilder.setContentText("Service is running" + FetchTrackerInfos.currentSteps + " steps");
+            notificationBuilder.setContentText("Service is running " + FetchTrackerInfos.currentSteps + " steps");
             NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -219,6 +223,7 @@ public class MyService extends Service implements SensorEventListener {
 
 
     private void updateInAppNotifications(int goal) {
+        //for notification
         SharedPreferences inAppPrefs = getApplicationContext().getSharedPreferences("inAppNotification", MODE_PRIVATE);
         SharedPreferences.Editor inAppEditor = inAppPrefs.edit();
         inAppEditor.putBoolean("newNotification", true);
@@ -255,12 +260,75 @@ public class MyService extends Service implements SensorEventListener {
                 return data;
             }
         };
+        inAppRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(getApplicationContext()).add(inAppRequest);
+    }
+    @SuppressLint("ObsoleteSdkInt")
+    private void displayNotification(String task, String desc,String goal) {
+        final String channel_id = "Step Result";
+        NotificationManager manager =
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel(channel_id, channel_id, NotificationManager.IMPORTANCE_DEFAULT);
+            manager.createNotificationChannel(channel);
+        }
+
+//        Intent notificationIntent = new Intent(this.getApplicationContext(), SplashScreen.class);
+//        PendingIntent contentIntent = PendingIntent.getActivity(this.getApplicationContext(), 1,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id)
+                .setContentTitle(task)
+                .setContentText(desc)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setAutoCancel(true);
+//                .setContentIntent(contentIntent);
+        manager.notify(1, builder.build());
+        updateDetails(goal);
+
+    }
+    private void updateDetails(String goal) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s");
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        Log.e("tag","updateDetailsCall");
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://infits.in/androidApi/updateStepFragmentDetails.php", response -> {
+            Log.e("tag",response);
+        },
+                error -> {
+                    Log.e("tag",error.toString());
+                }) {
+            @SuppressLint("DefaultLocale")
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                SharedPreferences loginDetails = getApplicationContext().getSharedPreferences("loginDetails",MODE_PRIVATE);
+                Map<String, String> data = new HashMap<>();
+                data.put("clientuserID",loginDetails.getString("clientuserID",""));
+                data.put("steps",goal);
+                data.put("distance",String.format("%.3f", (FetchTrackerInfos.Distance)));
+                data.put("calories",String.format("%.2f", (FetchTrackerInfos.Calories)));
+                data.put("avgspeed",FetchTrackerInfos.Avg_speed.substring(0, 1));
+                data.put("goal",goal);
+                LocalDateTime now = LocalDateTime.now();
+                data.put("dateandtime",dtf.format(now));
+                return data;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
 
     }
 

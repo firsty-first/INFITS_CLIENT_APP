@@ -99,6 +99,7 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
     float goalPercent = 0;
 
     UpdateStepCard updateStepCard;
+    RecyclerView pastActivity;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -152,7 +153,7 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
         setgoal = view.findViewById(R.id.setgoal);
         imgback = view.findViewById(R.id.imgback);
         goal_step_count = view.findViewById(R.id.goal_step_count);
-        RecyclerView pastActivity = view.findViewById(R.id.past_activity);
+        pastActivity = view.findViewById(R.id.past_activity);
         progressBar = view.findViewById(R.id.progressBar);
         speed = view.findViewById(R.id.speed);
         distance = view.findViewById(R.id.distance);
@@ -162,13 +163,9 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
 
         getPermission_Body();
 
-        //progressBar.setProgress(0.2F);
-
         stepPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         float goal = stepPrefs.getFloat("goal", 1f);
         var steps = Math.min(stepPrefs.getFloat("steps", 0f), goal);
-
-        float goalPercent = stepPrefs.getFloat("goalPercent", 0f);
 
         //progressBar.setProgress(goalPercent);
         goal_step_count.setText(String.valueOf((int) goal));
@@ -180,16 +177,13 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
             @Override
             public void run() {
 
-                if (goalVal >= FetchTrackerInfos.currentSteps && goalVal != 1 && goalVal != 0) {
-                    Log.d("completed", "1");
-
-                    //Toast.makeText(getActivity().getApplicationContext(), "Steps Completed", Toast.LENGTH_SHORT).show();
+                if (goalVal <= FetchTrackerInfos.currentSteps && goalVal != 1 && goalVal != 0) {
+                    Log.d("StepTrackerFragmentCheck", "1");
                     mythread.interrupt();
-
                 }
 
                 steps_label.setText(String.valueOf(FetchTrackerInfos.currentSteps));
-                handler.postDelayed(this, 0);
+                handler.postDelayed(this, 1000);
 
                 goalPercent2 = (float) (FetchTrackerInfos.currentSteps) / (int) goalVal;
                 progressBar.setProgress(goalPercent2);
@@ -211,82 +205,9 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
             }
 
         });
-
         mythread.start();
         updateDetails();
-
-
-        ArrayList<String> dates = new ArrayList<>();
-        ArrayList<String> datas = new ArrayList<>();
-
-//        if (DataFromDatabase.stepsGoal.equals(null)){
-//            goal_step_count.setText("5000");
-//        }
-//        else{
-//            goal_step_count.setText(DataFromDatabase.stepsGoal+" ml");
-//            try {
-//                 = Integer.parseInt(DataFromDatabase.waterGoal);
-//            }catch (NumberFormatException ex){
-//                goal = 1800;
-//                waterGoal.setText(1800+" ml");
-//                System.out.println(ex);
-//            }
-//        }
-//
-//        if (DataFromDatabase.stepsStr.equals(null)|| DataFromDatabase.stepsStr.equals("null")){
-//            steps_label.setText("0");
-//        }
-//        else{
-//            steps_label.setText(DataFromDatabase.waterStr+" ml");
-//            try {
-//                 = Integer.parseInt(DataFromDatabase.waterStr);
-//                waterGoalPercent.setText(String.valueOf(calculateGoal()));
-//            }catch (NumberFormatException ex){
-//                consumedInDay = 0;
-//                waterGoalPercent.setText(String.valueOf(calculateGoal()));
-//            }
-//        }
-
-        //String url = String.format("%spastActivity.php", DataFromDatabase.ipConfig);
-        String url = "https://infits.in/androidApi/pastActivity.php";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-            try {
-                Log.d("dattaaaa:", response.toString());
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("steps");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    String data = object.getString("steps");
-                    String date = object.getString("date");
-                    dates.add(date);
-                    datas.add(data);
-                    System.out.println(datas.get(i));
-                    System.out.println(dates.get(i));
-                }
-                AdapterForPastActivity ad = new AdapterForPastActivity(getContext(), dates, datas, Color.parseColor("#FF9872"));
-                pastActivity.setLayoutManager(new LinearLayoutManager(getContext()));
-                pastActivity.setAdapter(ad);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error -> {
-            Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-            Log.d("Error", error.toString());
-        }) {
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> data = new HashMap<>();
-                data.put("clientID", DataFromDatabase.clientuserID);
-                return data;
-            }
-        };
-
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        getPastActivity();
 
         PowerManager powerManager = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -318,17 +239,13 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
                     Toast.makeText(requireActivity(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
 
-
-                if (true) {
+                {
                     Intent serviceIntent = new Intent(requireContext(), MyService.class);
                     requireActivity().stopService(serviceIntent);
                     mythread.interrupt();
                 }
 
-
-//                steps_label.setText(String.valueOf(0));
                 save.setOnClickListener(v -> {
-//                    FetchTrackerInfos.previousStep = FetchTrackerInfos.totalSteps;
                     goal_step_count.setText(goal.getText().toString());
                     progressBar.setProgress(0);
                     steps_label.setText(String.valueOf(0));
@@ -390,10 +307,6 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
                                 ).addTag("WORKUPDATESTEP").setConstraints(constraints).build();
                                 saveTotalInPref(getActivity(),workRequest.getStringId(),"Steps_db");
                                 WorkManager.getInstance(requireActivity()).enqueue(workRequest);
-                                FetchTrackerInfos.currentSteps = 1;
-                                FetchTrackerInfos.Distance = 0.00F;
-                                FetchTrackerInfos.Calories = 0.00F;
-                                FetchTrackerInfos.Avg_speed = "0" ;
                                 Toast.makeText(requireActivity(), "Worker Set", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -445,18 +358,6 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
 
         reminder.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_stepTrackerFragment_to_stepReminderFragment));
 
-//        final Handler handler = new Handler();
-//        final int delay = 1000; // 1000 milliseconds == 1 second
-//
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                System.out.println(FetchTrackerInfos.stepsWalked);
-//                if (!FetchTrackerInfos.stepsWalked.isEmpty()){
-//                        steps_label.setText(FetchTrackerInfos.currentSteps);
-//                }
-//                handler.postDelayed(this, delay);
-//            }
-//        }, delay);
         return view;
     }
 
@@ -570,17 +471,15 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
     }
 
     private void updateDetails(){
-        if (FetchTrackerInfos.currentSteps > 1) {
 
+        if (FetchTrackerInfos.currentSteps > 1) {
             String url = "https://infits.in/androidApi/updateStepFragmentDetails.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-                Log.e("calorieUpdate", "success");
-                Toast.makeText(requireActivity(), "Details Updated in DB", Toast.LENGTH_SHORT).show();
+                Log.e("StepTrackerFragmentCheck", "Details Updated in DB");
             },
                     error -> {
-                        Log.e("calorieUpdate", "fail");
-                        Log.e("calorieUpdate", error.toString());
-                        Toast.makeText(requireActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e("StepTrackerFragmentCheck", "fail");
+                        Log.e("StepTrackerFragmentCheck", error.toString());
                     }) {
                 @SuppressLint("DefaultLocale")
                 @Nullable
@@ -605,6 +504,48 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
             Volley.newRequestQueue(requireContext()).add(stringRequest);
         }
     }
+    private void getPastActivity(){
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<String> datas = new ArrayList<>();
+        //String url = String.format("%spastActivity.php", DataFromDatabase.ipConfig);
+        String url = "https://infits.in/androidApi/pastActivity.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("steps");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    String data = object.getString("steps");
+                    String date = object.getString("date");
+                    dates.add(date);
+                    datas.add(data);
+                    System.out.println(datas.get(i));
+                    System.out.println(dates.get(i));
+                }
+                AdapterForPastActivity ad = new AdapterForPastActivity(getContext(), dates, datas, Color.parseColor("#FF9872"));
+                pastActivity.setLayoutManager(new LinearLayoutManager(getContext()));
+                pastActivity.setAdapter(ad);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Log.d("StepTrackerFragmentCheck", error.toString());
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("clientID", DataFromDatabase.clientuserID);
+                return data;
+            }
+        };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+
+    }
     public static String loadTotalFromPrefString(Context context,final String key) {
         SharedPreferences pref = context.getSharedPreferences(MY_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return pref.getString(key, "");
@@ -615,4 +556,5 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
         editor.putString(key,id);
         editor.apply();
     }
+
 }
