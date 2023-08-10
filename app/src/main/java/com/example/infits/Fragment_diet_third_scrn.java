@@ -39,18 +39,18 @@ public class Fragment_diet_third_scrn extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_diet_third_scrn, container, false);
-        recyclerView = rootView.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new RecyclerViewAdapter(dataList);
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                DataModel selectedData = dataList.get(position);
-                // Handle item click, e.g., show details for the selectedData
-            }
-        });
+//        recyclerView = rootView.findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+//        adapter = new RecyclerViewAdapter(dataList);
+//        recyclerView.setAdapter(adapter);
+//
+//        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                DataModel selectedData = dataList.get(position);
+//                // Handle item click, e.g., show details for the selectedData
+//            }
+//        });
 
         return rootView;
     }

@@ -9,16 +9,19 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e756b598-b526-46fb-92ee-e262e2d6bdb5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/WorkerForStepsDetailsUpdateInAppNotification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="e756b598-b526-46fb-92ee-e262e2d6bdb5" name="Changes" comment="Merge with paras and gagan branch">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DataFromDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/DataFromDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/MyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/MyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/NotificationReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/NotificationReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/StepTrackerFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/StepTrackerFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/Fragment_diet_third_scrn.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/Fragment_diet_third_scrn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activitySecondFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activitySecondFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activityfourthfragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activityfourthfragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activitythirdfragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/activitythirdfragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/connectingDietitian.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/connectingDietitian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/cycling_frag2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/cycling_frag2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/running_frag1.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/running_frag1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/infits/walking_frag2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/infits/walking_frag2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_trck_popup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_trck_popup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_running_frag1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_running_frag1.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +47,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2ThKcik73hKNr2n81jMvhX3Kipo" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -51,11 +57,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Git.Branch.Popup.ShowAllRemotes": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
     "dart.analysis.tool.window.visible": "false",
     "show.migrate.to.gradle.popup": "false"
   }
@@ -137,6 +145,29 @@
       <option name="presentableId" value="Default" />
       <updated>1691489960779</updated>
     </task>
+    <task id="LOCAL-00001" summary="Merge with paras and gagan branch">
+      <created>1691664669177</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1691664669177</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge with paras and gagan branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge with paras and gagan branch" />
   </component>
 </project>

@@ -44,7 +44,7 @@ public class connectingDietitian extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connecting_dietitian);
+        setContentView(R.layout.activity_connetcing_dietitian);
         verify = findViewById(R.id.button5Connect);
         cardView = findViewById(R.id.card70);
         discard = findViewById(R.id.button3);

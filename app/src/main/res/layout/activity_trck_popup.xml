@@ -50,6 +50,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nats_regular"
         android:hint="0.0"
+        android:inputType="number"
         android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/imageView88"

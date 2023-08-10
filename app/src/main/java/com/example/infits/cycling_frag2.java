@@ -1,7 +1,11 @@
 package com.example.infits;
 
+import static com.example.infits.activitythirdfragment.activityTrackerCyclingGoalValue;
+
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -24,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -43,13 +48,14 @@ public class cycling_frag2 extends Fragment implements LocationListener {
     SensorManager sensorManager;
     Sensor stepSensor;
     private boolean isRotationStarted = false;
-    TextView distance_show, Calorie_meter, time_meter;
+    TextView distance_show, Calorie_meter, time_meter,goalValue,distanceCovered;
     ImageView imageView80;
     ImageView imageView79;
     ImageView imageView76;
     ImageView btn_stop;
     Button btn_pause, btn_start;
     TextView running_txt, cont_running_txt, dunit;
+    String[] locationPermission = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
     public cycling_frag2() {
         // Required empty public constructor
@@ -82,12 +88,17 @@ public class cycling_frag2 extends Fragment implements LocationListener {
         imageView79 = view.findViewById(R.id.imageView79);
         btn_stop = view.findViewById(R.id.imageView89);
         time_meter = view.findViewById(R.id.textView73);
+        goalValue = view.findViewById(R.id.textView87);
+        distanceCovered = view.findViewById(R.id.textView71);
+
+        goalValue.setText(activityTrackerCyclingGoalValue);
         time = System.currentTimeMillis();
         Calorie_meter.setText("0");
         time_meter.setText("0");
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         startLocationUpdates();
+        statusCheck();
 
         SharedPreferences data = PreferenceManager.getDefaultSharedPreferences(requireContext());
         weight = data.getFloat("weight", 60);
@@ -123,8 +134,9 @@ public class cycling_frag2 extends Fragment implements LocationListener {
         btn_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Navigation.findNavController(v).navigate(R.id.action_activitythirdfragment_to_cycling_frag2);
+                stopLocationUpdates();
+                stopRotationAnimation();
+                getActivity().onBackPressed();
             }
         });
 
@@ -222,6 +234,32 @@ public class cycling_frag2 extends Fragment implements LocationListener {
             imageView76.clearAnimation();
             isRotationStarted = false;
         }
+    }
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override

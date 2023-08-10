@@ -1,6 +1,9 @@
 package com.example.infits;
 
+import static com.example.infits.activityfourthfragment.activityTrackerWalkingGoalValue;
+
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,9 +25,9 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
     int pre_step = 0, current = 0, flag_steps = 0, current_steps;
     float distance, calories;
     Button btnPause, btnStart;
-    TextView runningTxt, contRunningTxt, stepsDisp, calorieDisp, timeDisp;
+    TextView runningTxt, contRunningTxt, stepsDisp, calorieDisp, timeDisp,goalValue;
 
-    ImageView imageViewClockwise, imageViewAntiClockwise;
+    ImageView imageViewClockwise, imageViewAntiClockwise,stopButton;
     private ObjectAnimator clockwiseRotationAnimator;
     private ObjectAnimator anticlockwiseRotationAnimator;
 
@@ -56,6 +59,15 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
         timeDisp = view.findViewById(R.id.textView73);
         imageViewClockwise = view.findViewById(R.id.imageView76);
         imageViewAntiClockwise = view.findViewById(R.id.imageView79);
+        goalValue = view.findViewById(R.id.textView87);
+        stopButton = view.findViewById(R.id.imageView89);
+
+        goalValue.setText(activityTrackerWalkingGoalValue);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        register();
+        startClockwiseRotation();
+        startAntiClockwiseRotation();
+
 
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +76,19 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
                 btnPause.setVisibility(View.GONE);
                 runningTxt.setVisibility(View.GONE);
                 contRunningTxt.setVisibility(View.VISIBLE);
-                stop();
                 stopClockwiseRotation();
                 stopAntiClockwiseRotation();
+                flag_steps = 0;
+                register();
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flag_steps = 0;
+                //close this fragment
+                getActivity().onBackPressed();
             }
         });
 
@@ -77,9 +99,10 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
                 btnPause.setVisibility(View.VISIBLE);
                 runningTxt.setVisibility(View.VISIBLE);
                 contRunningTxt.setVisibility(View.GONE);
-                register();
                 startClockwiseRotation();
                 startAntiClockwiseRotation();
+                flag_steps = 0;
+                stop();
             }
         });
 
@@ -98,24 +121,27 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
             current_steps = current - pre_step;
             distance = (float) 0.002 * current_steps;
             calories = (float) 0.06 * current_steps;
-
-            stepsDisp.setText(String.format("%.2f", current_steps));
+            stepsDisp.setText(current_steps+"");
             calorieDisp.setText(String.format("%.2f", calories));
         }
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     public void register() {
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void stop() {
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null)
-            sensorManager.unregisterListener(this, stepSensor);
+        sensorManager.unregisterListener(this, stepSensor);
     }
+
+
 
     private void startClockwiseRotation() {
         if (clockwiseRotationAnimator != null && clockwiseRotationAnimator.isRunning()) {
@@ -152,10 +178,10 @@ public class walking_frag2 extends Fragment implements SensorEventListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        stop();
-        stopClockwiseRotation();
-        stopAntiClockwiseRotation();
+    public void onDestroy() {
+        super.onDestroy();
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+            sensorManager.unregisterListener(this,stepSensor);
+        flag_steps = 0;
     }
 }

@@ -2,6 +2,8 @@ package com.example.infits;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.infits.activitySecondFragment.activityTrackerRunningGoalValue;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -62,7 +64,8 @@ public class running_frag1 extends Fragment implements SensorEventListener {
     ImageView imageView80;
     ImageView imageView79;
     ImageView imageView76;
-    TextView running_txt, cont_running_txt, distance_disp, calorie_disp, time_disp;
+    TextView running_txt, cont_running_txt, distance_disp, calorie_disp, time_disp , totalGoal ,currentDistance,distanceCovered;
+    final String TAG = "RunningFrag1";
 
     public static final String preference = "running_values";
     SharedPreferences sharedpreferences;
@@ -105,7 +108,10 @@ public class running_frag1 extends Fragment implements SensorEventListener {
         distance_disp = view.findViewById(R.id.textView70);
         calorie_disp = view.findViewById(R.id.textView72);
         time_disp = view.findViewById(R.id.textView73);
-
+        totalGoal = view.findViewById(R.id.textView87);
+        currentDistance = view.findViewById(R.id.textView88);
+        distanceCovered = view.findViewById(R.id.textView71);
+        totalGoal.setText(activityTrackerRunningGoalValue);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         register();
 
@@ -135,9 +141,9 @@ public class running_frag1 extends Fragment implements SensorEventListener {
             public void onClick(View v) {
                 // Send data to the server when "Stop" button is pressed
                 sendDataToServer();
-
-                // Navigate to the next fragment after sending the data
-                Navigation.findNavController(v).navigate(R.id.action_running_frag1_to_activitySecondFragment);
+                flag_steps = 0;
+                //close this fragment
+                getActivity().onBackPressed();
             }
         });
 
@@ -176,10 +182,12 @@ public class running_frag1 extends Fragment implements SensorEventListener {
             current_steps = current - pre_step;
             distance = (float) 0.002 * current_steps;
             calories = (float) 0.06 * current_steps;
-
             distance_disp.setText(String.format("%.2f", distance));
+            currentDistance.setText(String.format("%.2f", distance));
+            distanceCovered.setText(String.format("%.2f", distance));
             calorie_disp.setText(String.format("%.2f", calories));
         }
+
     }
 
     @Override
@@ -234,12 +242,12 @@ public class running_frag1 extends Fragment implements SensorEventListener {
 
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
             if (response.equals("updated")) {
-                Toast.makeText(getActivity(), "Data updated successfully!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"Data updated successfully!");
             } else {
-                Toast.makeText(getActivity(), "Failed to update data", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"Failed to update data");
             }
         }, error -> {
-            Toast.makeText(requireContext(), "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG,error.toString());
         }) {
             @Nullable
             @Override
@@ -265,8 +273,14 @@ public class running_frag1 extends Fragment implements SensorEventListener {
         // Set a retry policy in case of timeout or connection errors
         int socketTimeout = 30000; // 30 seconds
         request.setRetryPolicy(new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         Volley.newRequestQueue(getActivity().getApplicationContext()).add(request);
-        Toast.makeText(getActivity(), "Updating data...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+            sensorManager.unregisterListener(this,stepSensor);
+        flag_steps = 0;
     }
 }
