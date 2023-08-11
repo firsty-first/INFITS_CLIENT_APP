@@ -1,7 +1,16 @@
 package com.example.infits;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +37,7 @@ public class activityTracker2 extends Fragment {
     CalAdapter_at adapter;
     ImageView running_img,walking_img,cycling_img;
     ImageButton backbutton;
+    private static final int PERMISSION_REQUEST_ALL_SENSORS = 100;
 
     public activityTracker2 () {
         // Required empty public constructor
@@ -102,8 +112,47 @@ public class activityTracker2 extends Fragment {
        // });
 
 //        return inflater.inflate(R.layout.fragment_diet_fourth, container, false);
+        getPermission_Body();
+        statusCheck();
         return  view;
 
 
+    }
+    public  void getPermission_Body()
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
+            // Permission already granted, proceed with your activity logic
+            // ...
+        } else {
+            // Permission not yet granted, request it from the user
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.BODY_SENSORS, Manifest.permission.ACTIVITY_RECOGNITION},PERMISSION_REQUEST_ALL_SENSORS);
+        }
+    }
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

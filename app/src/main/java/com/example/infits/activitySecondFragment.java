@@ -125,7 +125,7 @@ public class activitySecondFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
 
             try {
-                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                Log.d(TAG,response);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG,e.toString());

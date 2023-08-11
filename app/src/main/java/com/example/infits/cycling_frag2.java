@@ -55,7 +55,6 @@ public class cycling_frag2 extends Fragment implements LocationListener {
     ImageView btn_stop;
     Button btn_pause, btn_start;
     TextView running_txt, cont_running_txt, dunit;
-    String[] locationPermission = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
     public cycling_frag2() {
         // Required empty public constructor
@@ -98,7 +97,7 @@ public class cycling_frag2 extends Fragment implements LocationListener {
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         startLocationUpdates();
-        statusCheck();
+
 
         SharedPreferences data = PreferenceManager.getDefaultSharedPreferences(requireContext());
         weight = data.getFloat("weight", 60);
@@ -235,32 +234,7 @@ public class cycling_frag2 extends Fragment implements LocationListener {
             isRotationStarted = false;
         }
     }
-    public void statusCheck() {
-        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            buildAlertMessageNoGps();
-
-        }
-    }
-
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
 
     @Override
     public void onDestroyView() {
