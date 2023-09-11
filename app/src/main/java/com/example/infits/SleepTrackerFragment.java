@@ -132,10 +132,12 @@ public class SleepTrackerFragment extends Fragment {
         ArrayList<String> dates = new ArrayList<>();
         ArrayList<String> datas = new ArrayList<>();
 
-        String url = String.format("%spastActivitySleep.php",DataFromDatabase.ipConfig);
+        //String url = String.format("%spastActivitySleep.php",DataFromDatabase.ipConfig);
+        String url = "https://infits.in/androidApi/pastActivitySleep.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url, response -> {
             try {
+                Log.d("response123",response.toString());
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray jsonArray = jsonObject.getJSONArray("sleep");
                 for (int i = 0;i<jsonArray.length();i++){
@@ -329,7 +331,8 @@ public class SleepTrackerFragment extends Fragment {
                     }
                 }
 
-                String url=String.format("%ssleepTracker.php",DataFromDatabase.ipConfig);
+                //String url=String.format("%ssleepTracker.php",DataFromDatabase.ipConfig);
+                String url = "https://infits.in/androidApi/sleepTracker.php";
                 StringRequest request = new StringRequest(Request.Method.POST,url, response -> {
                     if (response.equals("updated")){
                         Toast.makeText(getActivity(), "Good Morning", Toast.LENGTH_SHORT).show();
@@ -350,7 +353,7 @@ public class SleepTrackerFragment extends Fragment {
                         String sleepTime = sh.getString("sleepTime", "");
 
                         Date date = new Date();
-                        String pat = "yyyy-MM-dd H:m:s";
+                        String pat = "dd-MM-yyyy H:m:s";
                         SimpleDateFormat sdf = new SimpleDateFormat(pat);
                         Map<String,String> data = new HashMap<>();
                         data.put("userID",DataFromDatabase.clientuserID);
@@ -396,7 +399,8 @@ public class SleepTrackerFragment extends Fragment {
         inAppEditor.putBoolean("newNotification", true);
         inAppEditor.apply();
 
-        String inAppUrl = String.format("%sinAppNotifications.php", DataFromDatabase.ipConfig);
+        //String inAppUrl = String.format("%sinAppNotifications.php", DataFromDatabase.ipConfig);
+        String inAppUrl = "https://infits.in/androidApi/inAppNotifications.php";
 
         String type = "sleep";
         String text = "You slept for " + hours + " hours, " + minutes + " minutes, " + secs + " seconds.";

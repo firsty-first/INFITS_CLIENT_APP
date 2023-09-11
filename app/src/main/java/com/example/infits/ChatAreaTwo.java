@@ -1,5 +1,7 @@
 package com.example.infits;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -45,6 +47,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,8 +67,11 @@ public class ChatAreaTwo extends AppCompatActivity {
     String encoded;
     String type = "text";
 
+
+
     ActivityResultLauncher<String> file = registerForActivityResult(
-            new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
 
@@ -115,9 +122,9 @@ public class ChatAreaTwo extends AppCompatActivity {
                                         System.out.println(response);
                                         if (response.equals("success")) {
                                             Log.d("ChatArea3", "success");
-                                            Log.d("response ChatArea3", response);
+                                            Log.d("response ChatArea32", response);
                                         } else if (response.equals("failure")) {
-                                            Log.d("ChatArea3", "failure");
+                                            Log.d("response ChatArea32", "failure");
                                             Toast.makeText(getApplicationContext(), "unable to send message!! try again", Toast.LENGTH_SHORT).show();
                                         }
                                     }, error -> {
@@ -127,11 +134,23 @@ public class ChatAreaTwo extends AppCompatActivity {
                                         @Override
                                         protected Map<String, String> getParams() throws AuthFailureError {
                                             Map<String, String> data = new HashMap<>();
-                                            data.put("dieticianID", DataFromDatabase.dietitianuserID);
-                                            data.put("clientID", DataFromDatabase.clientuserID);
+                                           /* data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
+                                            data.put("clientuserID", DataFromDatabase.clientuserID);
                                             data.put("message", encoded);
+                                            data.put("time",dtf.format(now));
+                                            data.put("messageBy","client");*/
+
+                                            LocalDateTime now = LocalDateTime.now();// gets the current date and time
+                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s");
+                                            data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
+                                            data.put("clientuserID", DataFromDatabase.clientuserID);
+                                            data.put("message", encoded);
+                                            Log.d("response ChatArea32",encoded);
                                             data.put("type",type);
-                                            data.put("sentBy","client");
+                                            Log.d("response ChatArea32", type);
+                                            data.put("time",dtf.format(now));
+                                            Log.d("response ChatArea32",dtf.format(now));
+                                            data.put("messageBy","client");
                                             return data;
                                         }
                                     };
@@ -182,7 +201,7 @@ public class ChatAreaTwo extends AppCompatActivity {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://192.168.1.6:8080");
+            mSocket = IO.socket("http://192.168.87.29:8080");
         } catch (URISyntaxException e) {}
     }
 
@@ -218,8 +237,9 @@ public class ChatAreaTwo extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if(type.equals("text")) {
                 sendMessage();
-//                attemptSend(v);
+            }
             }
         });
         ImageView i12 = findViewById(R.id.attach_file);
@@ -228,6 +248,7 @@ public class ChatAreaTwo extends AppCompatActivity {
             public void onClick(View v) {
 //                selectImage();
                 file.launch("*/*");
+               // sendMessage();
             }
         });
 
@@ -237,10 +258,10 @@ public class ChatAreaTwo extends AppCompatActivity {
         mSocket.emit("new-user",DataFromDatabase.clientuserID);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-            System.out.println(response);
+             Log.d("ChatArea1",response);
             if (!response.equals("failure")) {
                 Log.d("ChatArea", "success");
-                Log.d("response ChatArea", response);
+                Log.d("ChatArea1", response);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     String messageby = null;
@@ -251,7 +272,7 @@ public class ChatAreaTwo extends AppCompatActivity {
                             messageby = jsonObject.getString("messageBy");
                             String time = jsonObject.getString("time").substring(11,16);
                             String readUnread = "r";
-                            String type = jsonObject.getString("type");
+                            //String type = jsonObject.getString("type");
                             ChatMessage obj = new ChatMessage(DataFromDatabase.dietitianuserID, DataFromDatabase.clientuserID, message, time, messageby, readUnread,type);
                             msg.add(obj);
                         }
@@ -276,8 +297,8 @@ public class ChatAreaTwo extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> data = new HashMap<>();
-                data.put("duserID", DataFromDatabase.dietitianuserID);
-                data.put("cuserID", DataFromDatabase.clientuserID);
+                data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
+                data.put("clientuserID", DataFromDatabase.clientuserID);
                 return data;
             }
         };
@@ -303,11 +324,15 @@ public class ChatAreaTwo extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> data = new HashMap<>();
-                data.put("dieticianID", DataFromDatabase.dietitianuserID);
-                data.put("clientID", DataFromDatabase.clientuserID);
+                LocalDateTime now = LocalDateTime.now();// gets the current date and time
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s");
+                data.put("dietitianuserID", DataFromDatabase.dietitianuserID);
+                data.put("clientuserID", DataFromDatabase.clientuserID);
                 data.put("message", typed_message);
+                Log.d("response ChatArea3",typed_message);
                 data.put("type",type);
-                data.put("sentBy","client");
+                data.put("time",dtf.format(now));
+                data.put("messageBy","client");
                 return data;
             }
         };
@@ -409,7 +434,7 @@ public class ChatAreaTwo extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("CHAT",String.valueOf(requestCode));
         if (requestCode == PICK_IMAGE_GALLERY) {
             try {
                 if (data.getData() != null) {
