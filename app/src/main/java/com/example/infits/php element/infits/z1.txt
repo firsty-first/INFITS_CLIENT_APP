@@ -1,0 +1,38 @@
+
+uploaded to server on 1st aug
+Verify JD
+login_client JD
+dietitianUpdated JD
+calorieBurnt  JD
+weighttrackr JD
+sleepMonthGraph JD
+sleepYear JD
+waterMonthGraph JD
+waterYearGraph JD
+calorieConsumed JD
+registerclientwithreferral JD
+saveMeal  upload change java 
+customwater,sleep,step, weight  JD 
+updatewatergoal  check chetnacode
+updatewatertracker same
+weightGraph 
+weightMonth
+weightYear
+deletefavfooditem JD
+addFavourite JD
+clientGoalsCalorie
+calorieTracker
+getDietitiandetail
+getDietchart.php
+
+
+sleepFragment
+waterFragment
+weightFragment
+stepsFragment
+
+upload in server
+
+stepsYear
+stepsCustom
+weightFragment 

@@ -1,0 +1,25 @@
+i)StepTracker Done
+
+ii)Water Done
+
+iii)ActivityTracker using this we check the Calories Burnt History
+	BugFixed Done
+	now for pastActivites
+	pause check
+	time check
+
+iv)sleep tracker
+
+v)weight tracker
+
+vi)DietChart food receipes details
+
+vii)check meal tracker
+
+viii)Video Call and Message Section
+
+ix)Know about dietician
+
+x)apply referral issues
+
+	
