@@ -1971,6 +1971,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_activitySecondFragment_to_activityTracker2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_activitySecondFragment_to_running_frag1">
                               <value>
                                 <LayoutPositions />
@@ -2007,6 +2012,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_activityTracker2_to_dashBoardFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -2024,6 +2034,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_activityfourthfragment_self">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_activityfourthfragment_to_activityTracker2">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -2049,6 +2064,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_activitythirdfragment_to_activityTracker2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_activitythirdfragment_to_cycling_frag2">
                               <value>
                                 <LayoutPositions />
@@ -2339,6 +2359,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="calorie_mealInfoWithPhoto_Fragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="2234" />
+                            <option name="y" value="3987" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_calorie_mealInfoWithPhoto_Fragment_to_fragmentTodays_BreakFast">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="caloriesetgoalFragment">
                     <value>
                       <LayoutPositions>
@@ -2488,6 +2529,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="fragmentTodays_BreakFast">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="2598" />
+                            <option name="y" value="4078" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

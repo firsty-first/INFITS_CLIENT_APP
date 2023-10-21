@@ -2,6 +2,7 @@ package com.example.infits;
 
         import static android.content.Context.MODE_PRIVATE;
 
+        import android.annotation.SuppressLint;
         import android.content.Context;
         import android.content.SharedPreferences;
         import android.os.Handler;
@@ -11,7 +12,6 @@ package com.example.infits;
         import android.view.ViewGroup;
         import android.widget.ImageView;
         import android.widget.TextView;
-        import android.widget.Toast;
 
         import androidx.annotation.NonNull;
         import androidx.recyclerview.widget.RecyclerView;
@@ -37,12 +37,12 @@ public class MealtrackerFinalAdapter extends RecyclerView.Adapter<MealtrackerFin
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.icon.setImageDrawable(todays_breakFast_infos.get(position).icon);
 //        holder.icon.setImageBitmap(todays_breakFast_infos.get(position).icon);
         holder.mealName.setText(todays_breakFast_infos.get(position).mealName);
         holder.calorieValue.setText(todays_breakFast_infos.get(position).calorieValue);
-        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatvalue + " Fat");
+        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatValue + " Fat");
         holder.carbsValue.setText(todays_breakFast_infos.get(position).carbsValue + " Carbs");
         holder.quantityValue.setText(todays_breakFast_infos.get(position).quantityValue);
         holder.sizeValue.setText(todays_breakFast_infos.get(position).sizeValue);

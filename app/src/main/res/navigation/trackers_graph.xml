@@ -292,6 +292,9 @@
         <action
             android:id="@+id/action_calorieAddBreakfastFragment_to_mealInfoWithPhoto"
             app:destination="@+id/mealInfoWithPhoto"/>
+        <action
+            android:id="@+id/action_calorieAddBreakFastFragment_to_calorie_mealInfoWithPhoto_Fragment"
+            app:destination="@id/calorie_mealInfoWithPhoto_Fragment" />
 
     </fragment>
     <fragment
@@ -510,4 +513,18 @@
             android:id="@+id/action_caloriesetgoalFragment_to_calorieTrackerFragment"
             app:destination="@id/calorieTrackerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/calorie_mealInfoWithPhoto_Fragment"
+        android:name="com.example.infits.Calorie_mealInfoWithPhoto_Fragment"
+        android:label="fragment_calorie_meal_info_with_photo_"
+        tools:layout="@layout/fragment_calorie_meal_info_with_photo_" >
+        <action
+            android:id="@+id/action_calorie_mealInfoWithPhoto_Fragment_to_fragmentTodays_BreakFast"
+            app:destination="@id/fragmentTodays_BreakFast" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTodays_BreakFast"
+        android:name="com.example.infits.FragmentTodays_BreakFast"
+        android:label="fragment_todays__break_fast"
+        tools:layout="@layout/fragment_todays__break_fast" />
 </navigation>
