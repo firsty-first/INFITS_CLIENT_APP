@@ -220,6 +220,8 @@ public class mealInfoWithPhoto extends Fragment {
                 numberPicker2.setValue(numberPicker2.getValue() - 1);
             }
         });
+
+
         //TakeaPhotoButton
         TakeaPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
