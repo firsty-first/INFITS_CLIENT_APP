@@ -25,6 +25,7 @@ public class activity_trck_popup extends AppCompatActivity {
     ImageView set_goal;
     EditText goal_value_txt;
     String goal_value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
