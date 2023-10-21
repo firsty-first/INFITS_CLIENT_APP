@@ -12,6 +12,9 @@ buildscript {
         }
     }
     dependencies {
+
+        classpath 'com.android.tools.build:gradle:7.2.0'
+
  gaganTiwari
         classpath 'com.android.tools.build:gradle:8.1.2'
 
@@ -30,6 +33,7 @@ buildscript {
  test-branch
  test-branch
  test-branch
+
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21'
         classpath 'com.google.gms:google-services:4.3.10' // Update to the latest version (if available)
     }
