@@ -200,6 +200,7 @@ public class mealInfoWithPhoto extends Fragment {
             }
         });
 
+
         //numberPicker 2
         numberPicker2.setDisplayedValues(numberPicker2List);
         numberPicker2.setMaxValue(numberPicker2List.length - 1);
