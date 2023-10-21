@@ -1,7 +1,6 @@
 package com.example.infits;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Adapter_Todays_BreakFast extends RecyclerView.Adapter<Adapter_Todays_BreakFast.ViewHolder> {
@@ -35,7 +33,7 @@ public class Adapter_Todays_BreakFast extends RecyclerView.Adapter<Adapter_Today
         holder.icon.setImageBitmap(todays_breakFast_infos.get(position).icon);
         holder.mealName.setText(todays_breakFast_infos.get(position).mealName);
         holder.calorieValue.setText(todays_breakFast_infos.get(position).calorieValue);
-        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatvalue);
+        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatValue);
         holder.carbsValue.setText(todays_breakFast_infos.get(position).carbsValue);
         holder.quantityValue.setText(todays_breakFast_infos.get(position).quantityValue);
         holder.sizeValue.setText(todays_breakFast_infos.get(position).sizeValue);

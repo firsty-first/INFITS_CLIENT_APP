@@ -2,7 +2,19 @@ package com.example.infits;
 
 import static android.content.Context.MODE_PRIVATE;
 
+        import android.annotation.SuppressLint;
+        import android.content.Context;
+        import android.content.SharedPreferences;
+        import android.os.Handler;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.TextView;
+
 import static com.google.android.material.internal.ContextUtils.getActivity;
+
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -47,13 +59,18 @@ public class MealtrackerFinalAdapter extends RecyclerView.Adapter<MealtrackerFin
     }
 
     @Override
+ fixes-areej
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.icon.setImageDrawable(todays_breakFast_infos.get(position).icon);
+
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //  holder.icon.setImageDrawable(todays_breakFast_infos.get(position).icon);
         holder.icon.setImageBitmap(todays_breakFast_infos.get(position).icon);
+ Areej
 //        holder.icon.setImageBitmap(todays_breakFast_infos.get(position).icon);
         holder.mealName.setText(todays_breakFast_infos.get(position).mealName);
         holder.calorieValue.setText(todays_breakFast_infos.get(position).calorieValue);
-        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatvalue + " Fat");
+        holder.fatvalue.setText(todays_breakFast_infos.get(position).fatValue + " Fat");
         holder.carbsValue.setText(todays_breakFast_infos.get(position).carbsValue + " Carbs");
         holder.quantityValue.setText(todays_breakFast_infos.get(position).quantityValue);
         holder.sizeValue.setText(todays_breakFast_infos.get(position).sizeValue);
