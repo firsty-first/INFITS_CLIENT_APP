@@ -223,6 +223,7 @@ public class mealInfoWithPhoto extends Fragment {
 
 
 
+
         //TakeaPhotoButton
         TakeaPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
