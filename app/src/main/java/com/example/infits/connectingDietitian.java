@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class connectingDietitian extends AppCompatActivity {
+
     EditText verify_code;
     ProgressBar progressBar;
     TextView name,age_gender,email,mobile,dietitian_details;
