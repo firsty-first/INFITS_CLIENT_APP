@@ -320,6 +320,7 @@ public class SleepReminderFragment extends Fragment {
     }
 
     private void hooks(View view) {
+
         set = view.findViewById(R.id.set);
         imgBack = view.findViewById(R.id.img_back);
         time = view.findViewById(R.id.sleep_time);
