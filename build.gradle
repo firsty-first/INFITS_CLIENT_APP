@@ -1,0 +1,38 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        compose_ui_version = '1.3.3'
+    }
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Add JCenter repository for older dependencies (if needed)
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+    dependencies {
+
+        classpath 'com.android.tools.build:gradle:8.1.2'
+
+
+        classpath 'com.android.tools.build:gradle:8.1.2'
+
+
+        classpath 'com.android.tools.build:gradle:8.0.2'
+
+
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        // Use the latest stable AGP version (7.5.0)
+
+        classpath 'com.android.tools.build:gradle:8.0.2'
+
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21'
+        classpath 'com.google.gms:google-services:4.3.10' // Update to the latest version (if available)
+    }
+
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
