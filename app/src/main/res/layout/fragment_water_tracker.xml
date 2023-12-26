@@ -143,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="70dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="1800ml"
                 android:textColor="#0051AB"
