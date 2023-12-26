@@ -180,7 +180,7 @@ public class WaterTrackerFragment extends Fragment {
             waterGoal2.setText("0 ml");
         } else {
             waterGoal.setText(DataFromDatabase.waterGoal + " ml");
-            waterGoal2.setText(DataFromDatabase.waterGoal + " ml");
+            //waterGoal2.setText(DataFromDatabase.waterGoal + " ml");
             try {
                 goal = Integer.parseInt(DataFromDatabase.waterGoal);
                 // Log.d("Goal",String.valueOf(goal));
@@ -198,7 +198,7 @@ public class WaterTrackerFragment extends Fragment {
             consumed2.setText("0 ml");
         } else {
             consumed.setText(DataFromDatabase.waterStr + " ml");  // waterStr = waterConsumed
-            consumed2.setText(DataFromDatabase.waterStr + " ml");  // waterStr = waterConsumed
+            //consumed2.setText(DataFromDatabase.waterStr + " ml");  // waterStr = waterConsumed
             try {
                 consumedInDay = Integer.parseInt(DataFromDatabase.waterStr);
                 waterGoalPercent.setText(String.valueOf(calculateGoal(goal)));
@@ -218,7 +218,6 @@ public class WaterTrackerFragment extends Fragment {
         pastActivity();
 
         setgoal.setOnClickListener(view1 -> {
-
             final Dialog dialog = new Dialog(getActivity());
             dialog.setCancelable(true);
             dialog.setContentView(R.layout.watergoaldialog);
@@ -401,7 +400,7 @@ public class WaterTrackerFragment extends Fragment {
                 Log.d("Goal",String.valueOf(goal));
 
                 waterGoal.setText(goaltxt[0] + " ml");
-                waterGoal2.setText(goaltxt[0] + " ml");
+                //waterGoal2.setText(goaltxt[0] + " ml");
                 waterGoalPercent.setText(String.valueOf(calculateGoal(goal)));
                 consumedInDay = 0;
 
@@ -597,9 +596,9 @@ public class WaterTrackerFragment extends Fragment {
 
                     dialog.dismiss();
 
-                    String url = String.format("%supdateWatertracker.php",DataFromDatabase.ipConfig);
+                    //String url = String.format("%supdateWatertracker.php",DataFromDatabase.ipConfig);
 
-                    // String url = "https://infits.in/androidApi/updateWatertracker.php";
+                    String url = "https://infits.in/androidApi/updateWatertracker.php";
 
                     int finalSelectedDrink = selectedDrink;
                     StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
@@ -1033,8 +1032,8 @@ public class WaterTrackerFragment extends Fragment {
             Log.d("WaterTrackFrag", "Arithmetic Ex, consumedInDay, goal: " + consumedInDay + ", " + goal);
         }
         System.out.println(per);
-        //System.out.println(consumedInDay);
-        //System.out.println(goal);
+        System.out.println(consumedInDay);
+        System.out.println(goal);
         return per;
     }
 }
