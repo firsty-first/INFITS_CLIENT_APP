@@ -197,14 +197,14 @@ public class HeartRate extends Fragment {
 
         measuring = view.findViewById(R.id.measuring);
         try {
-            if(DataFromDatabase.macAddress!=null) {
+            if(DataFromDatabase.macAddress!=null)
                 {
                     //prevents crashes in case macAdddress is not available
                     device = rxBleClient.getBleDevice(DataFromDatabase.macAddress);
                     connectionObservable = prepareConnectionObservable();
                     deviceName.append(" " + device.getName());
                 }
-            }
+
         }catch (NullPointerException ex){
             startListening.setClickable(false);
             startListening.setOnClickListener(null);
