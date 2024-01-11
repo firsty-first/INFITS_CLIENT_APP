@@ -199,6 +199,7 @@ public class HeartRate extends Fragment {
         try {
             if(DataFromDatabase.macAddress!=null)
                 {
+                    //BluetoothAdapter not available in the system to work
                     //prevents crashes in case macAdddress is not available
                     device = rxBleClient.getBleDevice(DataFromDatabase.macAddress);
                     connectionObservable = prepareConnectionObservable();
