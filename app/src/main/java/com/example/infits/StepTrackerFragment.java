@@ -57,6 +57,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.tenclouds.gaugeseekbar.GaugeSeekBar;
 
 import org.json.JSONArray;
@@ -174,7 +175,9 @@ public class StepTrackerFragment extends Fragment implements UpdateStepCard {
         goal_step_count.setText(String.valueOf((int) goal));
 
         steps_label.setText(String.valueOf(steps));
-
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet1));
+        bottomSheetBehavior.setPeekHeight(200);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         mythread = new Thread(new Runnable() {
             @Override
